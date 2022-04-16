@@ -24,7 +24,7 @@
 <meta name="author" content="Ting-Chih Hung" />
 
 
-<meta name="date" content="2021-09-27" />
+<meta name="date" content="2022-04-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 
 <link rel="next" href="rlang.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -55,6 +55,70 @@
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
@@ -387,49 +451,50 @@ div.csl-indent {
 <li class="chapter" data-level="33" data-path="合成控制.html"><a href="合成控制.html"><i class="fa fa-check"></i><b>33</b> 合成控制</a></li>
 <li class="chapter" data-level="34" data-path="探索性因素分析.html"><a href="探索性因素分析.html"><i class="fa fa-check"></i><b>34</b> 探索性因素分析</a></li>
 <li class="chapter" data-level="35" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html"><i class="fa fa-check"></i><b>35</b> 驗證性因素分析</a></li>
-<li class="chapter" data-level="" data-path=""><a href="#part-網路與資料技術入門"><i class="fa fa-check"></i>(PART) 網路與資料技術入門</a>
+<li class="part"><span><b>IX 網路與資料技術入門</b></span></li>
+<li class="chapter" data-level="36" data-path="html.html"><a href="html.html"><i class="fa fa-check"></i><b>36</b> HTML</a>
 <ul>
-<li class="chapter" data-level="35.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#sourcecode"><i class="fa fa-check"></i><b>35.1</b> 瀏覽器呈現與原始碼</a></li>
-<li class="chapter" data-level="35.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#htmlsyntax"><i class="fa fa-check"></i><b>35.2</b> 語法規則</a>
+<li class="chapter" data-level="36.1" data-path="html.html"><a href="html.html#sourcecode"><i class="fa fa-check"></i><b>36.1</b> 瀏覽器呈現與原始碼</a></li>
+<li class="chapter" data-level="36.2" data-path="html.html"><a href="html.html#htmlsyntax"><i class="fa fa-check"></i><b>36.2</b> 語法規則</a>
 <ul>
-<li class="chapter" data-level="35.2.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#標籤元素與屬性"><i class="fa fa-check"></i><b>35.2.1</b> 標籤、元素與屬性</a></li>
-<li class="chapter" data-level="35.2.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#樹結構"><i class="fa fa-check"></i><b>35.2.2</b> 樹結構</a></li>
-<li class="chapter" data-level="35.2.3" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#註釋"><i class="fa fa-check"></i><b>35.2.3</b> 註釋</a></li>
-<li class="chapter" data-level="35.2.4" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#保留與特殊字元"><i class="fa fa-check"></i><b>35.2.4</b> 保留與特殊字元</a></li>
-<li class="chapter" data-level="35.2.5" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#文件類型定義"><i class="fa fa-check"></i><b>35.2.5</b> 文件類型定義</a></li>
-<li class="chapter" data-level="35.2.6" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#空白與換行"><i class="fa fa-check"></i><b>35.2.6</b> 空白與換行</a></li>
+<li class="chapter" data-level="36.2.1" data-path="html.html"><a href="html.html#標籤元素與屬性"><i class="fa fa-check"></i><b>36.2.1</b> 標籤、元素與屬性</a></li>
+<li class="chapter" data-level="36.2.2" data-path="html.html"><a href="html.html#樹結構"><i class="fa fa-check"></i><b>36.2.2</b> 樹結構</a></li>
+<li class="chapter" data-level="36.2.3" data-path="html.html"><a href="html.html#註釋"><i class="fa fa-check"></i><b>36.2.3</b> 註釋</a></li>
+<li class="chapter" data-level="36.2.4" data-path="html.html"><a href="html.html#保留與特殊字元"><i class="fa fa-check"></i><b>36.2.4</b> 保留與特殊字元</a></li>
+<li class="chapter" data-level="36.2.5" data-path="html.html"><a href="html.html#文件類型定義"><i class="fa fa-check"></i><b>36.2.5</b> 文件類型定義</a></li>
+<li class="chapter" data-level="36.2.6" data-path="html.html"><a href="html.html#空白與換行"><i class="fa fa-check"></i><b>36.2.6</b> 空白與換行</a></li>
 </ul></li>
-<li class="chapter" data-level="35.3" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#tagsattri"><i class="fa fa-check"></i><b>35.3</b> 標籤與屬性</a>
+<li class="chapter" data-level="36.3" data-path="html.html"><a href="html.html#tagsattri"><i class="fa fa-check"></i><b>36.3</b> 標籤與屬性</a>
 <ul>
-<li class="chapter" data-level="35.3.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>35.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
-<li class="chapter" data-level="35.3.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>35.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
-<li class="chapter" data-level="35.3.3" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>35.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
-<li class="chapter" data-level="35.3.4" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>35.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
-<li class="chapter" data-level="35.3.5" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>35.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
-<li class="chapter" data-level="35.3.6" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>35.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
-<li class="chapter" data-level="35.3.7" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>35.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
-<li class="chapter" data-level="35.3.8" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>35.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
-<li class="chapter" data-level="35.3.9" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>35.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
-<li class="chapter" data-level="35.3.10" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>35.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
-<li class="chapter" data-level="35.3.11" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>35.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
+<li class="chapter" data-level="36.3.1" data-path="html.html"><a href="html.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>36.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
+<li class="chapter" data-level="36.3.2" data-path="html.html"><a href="html.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>36.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
+<li class="chapter" data-level="36.3.3" data-path="html.html"><a href="html.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>36.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
+<li class="chapter" data-level="36.3.4" data-path="html.html"><a href="html.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>36.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
+<li class="chapter" data-level="36.3.5" data-path="html.html"><a href="html.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>36.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
+<li class="chapter" data-level="36.3.6" data-path="html.html"><a href="html.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>36.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
+<li class="chapter" data-level="36.3.7" data-path="html.html"><a href="html.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>36.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
+<li class="chapter" data-level="36.3.8" data-path="html.html"><a href="html.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>36.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
+<li class="chapter" data-level="36.3.9" data-path="html.html"><a href="html.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>36.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
+<li class="chapter" data-level="36.3.10" data-path="html.html"><a href="html.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>36.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
+<li class="chapter" data-level="36.3.11" data-path="html.html"><a href="html.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>36.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
 </ul></li>
-<li class="chapter" data-level="35.4" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#parsing"><i class="fa fa-check"></i><b>35.4</b> 解析</a>
+<li class="chapter" data-level="36.4" data-path="html.html"><a href="html.html#parsing"><i class="fa fa-check"></i><b>36.4</b> 解析</a>
 <ul>
-<li class="chapter" data-level="35.4.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#discarding-nodes"><i class="fa fa-check"></i><b>35.4.1</b> Discarding nodes</a></li>
-<li class="chapter" data-level="35.4.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#提取資訊"><i class="fa fa-check"></i><b>35.4.2</b> 提取資訊</a></li>
+<li class="chapter" data-level="36.4.1" data-path="html.html"><a href="html.html#discarding-nodes"><i class="fa fa-check"></i><b>36.4.1</b> Discarding nodes</a></li>
+<li class="chapter" data-level="36.4.2" data-path="html.html"><a href="html.html#提取資訊"><i class="fa fa-check"></i><b>36.4.2</b> 提取資訊</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="36" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>36</b> XML 與 JSON</a></li>
-<li class="chapter" data-level="37" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>37</b> XPath</a></li>
-<li class="chapter" data-level="38" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>38</b> HTTP</a></li>
-<li class="chapter" data-level="39" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>39</b> AJAX</a></li>
-<li class="chapter" data-level="40" data-path="sql-與關聯性資料庫.html"><a href="sql-與關聯性資料庫.html"><i class="fa fa-check"></i><b>40</b> SQL 與關聯性資料庫</a></li>
-<li class="chapter" data-level="41" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>41</b> 正規表達式</a></li>
-<li class="part"><span><b>IX 網路爬蟲</b></span></li>
-<li class="chapter" data-level="42" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>42</b> 網路爬蟲</a></li>
-<li class="part"><span><b>X 自然語言的特色</b></span></li>
-<li class="chapter" data-level="43" data-path="langmodeling.html"><a href="langmodeling.html"><i class="fa fa-check"></i><b>43</b> 語言與建模</a></li>
-<li class="chapter" data-level="44" data-path="斷詞.html"><a href="斷詞.html"><i class="fa fa-check"></i><b>44</b> 斷詞</a></li>
+<li class="chapter" data-level="37" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>37</b> XML 與 JSON</a></li>
+<li class="chapter" data-level="38" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>38</b> XPath</a></li>
+<li class="chapter" data-level="39" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>39</b> HTTP</a></li>
+<li class="chapter" data-level="40" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>40</b> AJAX</a></li>
+<li class="chapter" data-level="41" data-path="sql-與關聯性資料庫.html"><a href="sql-與關聯性資料庫.html"><i class="fa fa-check"></i><b>41</b> SQL 與關聯性資料庫</a></li>
+<li class="chapter" data-level="42" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>42</b> 正規表達式</a></li>
+<li class="part"><span><b>X 網路爬蟲</b></span></li>
+<li class="chapter" data-level="43" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>43</b> 網路爬蟲</a></li>
+<li class="part"><span><b>XI 自然語言的特色</b></span></li>
+<li class="chapter" data-level="44" data-path="langmodeling.html"><a href="langmodeling.html"><i class="fa fa-check"></i><b>44</b> 語言與建模</a></li>
+<li class="chapter" data-level="45" data-path="斷詞.html"><a href="斷詞.html"><i class="fa fa-check"></i><b>45</b> 斷詞</a></li>
 <li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -454,7 +519,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">R 學習筆記</h1>
 <p class="author"><em>Ting-Chih Hung</em></p>
-<p class="date"><em>2021-09-27</em></p>
+<p class="date"><em>2022-04-16</em></p>
 </div>
 <div id="序言" class="section level1 unnumbered">
 <h1>序言</h1>
@@ -533,6 +598,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
