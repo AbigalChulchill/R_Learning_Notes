@@ -1,0 +1,118 @@
+# 以 `stringr` 處理字串 {#stringr}
+
+:::{.note}
+本章為 @wickhamDataScience2016 第 11 章內容，重點為**正規表達式（regular expression）**。
+:::
+
+### 需要的套件 {-}
+
+我們需要特別加載 `stringr`，因為它並非 `tidyverse` 的核心。
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+## String Basics
+
+我們可以使用單引號 `'` 或雙引號 `"` 來創建字串，並無不同。不過，如果要在字串中使用單引號或雙引號，想當然就得用另一種來創建字串，如：
+
+```{r}
+string1 <- "This is a string."
+string2 <- 'This is a string.'
+string3 <- "This is a 'string.'"
+string4 <- 'This is a "string."'
+c(string1, string2, string3, string4)
+```
+
+注意到 `string4`，`\` 即跳脫字元。當我們想要在字串中使用單引號或雙引號時，如果不以上面那種單雙引號的方式來區分，那就需要使用跳脫字元（如果我們需要在字串中加入 `\` 的話，則需要輸入 `\\`）。
+
+不過，當我們直接印出字串時，就會包含跳脫字元，但這並非字串本身。如果我們想要看到字串本身，可以使用 `writeLines()` 函數，即：
+
+```{r, cache=TRUE}
+writeLines(c(string3, string4))
+```
+
+事實上，其他特殊字元也是如此，例如 `\n` 或 `\t`，甚或 unicode 碼，如：
+
+```{r, cache=TRUE}
+writeLines(c("\u5104", "\u32a3", "\u03A9"))
+```
+
+### String Length
+
+:::{.comment}
+Base R 有一套用於字串的函數，但以下我們都會使用 `stringr` 所提供的函數。它們全都以 `str_` 開頭。
+:::
+
+如果我們想知道字串的長度，我們可以使用 `str_length()` 函數，如：
+
+```{r, cache=TRUE}
+str_length(c("a", "R for Data Science", NA))
+```
+
+### Combining Strings
+
+如果要合併兩個以上的字串，我們可以使用 `str_c()`，如：
+
+```{r, cache=TRUE, eval=FALSE}
+str_c("R", "for", "Data", "Science")
+# [1] "RforDataScience"
+str_c("R", "for", "Data", "Science", sep = " ")
+# [1] "R for Data Science"
+str_c("R", "for", "Data", "Science", sep = ", ")
+# [1] "R, for, Data, Science"
+```
+
+引數除了能是字串，也能是向量，而比較短的向量的元素同 Base R 一樣，會被重新回收再利用，如：
+
+```{r, cache=TRUE}
+str_c(c("A", "B"), c("a", "b", "c", "d"))
+str_c(c("A", "B", "C"), c("a", "b", "c", "d"))
+```
+
+長度是 0 的會被丟棄，
+
+
+把向量轉為字串，我們可以使用引數 `collapse`，如：
+
+```{r}
+str_c(c("x", "y", "z"), collapse = ", ")
+```
+
+### Subsetting Strings
+
+### Locales
+
+
+## Matching Patterns with Regular Expressions
+
+### Basic Matches
+
+### Anchors
+
+### Character Classes and Alternatives
+
+### Repetition
+
+### Grouping and Backreferences
+
+## Tools
+
+### Detect Matches
+
+### Extract Matches
+
+### Grouped Matches
+
+### Replacing Matches
+
+### Splitting
+
+### Find Matches
+
+## Other Types of Pattern
+
+## Other Uses of Regular Expressions
+
+## stringi

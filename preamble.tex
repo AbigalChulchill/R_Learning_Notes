@@ -1,0 +1,63 @@
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setCJKmainfont{宋體-繁}
+\XeTeXlinebreaklocale "zh"
+\setlength{\parskip}{0.3cm}
+\setCJKsansfont{蘋方-繁}
+\newCJKfontfamily\kai{楷體-繁}
+\usepackage[compact]{titlesec}
+\newCJKfontfamily\quotefont{楷體-繁}
+\usepackage{lipsum}
+\usepackage{graphicx,psfrag,booktabs}
+\usepackage{caption}
+\usepackage{tikz-cd}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{enumitem}
+\setlist{noitemsep}
+\let\oldfootnote\footnote
+\renewcommand\footnote[1]{\oldfootnote{%
+\renewcommand\baselinestretch{1.1}%
+\large\footnotesize\ignorespaces#1}}
+\addtolength{\footnotesep}{1pt}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{definition}
+\newtheorem{exercise}{}[section]
+\usepackage{multirow}
+\newtheorem*{remark}{Remark}
+\newtheorem*{question}{Question}
+
+\theoremstyle{remark}
+\newtheorem*{solution}{Solution}
+
+\setcounter{secnumdepth}{2}
+
+\setmainfont{STIX Two Text}[Numbers={Proportional,OldStyle}]
+\setmathfont{STIX Two Math}
+\setmathfont{STIX Two Text}[range=up/{num},Numbers={OldStyle}]
+\setsansfont{Myriad Pro}[Numbers={Proportional,OldStyle}]
+
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{verbatim}
+
+% Set the overall layout of the tree
+\tikzstyle{level 1}=[level distance=3.5cm, sibling distance=3.5cm]
+\tikzstyle{level 2}=[level distance=3.5cm, sibling distance=2cm]
+
+% Define styles for bags and leafs
+\tikzstyle{bag} = [text width=4em, text centered]
+\tikzstyle{end} = [circle, minimum width=3pt,fill, inner sep=0pt]
+\usepackage{tikz-qtree}
+\usepackage{tikz-cd}
+
+\usepackage{forest}
+
+\setlist[description]{leftmargin=7em,style=multiline}
+\titleformat{\section}
+{\normalfont\large\sc}{\thesection}{1em}{}[{\titlerule[0.5pt]\vspace{5pt}}]
+

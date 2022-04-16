@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>16 單變數迴歸 | R 學習筆記</title>
+<meta name="author" content="Ting-Chih Hung">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.9002/transition.js"></script><script src="libs/bs3compat-0.2.5.9002/tabs.js"></script><script src="libs/bs3compat-0.2.5.9002/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fontawesome.min.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">R 學習筆記</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">序言</a></li>
+<li class="book-part">基本語法</li>
+<li><a class="" href="rlang.html"><span class="header-section-number">1</span> R 資料結構</a></li>
+<li><a class="" href="control.html"><span class="header-section-number">2</span> 控制結構與函數</a></li>
+<li class="book-part">資料庫與基本的資料前處理</li>
+<li><a class="" href="rdata.html"><span class="header-section-number">3</span> R 的資料庫</a></li>
+<li><a class="" href="preprocessing.html"><span class="header-section-number">4</span> 資料前處理</a></li>
+<li class="book-part">以 tidyverse 進行資料探索</li>
+<li><a class="" href="ggplot2.html"><span class="header-section-number">5</span> 以 ggplot2 進行資料視覺化</a></li>
+<li><a class="" href="dplyr.html"><span class="header-section-number">6</span> 以 dplyr 轉換資料</a></li>
+<li><a class="" href="EDA.html"><span class="header-section-number">7</span> 探索性資料分析</a></li>
+<li class="book-part">以 tidyverse 進行資料整理</li>
+<li><a class="" href="tibble.html"><span class="header-section-number">8</span> 以 tibble 處理 Tibbles</a></li>
+<li><a class="" href="readr.html"><span class="header-section-number">9</span> 以 readr 匯入資料</a></li>
+<li><a class="" href="tidyr.html"><span class="header-section-number">10</span> 以 tidyr 整理資料</a></li>
+<li><a class="" href="dplyr2.html"><span class="header-section-number">11</span> 以 dplyr 處理關聯性資料</a></li>
+<li><a class="" href="stringr.html"><span class="header-section-number">12</span> 以 stringr 處理字串</a></li>
+<li><a class="" href="forcats.html"><span class="header-section-number">13</span> 以 forcats 處理 Factors</a></li>
+<li><a class="" href="lubridate.html"><span class="header-section-number">14</span> 以 lubridate 處理日期時間</a></li>
+<li class="book-part">編寫程式與 tidyverse</li>
+<li><a class="" href="%E4%BB%A5-magrittr-%E4%BD%BF%E7%94%A8-pipes.html"><span class="header-section-number">15</span> 以 magrittr 使用 Pipes</a></li>
+<li class="book-part">R 與社會科學計量</li>
+<li><a class="active" href="%E5%96%AE%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8.html"><span class="header-section-number">16</span> 單變數迴歸</a></li>
+<li><a class="" href="%E5%A4%9A%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8.html"><span class="header-section-number">17</span> 多變數迴歸</a></li>
+<li><a class="" href="IV.html"><span class="header-section-number">18</span> 工具變數</a></li>
+<li><a class="" href="%E9%82%8A%E7%95%8C%E4%BC%B0%E8%A8%88.html"><span class="header-section-number">19</span> 邊界估計</a></li>
+<li><a class="" href="%E7%B8%B1%E8%B2%AB%E8%B3%87%E6%96%99.html"><span class="header-section-number">20</span> 縱貫資料</a></li>
+<li><a class="" href="%E5%90%88%E6%88%90%E6%8E%A7%E5%88%B6.html"><span class="header-section-number">21</span> 合成控制</a></li>
+<li><a class="" href="%E6%8E%A2%E7%B4%A2%E6%80%A7%E5%9B%A0%E7%B4%A0%E5%88%86%E6%9E%90.html"><span class="header-section-number">22</span> 探索性因素分析</a></li>
+<li><a class="" href="%E9%A9%97%E8%AD%89%E6%80%A7%E5%9B%A0%E7%B4%A0%E5%88%86%E6%9E%90.html"><span class="header-section-number">23</span> 驗證性因素分析</a></li>
+<li class="book-part">網路與資料技術入門</li>
+<li><a class="" href="html.html"><span class="header-section-number">24</span> HTML</a></li>
+<li><a class="" href="xml-%E8%88%87-json.html"><span class="header-section-number">25</span> XML 與 JSON</a></li>
+<li><a class="" href="xpath.html"><span class="header-section-number">26</span> XPath</a></li>
+<li><a class="" href="http.html"><span class="header-section-number">27</span> HTTP</a></li>
+<li><a class="" href="ajax.html"><span class="header-section-number">28</span> AJAX</a></li>
+<li><a class="" href="sql-%E8%88%87%E9%97%9C%E8%81%AF%E6%80%A7%E8%B3%87%E6%96%99%E5%BA%AB.html"><span class="header-section-number">29</span> SQL 與關聯性資料庫</a></li>
+<li><a class="" href="%E6%AD%A3%E8%A6%8F%E8%A1%A8%E9%81%94%E5%BC%8F.html"><span class="header-section-number">30</span> 正規表達式</a></li>
+<li class="book-part">網路爬蟲</li>
+<li><a class="" href="%E7%B6%B2%E8%B7%AF%E7%88%AC%E8%9F%B2.html"><span class="header-section-number">31</span> 網路爬蟲</a></li>
+<li class="book-part">自然語言的特色</li>
+<li><a class="" href="%E8%AA%9E%E8%A8%80%E8%88%87%E5%BB%BA%E6%A8%A1.html"><span class="header-section-number">32</span> 語言與建模</a></li>
+<li><a class="" href="%E6%96%B7%E8%A9%9E.html"><span class="header-section-number">33</span> 斷詞</a></li>
+<li><a class="" href="ref.html">參考文獻</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="單變數迴歸" class="section level1" number="16">
+<h1>
+<span class="header-section-number">16</span> 單變數迴歸<a class="anchor" aria-label="anchor" href="#%E5%96%AE%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8"><i class="fas fa-link"></i></a>
+</h1>
+<div class="note">
+<p>本章為 <span class="citation"><a href="ref.html#ref-ismay2019statistical" role="doc-biblioref">Ismay and Kim</a> (<a href="ref.html#ref-ismay2019statistical" role="doc-biblioref">2019</a>)</span> 第 5 章內容。</p>
+</div>
+<div id="需要的套件" class="section level3 unnumbered">
+<h3>需要的套件<a class="anchor" aria-label="anchor" href="#%E9%9C%80%E8%A6%81%E7%9A%84%E5%A5%97%E4%BB%B6"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb492"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://moderndive.github.io/moderndive/">moderndive</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/skimr/">skimr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jennybc/gapminder">gapminder</a></span><span class="op">)</span></code></pre></div>
+<p>其中，<code>moderndive</code> 使用 tidyverse style 編寫，可以從事基本的線性迴歸；<code>skimr</code> 則可以幫助我們快速地計算敘述統計。</p>
+</div>
+<div id="解釋變數為連續變數" class="section level2" number="16.1">
+<h2>
+<span class="header-section-number">16.1</span> 解釋變數為連續變數<a class="anchor" aria-label="anchor" href="#%E8%A7%A3%E9%87%8B%E8%AE%8A%E6%95%B8%E7%82%BA%E9%80%A3%E7%BA%8C%E8%AE%8A%E6%95%B8"><i class="fas fa-link"></i></a>
+</h2>
+<p>以下，我們想了解的是老師的外貌與其教學評鑑的分數有關係嗎？是什麼關係？因此，<strong>解釋變數（explanatory variable）</strong> <span class="math inline">\(x\)</span> 為老師的外貌分數，而<strong>結果變數（outcome variable）</strong>為老師的教學評鑑分數。</p>
+<div id="探索性資料分析" class="section level3" number="16.1.1">
+<h3>
+<span class="header-section-number">16.1.1</span> 探索性資料分析<a class="anchor" aria-label="anchor" href="#%E6%8E%A2%E7%B4%A2%E6%80%A7%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90"><i class="fas fa-link"></i></a>
+</h3>
+<p>在 <code>moderdive</code> 中，有一 data frame 為 <code>eval</code>，其包含了 UT Austin 的 463 門課程。我們使用 <code>select()</code> 選取我們接下來將要使用的變數，包括 <code>ID</code>、<code>score</code> 與 <code>bty_avg</code>，並且存在名為 <code>evals_ch5</code> 裡頭。</p>
+<div class="sourceCode" id="cb493"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">&lt;-</span> <span class="va">evals</span> <span class="op">%&gt;%</span>
+  <span class="fu">select</span><span class="op">(</span><span class="va">ID</span>, <span class="va">score</span>, <span class="va">bty_avg</span><span class="op">)</span></code></pre></div>
+<p>回憶第 <a href="EDA.html#EDA">7</a> 章所提及的，當我們拿到資料要分析或建模之前，第一件事情就是進行<strong>探索性資料分析</strong>，即 EDA。EDA 讓我們了解個別變數的分配、變數之間是否有潛在的關係與是否有 outliers 或缺漏值。EDA 常見的三個步驟：<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;可以發現 &lt;span class="citation"&gt;&lt;a href="ref.html#ref-ismay2019statistical" role="doc-biblioref"&gt;Ismay and Kim&lt;/a&gt; (&lt;a href="ref.html#ref-ismay2019statistical" role="doc-biblioref"&gt;2019&lt;/a&gt;)&lt;/span&gt; 的說法與 &lt;span class="citation"&gt;&lt;a href="ref.html#ref-wickhamDataScience2016" role="doc-biblioref"&gt;Wickham and Grolemund&lt;/a&gt; (&lt;a href="ref.html#ref-wickhamDataScience2016" role="doc-biblioref"&gt;2016&lt;/a&gt;)&lt;/span&gt; 不太相同。&lt;/p&gt;'><sup>5</sup></a></p>
+<ol style="list-style-type: decimal">
+<li><p>觀察原始資料的值。</p></li>
+<li><p>計算概括的統計量，如平均數、中位數或四分位距等。</p></li>
+<li><p>資料視覺化。</p></li>
+</ol>
+<div id="eda觀察原始資料的值" class="section level4" number="16.1.1.1">
+<h4>
+<span class="header-section-number">16.1.1.1</span> EDA：觀察原始資料的值<a class="anchor" aria-label="anchor" href="#eda%E8%A7%80%E5%AF%9F%E5%8E%9F%E5%A7%8B%E8%B3%87%E6%96%99%E7%9A%84%E5%80%BC"><i class="fas fa-link"></i></a>
+</h4>
+<p>我們可以使用 <code>tibble</code> 中的 <code>glimpse()</code> 查看資料，如：</p>
+<div class="sourceCode" id="cb494"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">glimpse</span><span class="op">(</span><span class="va">evals_ch5</span><span class="op">)</span></code></pre></div>
+<pre><code>## Rows: 463
+## Columns: 3
+## $ ID      &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,…
+## $ score   &lt;dbl&gt; 4.7, 4.1, 3.9, 4.8, 4.6, 4.3, 2.8, 4.1, 3.4, 4.5, 3.8, 4.5, 4.…
+## $ bty_avg &lt;dbl&gt; 5.000, 5.000, 5.000, 5.000, 3.000, 3.000, 3.000, 3.333, 3.333,…</code></pre>
+<p>也能使用 <code>dplyr</code> 中的 <code>sample_n()</code> 函數，隨機挑選給定數量的觀察值，如：</p>
+<div class="sourceCode" id="cb496"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span>
+  <span class="fu">sample_n</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 3
+##      ID score bty_avg
+##   &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1   183   3      4.33
+## 2    25   4.6    5.5 
+## 3   307   4.6    3.33
+## 4   124   3.5    4.83
+## 5   273   4.5    5.67</code></pre>
+<p>由上，我們可知有 463 個觀察值。其中，各個變數分別代表：</p>
+<ol style="list-style-type: decimal">
+<li><p><code>ID</code>：在這份資料中用以編號觀察值的變數。</p></li>
+<li><p><code>score</code>：連續變數；老師的平均教學評鑑分數；最高 5 分，最低 1 分；為我們所關切的結果變數 <span class="math inline">\(y\)</span>。</p></li>
+<li><p><code>bty_avg</code>：連續變數；老師的平均外貌分數，最高 10 分，最低 1 分；為我們所關切的解釋變數 <span class="math inline">\(x\)</span>。</p></li>
+</ol>
+</div>
+<div id="eda簡單的敘述統計" class="section level4" number="16.1.1.2">
+<h4>
+<span class="header-section-number">16.1.1.2</span> EDA：簡單的敘述統計<a class="anchor" aria-label="anchor" href="#eda%E7%B0%A1%E5%96%AE%E7%9A%84%E6%95%98%E8%BF%B0%E7%B5%B1%E8%A8%88"><i class="fas fa-link"></i></a>
+</h4>
+<p>既然 <code>score</code> 與 <code>bty_avg</code> 是連續的數值變數，那我們可以計算他們的平均值與中位數，如：</p>
+<div class="sourceCode" id="cb498"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span>
+  <span class="fu">summarise</span><span class="op">(</span>mean_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span>,
+            mean_bty_avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bty_avg</span><span class="op">)</span>,
+            median_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span>,
+            median_bty_avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">bty_avg</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 4
+##   mean_score mean_bty_avg median_score median_bty_avg
+##        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;
+## 1       4.17         4.42          4.3           4.33</code></pre>
+<p>不過，如果要使用 <code>summarize</code> 來計算標準差、極值與分量的話，並非不可，只是比較麻煩。我們可以使用套件 <code>skimr</code> 中的 <code><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim()</a></code> 函數。把 data frame 丟入這個函數，將會回傳常用的敘述統計量，如：</p>
+<div class="sourceCode" id="cb500"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">score</span>, <span class="va">bty_avg</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>── Data Summary ────────────────────────
+                           Values    
+Name                       Piped data
+Number of rows             463       
+Number of columns          2         
+_______________________              
+Column type frequency:               
+  numeric                  2         
+________________________             
+Group variables            None      
+
+── Variable type: numeric ───────────────────────────────────────────────────────────────────
+  skim_variable n_missing complete_rate  mean    sd    p0   p25   p50   p75  p100 hist 
+1 score                 0             1  4.17 0.544  2.3   3.8   4.3    4.6  5    ▁▁▅▇▇
+2 bty_avg               0             1  4.42 1.53   1.67  3.17  4.33   5.5  8.17 ▃▇▇▃▂</code></pre>
+<p>其中，回傳的有：</p>
+<ul>
+<li><p><code>missing</code>：缺漏值的數量。</p></li>
+<li><p><code>complete</code>：非缺漏值的數量。</p></li>
+<li><p><code>n</code>：所有值變數值的數量。</p></li>
+<li><p><code>mean</code>：平均值。</p></li>
+<li><p><code>sd</code>：標準差（standard deviation）。</p></li>
+<li><p><code>p0</code>：0th 分量，即最小值。</p></li>
+<li><p><code>p25</code>：25th 分量。</p></li>
+<li><p><code>p50</code>：50th 分量。</p></li>
+<li><p><code>p75</code>：75th 分量。</p></li>
+<li><p><code>p100</code>：100th 分量，即最大值。</p></li>
+</ul>
+<p>不過，<code><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim()</a></code> 回傳的這些都是所謂的 univariate summary statistics。但我們還會想知道 binary summary statistics。例如，如果兩個變數都是數值變數，那我們可以計算<strong>相關係數（correlation coefficients） </strong>。</p>
+<p>想要計算相關係數的話，我們有兩種方式。</p>
+<ol style="list-style-type: decimal">
+<li>使用 <code>moderndive</code> 中的 <code><a href="moderndive.github.io/moderndive//reference/get_correlation.html">get_correlation()</a></code> 函數，使用 formula <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code>，把解釋變數放在 <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code> 右邊，結果變數放在 <code><a href="https://rdrr.io/r/base/tilde.html">~</a></code> 左邊，如：</li>
+</ol>
+<div class="sourceCode" id="cb502"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="moderndive.github.io/moderndive//reference/get_correlation.html">get_correlation</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">score</span> <span class="op">~</span> <span class="va">bty_avg</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##     cor
+##   &lt;dbl&gt;
+## 1 0.187</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>使用 <code>summarize()</code> 中的 <code>cor</code> 函數，如：</li>
+</ol>
+<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span>
+  <span class="fu">summarise</span><span class="op">(</span>correlation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">score</span>, <span class="va">bty_avg</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   correlation
+##         &lt;dbl&gt;
+## 1       0.187</code></pre>
+</div>
+<div id="eda視覺化" class="section level4" number="16.1.1.3">
+<h4>
+<span class="header-section-number">16.1.1.3</span> EDA：視覺化<a class="anchor" aria-label="anchor" href="#eda%E8%A6%96%E8%A6%BA%E5%8C%96"><i class="fas fa-link"></i></a>
+</h4>
+<p>加上 <code>position = "jitter"</code>（或者不用 <code>geom_point()</code>，改用 <code>hgeom_jitter()</code>）如同第 <a href="ggplot2.html#ggplot2">5</a> 章所說的，是為了避免 overplotting 的情況。</p>
+<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span>
+  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bty_avg</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_point</span><span class="op">(</span>position <span class="op">=</span> <span class="st">"jitter"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Beauty Score"</span>,
+       y <span class="op">=</span> <span class="st">"Teaching Score"</span>,
+       title <span class="op">=</span> <span class="st">"Scatterplot of realtionship of traching and beauty scores"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R_learning_notes_files/figure-html/unnamed-chunk-289-1.png" width="480" style="display: block; margin: auto;"></div>
+<p>我們也可以使用 <code>geom_smooth(method = "lm")</code>，就能以<strong>最小平方法</strong>來適配模型，並畫出<strong>迴歸線（regression line）</strong>，如：</p>
+<div class="sourceCode" id="cb507"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">evals_ch5</span> <span class="op">%&gt;%</span>
+  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bty_avg</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_jitter</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span>, formula <span class="op">=</span> <span class="st">'y ~ x'</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Beauty Score"</span>,
+       y <span class="op">=</span> <span class="st">"Teaching Score"</span>,
+       title <span class="op">=</span> <span class="st">"Relationship between teaching and beauty scores"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R_learning_notes_files/figure-html/unnamed-chunk-290-1.png" width="480" style="display: block; margin: auto;"></div>
+<p>事實上，藍色線段的斜率恰等於上節所算出的相關係數 0.0187。不過，雖然相關係數與迴歸線的斜率的正負號通常相同，但其值通常不同。</p>
+</div>
+</div>
+<div id="簡單線性迴歸" class="section level3" number="16.1.2">
+<h3>
+<span class="header-section-number">16.1.2</span> 簡單線性迴歸<a class="anchor" aria-label="anchor" href="#%E7%B0%A1%E5%96%AE%E7%B7%9A%E6%80%A7%E8%BF%B4%E6%AD%B8"><i class="fas fa-link"></i></a>
+</h3>
+<p>如何進行簡單線性回歸？定義一迴歸線 <span class="math inline">\(\hat{y} = \hat{b}_0 + \hat{b}_1\cdot x\)</span>，我們可以：</p>
+<ol style="list-style-type: decimal">
+<li><p>使用 <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> 函數適配迴歸模型，然後存在 <code>score_model</code> 中。</p></li>
+<li><p>把 <code>score_model</code> 丟到套件 <code>moderndive</code> 中的 <code><a href="moderndive.github.io/moderndive//reference/get_regression_table.html">get_regression_table()</a></code> 函數得到 regression table。</p></li>
+</ol>
+<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">score_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">score</span> <span class="op">~</span> <span class="va">bty_avg</span>, data <span class="op">=</span> <span class="va">evals_ch5</span><span class="op">)</span>
+<span class="fu"><a href="moderndive.github.io/moderndive//reference/get_regression_table.html">get_regression_table</a></span><span class="op">(</span><span class="va">score_model</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 7
+##   term      estimate std_error statistic p_value lower_ci upper_ci
+##   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 intercept    3.88      0.076     51.0        0    3.73     4.03 
+## 2 bty_avg      0.067     0.016      4.09       0    0.035    0.099</code></pre>
+<p>簡而言之，我們適配出的迴歸模型即
+<span class="math display">\[
+\begin{aligned}
+\hat{y} &amp;= \hat{b}_0 +\hat{b}_1  \cdot x\\
+\widehat{\rm score} &amp;= 3.88 + 0.067 \cdot {\rm bty\_avg}
+\end{aligned}
+\]</span>
+這說明了，當 <code>bty_avg</code> 每增加 1 單位，<code>score</code> 平均會增加 0.067 單位。不過要注意的是，這是相關，而不是因果；即這是 associated increase，而非 causal increase。</p>
+</div>
+<div id="observedfitted-values-and-residuals" class="section level3" number="16.1.3">
+<h3>
+<span class="header-section-number">16.1.3</span> Observed/fitted values and residuals<a class="anchor" aria-label="anchor" href="#observedfitted-values-and-residuals"><i class="fas fa-link"></i></a>
+</h3>
+<p>如果我們想看個別的點的預測值與殘差呢？我們可以 <code><a href="moderndive.github.io/moderndive//reference/get_regression_points.html">get_regression_points()</a></code> 來完成這件事，如：</p>
+<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">regression_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="moderndive.github.io/moderndive//reference/get_regression_points.html">get_regression_points</a></span><span class="op">(</span><span class="va">score_model</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">regression_points</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##      ID score bty_avg score_hat residual
+##   &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1     1   4.7       5      4.21    0.486
+## 2     2   4.1       5      4.21   -0.114
+## 3     3   3.9       5      4.21   -0.314
+## 4     4   4.8       5      4.21    0.586
+## 5     5   4.6       3      4.08    0.52 
+## 6     6   4.3       3      4.08    0.22</code></pre>
+</div>
+</div>
+<div id="解釋變數為類別變數" class="section level2" number="16.2">
+<h2>
+<span class="header-section-number">16.2</span> 解釋變數為類別變數<a class="anchor" aria-label="anchor" href="#%E8%A7%A3%E9%87%8B%E8%AE%8A%E6%95%B8%E7%82%BA%E9%A1%9E%E5%88%A5%E8%AE%8A%E6%95%B8"><i class="fas fa-link"></i></a>
+</h2>
+<p>世界上各國的預期壽命有什麼差異？各個大陸的人的預期壽命之間有何差異？同個大陸之間，預期壽命的分佈又是如何呢？</p>
+<p>我們可以使用套件 <code>gapminder</code> 中的 <code>gapminder</code> 這個 data frame 來嘗試回答這個問題。其中，結果變數 <span class="math inline">\(y\)</span> 是國家的預期壽命，一個連續變數；解釋變數 <span class="math inline">\(x\)</span> 是國家屬於哪大洲，一個類別變數。資料詳情可以參照套件說明。</p>
+<div id="探索性資料分析-1" class="section level3" number="16.2.1">
+<h3>
+<span class="header-section-number">16.2.1</span> 探索性資料分析<a class="anchor" aria-label="anchor" href="#%E6%8E%A2%E7%B4%A2%E6%80%A7%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>首先載入資料。我們觀察的焦點放在 2007 年的狀況，並且我們需要 <code>country</code>、<code>lifeExp</code>、<code>continent</code> 的資料。</p>
+<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jennybc/gapminder">gapminder</a></span><span class="op">)</span>
+<span class="va">gapminder2007</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2007</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">select</span><span class="op">(</span><span class="va">continent</span>, <span class="va">country</span>, <span class="va">lifeExp</span><span class="op">)</span></code></pre></div>
+<div id="eda觀察原始資料" class="section level4" number="16.2.1.1">
+<h4>
+<span class="header-section-number">16.2.1.1</span> EDA：觀察原始資料<a class="anchor" aria-label="anchor" href="#eda%E8%A7%80%E5%AF%9F%E5%8E%9F%E5%A7%8B%E8%B3%87%E6%96%99"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">glimpse</span><span class="op">(</span><span class="va">gapminder2007</span><span class="op">)</span></code></pre></div>
+<pre><code>## Rows: 142
+## Columns: 3
+## $ continent &lt;fct&gt; Asia, Europe, Africa, Africa, Americas, Oceania, Europe, Asi…
+## $ country   &lt;fct&gt; "Afghanistan", "Albania", "Algeria", "Angola", "Argentina", …
+## $ lifeExp   &lt;dbl&gt; 43.828, 76.423, 72.301, 42.731, 75.320, 81.235, 79.829, 75.6…</code></pre>
+<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gapminder2007</span> <span class="op">%&gt;%</span> <span class="fu">sample_n</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 3
+##   continent country                  lifeExp
+##   &lt;fct&gt;     &lt;fct&gt;                      &lt;dbl&gt;
+## 1 Europe    Finland                     79.3
+## 2 Africa    Central African Republic    44.7
+## 3 Africa    Angola                      42.7
+## 4 Africa    Tunisia                     73.9
+## 5 Africa    Cameroon                    50.4</code></pre>
+</div>
+<div id="eda簡單的敘述統計-1" class="section level4" number="16.2.1.2">
+<h4>
+<span class="header-section-number">16.2.1.2</span> EDA：簡單的敘述統計<a class="anchor" aria-label="anchor" href="#eda%E7%B0%A1%E5%96%AE%E7%9A%84%E6%95%98%E8%BF%B0%E7%B5%B1%E8%A8%88-1"><i class="fas fa-link"></i></a>
+</h4>
+<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gapminder2007</span> <span class="op">%&gt;%</span>
+  <span class="fu">select</span><span class="op">(</span><span class="va">lifeExp</span>, <span class="va">continent</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://docs.ropensci.org/skimr/reference/skim.html">skim</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>── Data Summary ────────────────────────
+                           Values    
+Name                       Piped data
+Number of rows             142       
+Number of columns          2         
+_______________________              
+Column type frequency:               
+  factor                   1         
+  numeric                  1         
+________________________             
+Group variables            None      
+
+── Variable type: factor ───────────────────────────────────────────────────────────────────
+  skim_variable n_missing complete_rate ordered n_unique top_counts                        
+1 continent             0             1 FALSE          5 Afr: 52, Asi: 33, Eur: 30, Ame: 25
+
+── Variable type: numeric ──────────────────────────────────────────────────────────────────
+  skim_variable n_missing complete_rate  mean    sd    p0   p25   p50   p75  p100 hist 
+1 lifeExp               0             1  67.0  12.1  39.6  57.2  71.9  76.4  82.6 ▂▃▃▆▇</code></pre>
+</div>
+</div>
+<div id="線性迴歸" class="section level3" number="16.2.2">
+<h3>
+<span class="header-section-number">16.2.2</span> 線性迴歸<a class="anchor" aria-label="anchor" href="#%E7%B7%9A%E6%80%A7%E8%BF%B4%E6%AD%B8"><i class="fas fa-link"></i></a>
+</h3>
+</div>
+<div id="observedfitted-values-and-residuals-1" class="section level3" number="16.2.3">
+<h3>
+<span class="header-section-number">16.2.3</span> Observed/fitted values and residuals<a class="anchor" aria-label="anchor" href="#observedfitted-values-and-residuals-1"><i class="fas fa-link"></i></a>
+</h3>
+
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="%E4%BB%A5-magrittr-%E4%BD%BF%E7%94%A8-pipes.html"><span class="header-section-number">15</span> 以 magrittr 使用 Pipes</a></div>
+<div class="next"><a href="%E5%A4%9A%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8.html"><span class="header-section-number">17</span> 多變數迴歸</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li>
+<a class="nav-link" href="#%E5%96%AE%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8"><span class="header-section-number">16</span> 單變數迴歸</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E7%9A%84%E5%A5%97%E4%BB%B6">需要的套件</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#%E8%A7%A3%E9%87%8B%E8%AE%8A%E6%95%B8%E7%82%BA%E9%80%A3%E7%BA%8C%E8%AE%8A%E6%95%B8"><span class="header-section-number">16.1</span> 解釋變數為連續變數</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E6%80%A7%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90"><span class="header-section-number">16.1.1</span> 探索性資料分析</a></li>
+<li><a class="nav-link" href="#%E7%B0%A1%E5%96%AE%E7%B7%9A%E6%80%A7%E8%BF%B4%E6%AD%B8"><span class="header-section-number">16.1.2</span> 簡單線性迴歸</a></li>
+<li><a class="nav-link" href="#observedfitted-values-and-residuals"><span class="header-section-number">16.1.3</span> Observed/fitted values and residuals</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#%E8%A7%A3%E9%87%8B%E8%AE%8A%E6%95%B8%E7%82%BA%E9%A1%9E%E5%88%A5%E8%AE%8A%E6%95%B8"><span class="header-section-number">16.2</span> 解釋變數為類別變數</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E6%80%A7%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90-1"><span class="header-section-number">16.2.1</span> 探索性資料分析</a></li>
+<li><a class="nav-link" href="#%E7%B7%9A%E6%80%A7%E8%BF%B4%E6%AD%B8"><span class="header-section-number">16.2.2</span> 線性迴歸</a></li>
+<li><a class="nav-link" href="#observedfitted-values-and-residuals-1"><span class="header-section-number">16.2.3</span> Observed/fitted values and residuals</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>R 學習筆記</strong>" was written by Ting-Chih Hung. It was last built on 2021-08-24.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,616 @@
+# (PART) 基本語法 {-}
+
+# R 資料結構 {#rlang}
+
+:::{.note}
+本章為 @zamorasaizIntroductionDataAnalysis2020 節 2.2 內容。
+:::
+
+
+## 變數與基本的運算
+
+以下分別是「加」、「減」、「乘」、「除」、「餘數除法」、與「整數除法」：
+
+```{r,  results="hide"}
+3 + 4
+3 - 4
+3 * 4
+3 / 4
+15 %% 2  # get "1"
+15 %/% 2  # get "7"
+```
+
+我們可以 `<-` 來指派值給變數：
+
+```{r, results='hide'}
+x <- 3 * 4
+y <- 4 * 20
+z <- x + y
+z  # get "92"
+```
+
+最基本的資料型態有三種：`numeric`、`character` 與 `logical`。`numeric` 即數字，`character` 即字串而 `logical` 即布林值 `TRUE` 或 `FALSE`。此外，使用 `as.integer()` 可以把 `numeric` 轉成型態 `integer`，[^r_lang-1]也另有複數為型態 `complex`。而我們可以使用 `class()` 來查看變數的資料型態，如：
+
+[^r_lang-1]: 傳 `character` 至 `as.integer` 的話將會產生 `NA`，傳 `TRUE` 或 `FALSE` 的話會變成整數 1 或 0，而傳 `complex` 的話則虛數的部份將會被自動捨棄。
+
+```{r, results='hide'}
+GPA <- 4.3
+class(GPA)  # get "'numeric'"
+
+word <- "GPA"
+class(word)  # get "'character'"
+
+yes.no <- TRUE
+class(yes.no)  # get "'logical'"
+
+GTA <- as.integer(5)
+class(GTA)  # get "'integer'"
+
+complex.number <- 2 + 5i
+class(complex.number)  # get "'complex'"
+
+as.integer(TRUE)
+```
+
+我們也可以使用科學記號代表很大的數，如：
+
+```{r, results='hide'}
+2.35e7  # get "23500000"
+```
+
+Logical value 也可以進行運算，其中 `TRUE` 代表 1，而 `FALSE` 代表 0，如：
+
+```{r, results='hide'}
+TRUE + TRUE  # get "2"
+TRUE + FALSE  # get "1"
+TRUE * FALSE  # get "0"
+FALSE * FALSE  # get "0"
+```
+
+此外，還有兩種特殊的資料型態：`NULL` 與 `NA`。當我們指派一個 `NULL` 給一個變數時，會讓其變成一個空的物件。
+
+```{r, results='hide'}
+null.object <- NULL
+null.object  # get "NULL"
+class(null.object)  # get "'NULL'"
+```
+
+而 `NA` 的意思是 non-available，常常表示 missing data。但特別的是用 `class()` 檢視為 `NA` 的變數時會發現其為一 logical value。
+
+```{r, results='hide'}
+missing <- NA
+missing  # get "NA"
+class(missing)  # get "'NA'"
+```
+
+`NA` 運算後也會產生 `NA`：
+
+```{r, results='hide'}
+1 + NA  # get "NA"
+TRUE - NA  # get "NA"
+```
+
+## 向量
+
+向量（vector）是一列元素。我們以 `c()` 可以創造向量，裡頭的元素可以是 `numeric`、`character` 或 `logical` 其中一種，或者混合，而之間須以逗號分隔；我們可以用 `length()` 來得知向量的長度；如果裡頭的元素都是 `numeric`、`character` 或 `logical` 其中一種，則該向量的型態即其元素的型態，如：
+
+```{r, results='hide'}
+vector.numbers <- c(1, 2, 3, 4)
+vector.numbers  # get "1 2 3 4"
+length(vector.numbers)  # "4"
+class(vector.numbers)  # get "'numeric'"
+
+vector.characters <- c("R", "is", "cool") 
+vector.characters  # get "'R'    'is'   'cool'"
+class(vector.characters)  # get "'character'"
+
+vector.logicals <- c(TRUE, FALSE)
+vector.logicals  # get "TRUE FALSE"
+class(vector.logicals)  # get "'logical'"
+```
+
+但如果是向量內有不同種類的元素，那麼 R 會去讓向量裡的元素的型態變得更「一般」，即 character 優先於 numeric 又優先於 logical，就連 `NA` 都能被變成其他型態，如：
+
+```{r, results='hide'}
+c("I", "am", 1)  # get "'I'  'am' '1'"
+class(c("I", "am", 1))  # get "'character'"
+
+c("He", "is", "the", TRUE)  # get "'He'   'is'   'the'  'TRUE'"
+class(c("He", "is", "the", TRUE))  # get "'character'"
+
+c(1, FALSE)  # get "1 0"
+class(c(1, FALSE))  # get "'numeric'"
+
+c(NA, "1")  # get "NA  '1'"
+class(c(NA, "1"))  # get "'character'"
+
+c(NA, TRUE)  # get "NA  TRUE"
+class(c(NA, TRUE))  # get "'logical'"
+```
+
+### 創造向量的其他方法
+
+如果我們要創造一個連續的向量，可以使用 `a:b`，如：
+
+```{r, results='hide'}
+3:12  # get "3  4  5  6  7  8  9 10 11 12"
+class(3:12)  # get "'numeric'"
+```
+
+如果我們想要重複（repeat）某個數字或某群數字好幾遍，可以使用 `rep()`，例如：
+
+```{r, results='hide'}
+rep(c(3, -1, 0.5), 3)  # get "3.0 -1.0  0.5  3.0 -1.0  0.5  3.0 -1.0  0.5"
+rep(c(3, -1, 0.5), times=3)  # get "3.0 -1.0  0.5  3.0 -1.0  0.5  3.0 -1.0  0.5"
+# 所以第二個 argument 預設是整串重複幾次的意思
+# 但也能改成個別重複幾次，如下：
+rep(c(3, -1, 0.5), each=3)  # get "3.0  3.0  3.0 -1.0 -1.0 -1.0  0.5  0.5  0.5"
+```
+
+或者，我們可以在第二個 argument 丟入一個向量，指定第一個 argument 的個別的向量分別要重覆幾次，但這時候會長得像在第二個 argument 丟入 `each=` 的樣子，如：
+
+```{r, results='hide'}
+rep(c(3, -1, 0.5), times=c(2, 1, 3)) # get "3.0  3.0 -1.0  0.5  0.5  0.5"
+```
+
+我們也可以在第二個 argument 丟入一個 `length.out=`，這會使第一個 argument 的向量重複，而直到長度與 `length.out=` 的值相當，如：
+
+```{r, results='hide'}
+rep(c(3, -1, 0.5), length.out=8)  # get "3.0 -1.0  0.5  3.0 -1.0  0.5  3.0 -1.0"
+```
+
+除了手動輸入、使用 `a:b` 或者以 `rep()` 的方式產生向量，我們還可以使用 `seq()`，這可以創造出一個數列。`seq()` 有三個引數，第一個引數為起始值，第二個引數為結束值，第三個引述則為公差，如：
+
+```{r, results='hide'}
+seq(0, 10, 2.5)  # get "0.0  2.5  5.0  7.5 10.0"
+seq(0, 10, 2.3)  # get "0.0 2.3 4.6 6.9 9.2"
+```
+
+### 標籤
+
+只要創建了向量，裡頭的元素就能以 `name()` 命名。在我們要指出向量中的特定元素時還蠻有用的。此功能也有點像 Python 裡頭的字典，如：
+
+```{r}
+temperatures <- c(28, 29, 27, 27, 30)
+names(temperatures) <- c("Monday", "Tuesday", "Wednesday",
+"Thursday", "Friday")
+temperatures
+```
+
+這時候，ouput 就不會有 `[1]` 了，而是變成結構性的帶有標籤的向量。此外，如果要新增一個有同樣多座標且標籤順序一致的向量，有兩種方法。第一種方法是直接把 `names(標籤向量)` 指派給 `names(欲標籤的向量)`，這樣會把前者的標籤貼到後者身上；或者，我們還是可以仿效原先的做法，再新創一個同等長度的字串向量，然後輸入 `names(欲標籤的向量)`，如下：
+
+```{r}
+# Method 1
+rains <- c(0, 5, 6, 0, 2)
+names(rains) <- names(temperatures)
+rains
+
+# Method 2
+rains <- rep(NULL, 5)  # 先清空剛剛指派的 named num [1:5]
+rains <- c(0, 5, 6, 0, 2)
+days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(rains) <- days
+rains
+```
+
+### 向量的運算  {#vectcalc}
+
+而如果我們想要把向量中的每個數字都加上另一個數字，只要直接把兩個物件相加就行了（雖然這違反了數學邏輯的公理）；如果要把向量中的每個數字都乘上某個數字也是同理，如攝氏溫標轉換成凱式溫標與華氏溫標：
+
+```{r}
+# Kelvin degrees
+Ktemp <- temperatures + 273.15
+Ktemp
+
+# Fahrenheit degrees
+Ftemp <- temperatures * 1.8 + 32
+Ftemp
+```
+
+減、除、次方也是類似的道理。
+
+此外，`sum()` 可以將所有向量的座標加總，如：
+
+```{r, results='hide'}
+total.rains <- sum(rains)
+total.rains  # get "13"
+```
+
+### 存取向量中的元素  {#accesselements}
+
+在 R 語言中，第一個位置是 1（而不像有些語言是從 0 開始），並依序下去。如果我們要**存取一個向量中的元素**，可以直接指定向量中的位置；若要**存取多個元素**，就要使用 `變數[c(想指定的位置)]`；**存取連續的位置**則依然可以使用 `a:b`；當然也可以丟**等差數列** `seq()` 進去，如：
+
+```{r}
+# 存取一個元素
+rains[2]
+
+# 存取多個元素
+rains[c(2, 5)]
+
+# 存取連續的元素
+rains[2: 5]
+
+# 等差地存取元素
+rains[seq(1, 5, 2)]
+```
+
+除了以位置來存取，當然也可以標籤來存取向量中的元素，如：
+
+```{r}
+rains[c("Monday", "Tuesday")]
+```
+
+### 關係
+
+-  `<`：小於。
+-  `>`：大於。
+-  `<=`：小於或等於。
+-  `>=`：大於或等於。
+-  `==`：相等。
+-  `!=`：不相等。
+
+在兩個值之間加入這些關係符號，會輸出一個布林值，描述兩者的關係是否符合輸入的關係，如：
+```{r, results='hide'}
+4 > 3  # get "TRUE"
+4 != 4  # get "FALSE"
+```
+
+向量也能與一個數字比較，此時會依據向量裡頭的位置順序，連帶著標籤（如果有的話），輸出各個座標的布林值，如：
+
+```{r}
+rains > 0
+```
+
+也能考慮多重的關係。`&` 代表的是「且」（and），而 `|` 代表的是「或」（or），而函數 `xor()` 在其中一者為真一者為假時會回傳真，在兩者皆真或皆假的情況會回傳假，如：
+
+```{r, results='hide'}
+3 == 4 & 3 == 3  # get "FALSE"
+3 == 4 | 3 == 3  # get "TRUE"
+3 < 5 & 4 > 2  # get "TRUE"
+TRUE & TRUE & FALSE  # get "FALSE"
+xor(3 > 2, FALSE)  # get "TRUE"
+xor(3 > 2, TRUE)  # get "FALSE"
+xor(3 < 2, FALSE)  # get "FALSE"
+```
+
+我們可以運用這些比較關係來確認向量裡頭的元素是否符合某個性質。例如是否下雨、是否溫度高於某個給定的溫度，即：
+
+```{r}
+# 沒下雨的日子
+not.rainy.days <- rains == 0
+not.rainy.days
+
+# 炎熱的日子
+hot.days <- temperatures >= 29
+hot.days
+```
+
+還可以用剛剛新建的向量，來存取原先向量中的位置，如：
+```{r}
+# 在 hot.days 中，Tues. 與 Fri. 是真
+# 所以 rains 中 Tues. 與 Fri. 標籤的位置的標籤與值會被叫出來
+rains[hot.days]
+```
+
+此外，我們可以透過兩個函數來一次檢查向量中的元素與某個性質之間的關係，即 `all()` 與 `any()`。前者在都有滿足的情況下就會回傳 `TRUE`，反之則回傳 `FALSE`；後者在其中一個座標有滿足的情況下就會回傳 `TRUE`，反之則回傳 `FALSE`。例如以下分別為「如果所有日子氣溫都大於等於 28 度則回傳 `TRUE`」與「如果其中一天氣溫恰等於 30 度則回傳 `TRUE`」，即：
+```{r, results='hide'}
+all(temperatures >= 28)  # get "FALSE"
+any(temperatures >= 30)  # get "TRUE"
+```
+
+另外，`which()` 則可以找到滿足條件的位置，即回傳為 `TRUE` 的位置的標籤與索引值，如找出溫度恰等於 27 度的日子：
+```{r}
+which(temperatures == 27)
+```
+
+### 排序
+
+我們可以使用 `order()`，其引數為一個向量，而此函數會回傳此向量中的元素的索引值為一個向量，由原向量的元素由小到大排列。如下，`order(some.vector)` 回傳的向量的第一個元素為 `5`，這意味著原先的向量中最小的元素 `2` 其索引值為 `5`，而次小的元素 `3` 其索引值為 `1`，依此類推，最大的元素 `9` 其索引值為 `3`：
+
+```{r}
+some.vector <- c(3, 7, 9, 6, 2, 8)
+order(some.vector)
+```
+
+所以，將 `order(some.vector)` 作為 `some.veector[]` 的引數（回憶節 \@ref(accesselements)），我們可以由小到大重新排列向量，即回傳一個向量，其第一個元素為原向量索引值 `5` 的元素，其值為 `2`，依此類推，如：
+```{r}
+some.vector[order(some.vector)]
+```
+
+不過要把向量由小排到大也可以使用 `sort()` 就是了。此操作不會改變原本的向量的排序，但會回傳排序後的向量。不過與上面的方法不同的是，此方法無法知道這些值原先在什麼位置：
+```{r}
+some.vector <- c(3, 7, 9, 6, 2, 8)
+sort(some.vector)
+```
+
+### 其他操作
+
+我們可以使用 `sum()` 將向量的所有元素的值加總；`max()` 與 `min()` 則分別會回傳其中最大與最小的值；`range()` 則將回傳向量中的元素的範圍（即同時回傳 `min()` 與 `max()`）；`mean()` 可以計算向量的算術平均，如：
+
+```{r, results='hide'}
+sum(some.vector)  # get "35"
+max(some.vector)  # get "9"
+min(some.vector)  # get "2"
+range(some.vector)  # get "2 9"
+mean(some.vector)  # get "5.833333"
+```
+
+結合 `which()`（回傳為 TRUE 的位置的標籤與索引值）與 `max()`（找到氣溫最高的值），就可以找到氣溫最高的日子的標籤與索引值，如：
+```{r}
+temperatures
+which(temperatures == min(temperatures))
+max(temperatures)
+```
+
+## 矩陣
+
+### 創建矩陣
+
+我們可以用 `matrix()` 來創建矩陣，其語法為：
+```{r, results='hide'}
+matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL)
+```
+其中，`data` 為我們要放進矩陣的向量資料；`nrow` 為 row 的數量；`ncol` 為 column 的數量；`byrow` 為以 column 或 row 的方式填滿矩陣（預設為 `FALSE`，即以 column 的方式填滿矩陣）；`dimnames` 則可以添加一個 list 為 row 與 column 的名字到矩陣（見節 \@ref(lists)）。
+
+對於 `byrow` 的用法如下兩個例子：
+```{r byrow}
+matrix(1:6, nrow = 2, byrow = TRUE)
+matrix(1:6, nrow = 2, byrow = FALSE)  # default argument
+```
+
+而如果我們以向量的資料填滿矩陣，只要丟入 `nrow` 或 `ncol` 其中一者的引數即可，R 會根據資料的長度，算出 column 或 row 該要是多少。但如果向量資料的長度無法非 `nrow` 或 `ncol`，就會出現 `Warning`。但 R 還是會像資料長度為 `nrow` 或 `ncol` 的因數的情況一樣，從頭開始以原本的向量把矩陣給填滿，如：
+
+```{r}
+matrix(1:11, nrow = 3)
+```
+
+矩陣也可以放以 character 或 logical 組成的向量資料，如：
+
+```{r}
+matrix(c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"), nrow = 4)
+
+matrix(c(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE), nrow = 2)
+```
+
+我們可以 `rownames()` 與 `colnames` 為 row 與 column 加上名字，使用方法如：
+```{r}
+climate <- matrix(c(temperatures, rains), byrow = TRUE, nrow = 2)
+rownames(climate) <- c("Temperatures", "Rains")
+colnames(climate) <- days
+climate
+```
+
+我們可以透過 `dim(想得知的矩陣)` 得知 row 與 column 的數量，如：
+```{r, results='hide'}
+dim(climate)  # get "2 5"
+```
+
+### 合併矩陣與矩陣運算
+
+我們可以透過 `rbinds()` 與 `cbinds()` 在矩陣新增 row 或 column，如：
+
+```{r}
+Winds <- c(30, 25, 22, 24, 18)
+total.climate <- rbind(climate, Winds)
+total.climate
+```
+
+我們可以使用 `rowSums()` 或 `colSums()` 把各個 row 或 column 的值加起來。把各個 row 的值相加以後指派給變數 `totals`，然後與原先的 `climate` 合併，就如：
+```{r}
+totals <- rowSums(total.climate)
+cbind(total.climate, totals)
+```
+
+### 存取矩陣中的元素
+
+存取矩陣的方式與向量類似，即 `矩陣[row, col]`，如：
+
+```{r, results='hide'}
+total.climate[2, 3]  # get "6"
+```
+
+如果不輸入 row 的引數，則會列出該 column 所有的資料，如下列出了週三的氣溫、雨量及風速：
+```{r}
+total.climate[, 3]
+```
+如果不輸入 column 的引數，則會列出該 row 所有的資料，如下列出了每日的雨量：
+```{r}
+total.climate[2, ]
+```
+
+另外，也可以直接指定某個 row 或 column 的名字來存取資料，如：
+```{r}
+total.climate[, "Wednesday"]
+total.climate["Rains",]
+total.climate["Rains", "Wednesday"]
+```
+
+### 矩陣的運算
+
+我們可以用 `mean()` 計算向量的算術平均，我們也能以此計算矩陣的 column 或 row 的算術平均。例如想要計算每天的平均氣溫，可以如下：
+
+```{r}
+mean(total.climate["Temperatures", ])
+```
+
+矩陣也能像向量一般運算（回憶節 \@ref(vectcalc)），如：
+```{r}
+climate * 2
+climate ^ 2
+
+# 計算雨量與氣溫的比例
+climate[2, ] / climate[1, ]
+```
+
+## Factors
+
+質性或類別變數（qualitative or categorical variable）的值即類別，而非數值。把向量丟到 `factor()` 中可以把向量轉換成 factor。
+
+創建一個向量 `sizes`，如：
+
+```{r}
+sizes <- c("Small", "Big", "Big", "Medium", "Medium", "Small", "Medium", "Small", "Small")
+sizes
+```
+
+但這時候如果用 `summary()`，我們只看得到資料長度和他們的類別：
+
+```{r}
+summary(sizes)
+```
+
+此時，把向量丟到 `fator()` 中將會回傳不太一樣的結果，並且 `summary()` 將會回傳各個值出現的次數；`levels()` 則會回傳此 factor vector 中有哪些元素（重複的不計），如：
+
+```{r}
+factor.sizes <- factor(sizes)
+factor.sizes
+summary(factor.sizes)
+levels(factor.sizes)
+```
+
+類別變數可以分為無序（nominal）與有序（ordinal）兩種。前者如顏色，後者如尺寸。如果要讓變數是有序的，我們在 `factor()` 中須將引數 `ordered` 設置為 `TRUE`，並且以引數 `levels = 向量` 由小到大地來描述順序關係，如：
+
+```{r}
+sizes2 <- c("Small", "Big", "Big", "Medium", "Medium", "Small", "Medium", "Small", "Small")
+factor.sizes2 <- factor(sizes, ordered=TRUE, levels=c("Small", "Medium", "Big"))
+factor.sizes2
+```
+
+我們也可以把向量指派給 `level(目標 factor)`，來覆寫 factor 中的值，如：
+```{r}
+survey.vector <- c("M", "F", "F", "M", "M", "F", "M", "M") 
+factor.survey.vector <- factor(survey.vector)
+# 此時儲存的順序是 "F M"，因此可以 c("Female", "Male") 覆寫之
+levels(factor.survey.vector) <- c("Female", "Male")
+factor.survey.vector
+```
+
+無序的 factor 的元素無法比較，但有序的可以，如：
+
+```{r, results='hide'}
+factor.sizes2[1] < factor.sizes2[2]  # get "TRUE"
+factor.sizes2[2] == factor.sizes2[2]  # get "TRUE"
+factor.sizes2[2] != factor.sizes2[3]  # get "FALSE"
+```
+
+## Data Frames
+
+在 vectors 與 matrices 中，資料都會儲存成一樣的型態。但進行資料分析時，我們會同時處理不同型態的資料。此時我們需要 data frames 來儲存資料表。與矩陣不同的是， data frames 可以儲存不同型態的資料。R 有內置的 datasets，可以使用以下指令查看其資訊：
+
+```{r, results='hide'}
+?datasets
+library(help="datasets")
+```
+
+我們也可以使用 `data()` 查看電腦內現有的 datasets。
+
+我們可以使用其中一個現成的 dataset `OrchardSprays`。輸入 `OrchardSprays` 可以查看整個表。我們可以發現有四個變數，分別是 `decrease`、`rowpos`、`colpos` 與 `treatmenet`。`decrease` 為對處置的反應，以數值記載；`rowpos` 與 `colpos` 分別代表其 design 的 row 與 column；`treatment` 則為 `A` 至 `H` 的類別變數。以 `head(OrchardSprays)` 可以查看表格的前六個 rows。以 `str()` 可以獲知表格的資訊，如：
+
+```{r}
+str(OrchardSprays)
+```
+
+我們可以用 `dataframe()` 來創建 data frames。其中的引數放入向量，而依序構成該 data frames 的各個 columns，如：
+
+```{r}
+name <- c("Alfonso", "Carlos", "Lluis", "Diego")
+last.name <- c("Zamora", "Quesada", "Hurtado", "Mondejar")
+second.last.name <- c("Saiz", "Gonzalez", "Gil", "Ruiz")
+age <- c(33, 32, 30, 37)
+phd <- c("math", "math", "physics", "math")
+office <- c(4, 14, 6, 8)
+from.madrid <- c(FALSE, TRUE, FALSE, TRUE)
+professors <- data.frame(name, last.name, second.last.name, age, phd, office, from.madrid)
+str(professors)
+```
+
+### 存取 data frames 中的元素與 subset {#dataframesubsetting}
+
+想要選取 data frames 中的元素，就像選取矩陣中的元素一樣，即 `dataframes[row, col]`，如：
+
+```{r, results='hide'}
+professors[2, 3]
+professors[1, ]  # 顯示第一個 row
+professors[, 2]  # 顯示第二個 column
+professors[1 : 2, ]  # 選擇頭兩個 rows
+```
+
+要注意的是，data frames 的 column 的名字是來自 column vector 的名字，所以我們也可以用 `$` 來存取特定的 column vector，如：
+
+```{r}
+professors$phd
+professors$phd[3]
+```
+
+我們還可以用 logical 的方式來叫出 data frames 的 subset，例如要叫出 `from.madrid` 為 `TRUE` 的兩個 rows，即：
+```{r}
+madrileans <- professors$from.madrid
+professors[madrileans, ]
+```
+
+以指令 `subset(data_frame, subset=logical_condition)` 也能做到類似的事，如：
+
+```{r}
+subset(professors, subset=age > 31)
+subset(professors, subset=phd == "math")
+```
+
+### 排序 {#dataframeordering}
+
+想要以某個特定的變數的順序整理 data frames，可以使用 `order()`，如：
+```{r}
+positions <- order(professors$age)
+professors[positions, ]
+```
+
+### 其他操作
+
+我們可以 `as.data.frame()` 把矩陣轉為 data frames。
+
+
+## Lists {#lists}
+
+Lists 就像向量，但其元素可以有不同的長度、大小、型態。我們可以用 `list()` 創建 lists，如：
+
+```{r}
+new.list <- list(days, factor.sizes, climate)
+new.list
+```
+
+我們也可以選取 lists 中的元素，如：
+
+```{r, results='hide'}
+new.list[1]  # 第一個元素
+new.list[[1]][3]  # 第一個元素中的第三個元素
+new.list[[3]][1, 2:5]  # 第三個元素中的第一個 row 的第二至五個的元素
+```
+
+我們也可以為 list 中的元素命名，如將第一個元素命名為 `the.days`、第二個元素命名為 `the.factors`、將第三個元素命名為 `the.data`：
+
+```{r}
+new.list <- list(the.days=days, the.factors=factor.sizes, the.data=climate)
+new.list
+```
+
+這樣就可以用 `$名字` 來存取 list 中的元素，如：
+
+```{r, results='hide'}
+new.list$the.factors
+new.list$the.data[2, 5]
+new.list["the.data"]
+```
+
+如果要新增元素到 list，可以 `list_name[["名字"]] <- 要輸入的物件` 指令，其中名字當然是選擇性的，也能空下來；此外，如果要刪除 list 中的成份，只要指派 `NULL` 給它就行，如：
+
+```{r}
+new.list[["professors"]] <- professors  # 新增第四個元素，名為 "professors" 的 data frames
+new.list[[""]] <- positions  # 新增第五個元素，無名的向量
+new.list[[5]] <- NULL  # 刪除第五個元素
+new.list[["professors"]] <- NULL  # 刪除名為 "professors" 的元素
+```
+
+我們也可以用 `str()` 來查看 lists 的資訊，如：
+
+```{r, results='hide'}
+str(new.list)
+```

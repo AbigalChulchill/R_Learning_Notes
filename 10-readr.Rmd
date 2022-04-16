@@ -1,0 +1,445 @@
+# 以 `readr` 匯入資料 {#readr}
+
+:::{.note}
+本章為 @wickhamDataScience2016 第 7 章內容。
+:::
+
+
+### 需要的套件 {-}
+
+```{r}
+library(tidyverse)
+library(readr)
+```
+
+## 簡介
+
+本章要使用 `tidyverse` 中的 `readr` 來匯入資料。使用 `read_csv()` 可以匯入 `.csv` 檔，或是直接匯入 inline 的 csv 檔，如：
+
+```{r, cache=TRUE, eval=FALSE}
+read_csv("a,b,c
+1,2,3
+4,5,6")
+```
+
+```{r, eval=FALSE}
+## # A tibble: 2 × 3
+##       a     b     c
+##   <dbl> <dbl> <dbl>
+## 1     1     2     3
+## 2     4     5     6
+```
+
+要注意的是，`read_csv` 會把第一行的資料當成 column 的名稱，所以我們可以看到上面的 tibble 中，column 的名稱分別是 `a`、`b` 與 `c`。如果我們不想要這樣的話，可以透過幾種方式：
+
+1. 如果情況是檔案的前幾行不希望匯入的話，可以透過引數 `skip = n`，而或者指定 `comment = "#"` 直接註解掉，如：
+
+```{r, cache=TRUE, eval=FALSE}
+read_csv("不想讀入第一行
+  第二行也不想
+  x,y,z
+  1,2,3", skip = 2)
+
+read_csv("#不想讀入第一行
+  #第二行也不想
+  x,y,z
+  1,2,3", comment = "#")
+
+# 以上兩種做法都會得到
+## # A tibble: 1 × 3
+##       x     y     z
+##   <dbl> <dbl> <dbl>
+## 1     1     2     3
+```
+
+2.  如果是因為資料沒有 column name 的話，可以使用 `col_names = FALSE`，這樣 `read_csv()` 就不會把第一行當作是 column names，而是使用 `X1`、`X2`、⋯⋯；所以反過來說，也可以使用 `col_names` 來指定 column names，如：
+
+```{r, cache=TRUE, eval=FALSE}
+read_csv("1,2,3\n4,5,6", col_names = FALSE)
+## # A tibble: 2 × 3
+##      X1    X2    X3
+##   <dbl> <dbl> <dbl>
+## 1     1     2     3
+## 2     4     5     6
+
+read_csv("1,2,3\n4,5,6", col_names = c("A", "B", "C"))
+## # A tibble: 2 × 3
+##      A     B     C
+##  <dbl> <dbl> <dbl>
+## 1     1     2     3
+## 2     4     5     6
+```
+
+此外，如果資料中的變數值有 `NA`，但以其他方式表示怎麼辦？我們可以使用引數 `na` 來指定資料中所用以表示缺漏值的符號，讀入時就將其轉換成 `NA`，如以下的資料將 `NA` 用 `.` 來表示：
+
+```{r, cache=TRUE, eval=FALSE}
+read_csv("a,b,c\n1,2,.", na = ".")
+## # A tibble: 1 x 3
+##       a     b c    
+##   <dbl> <dbl> <lgl>
+## 1     1     2 NA
+```
+
+### 與 base R 比較
+
+為何不用 base R 的 `read.csv()`？
+
+1.  `readr` 中的 `read_csv()` 速度快上 10 倍。單純追求速度的話可以使用 `data.table` 套件（可見節 \@ref(datatable)），速度更快，但跟 `tidyverse` 就有一點點不搭。
+
+2.  直接讀入成為 tibbles、不會把 character vectors 轉成 factors、不會使用 row names、不會破壞 column names。
+
+3.  更可複製（reproducible）。
+
+
+
+## Parsing a Vector
+
+`parse_*()` 函數可以幫助我們把字母向量轉成特定型態的向量，如 logical、integer 或 date，其中，第一個引數為要 parse 的字母向量：
+
+```{r, cache=TRUE, eval=FALSE}
+str(parse_logical(c("TRUE", "FALSE", "NA")))
+# logi [1:3] TRUE FALSE NA
+str(parse_integer(c("3", "5", "6")))
+# int [1:3] 3 5 6
+str(parse_date(c("2020-11-03", "2000-04-23")))
+# Date[1:2], format: "2020-11-03" "2000-04-23"
+# 注意：date 預設格式為 yyyy-mm-dd
+# 也可以使用 na =
+parse_integer(c("1", "231", ".", "456"), na = ".")
+# [1]   1 231  NA 456
+# 當然，如果輸入錯的格式就會得到 warning
+```
+
+如果有 parsing failures，我們可以透過 `problem()` 來檢視出問題的地方。
+
+常用的 `parse_*()` 如下：
+
+1.  `parse_logical()`：用來 parse logical。
+
+2.  `parse_integer()`、`parse_double()` 與 `parse_number()`：看似類似，實則大相徑庭。`parse_integer()` 已經示範過了，即用來 parse 整數；`parse_double()` 用來 parse 實數；`parse_number()` 則會丟掉數字前後的非數字字元，如 $1000 就會變成 1000，euro1,000 就會變成 1000，詳細的使用方法與範例可以參見節 \@ref(parsenumber) 或 [Parse numbers, flexibly ](https://readr.tidyverse.org/reference/parse_number.html)。
+
+3.  `parse_chracter()`：看似非必要，卻還是有其用處，見節 \@ref(parsestring)。
+
+4.  `parse_factor()`：用來 parse factors，見節 \@ref(parsefactor)。
+
+5.  `parse_date()`、`parse_datetime()` 與 `parse_time()`：用來 parse 日期時間，見節 \@ref(parsedatetime)。
+
+
+
+
+
+
+### Numbers {#parsenumber}
+
+之所以 parse 數字會成為問題，是因為數字有非常多種不同的寫法。`readr` 為了解決這個問題，有引數 `locale`，可以用來指定 parsing options。
+
+#### 小數點
+
+一般而言，我們熟知的小數點是 `.`，但也是有人會寫成 `,`。`parse_double()` 中，預設就是 `.`，但如果是 `,` 或其他符號怎麼辦？要處理這個問題，我們可以在 `locale` 的設定中，使用引數 `decimal_mark`，如：
+
+```{r, cache=TRUE, eval=FALSE}
+parse_double("1.23")
+# [1] 1.23
+parse_double("1,23", locale = locale(decimal_mark = ","))
+# # [1] 1.23
+```
+
+#### 數字前後有非數字的字母
+
+有時候，數字前後就是有非數字的字母，例如 $1000 或 20% 或 1,300，那怎麼辦？我們可以改用 `parse_number()`。此外，美國通常以 `,` 作為 grouping mark，像是 20000 會寫成 20,000；但歐洲各國並不一定，因此我們也可以在 locale 中設置引數 `grouping_mark`，如：
+
+```{r, eval=FALSE}
+parse_number("20,044,620")
+# [1] 20044620
+parse_number("20%")
+# [1] 20
+parse_number("#20")
+# [1] 20
+parse_number("It costs $817.")
+# [1] 817
+parse_number("552.255.123", locale = locale(grouping_mark = "."))
+# [1] 552255123
+parse_number("552'255'123", locale = locale(grouping_mark = "'"))
+# [1] 552255123
+parse_number("33.457,32", locale = locale(decimal_mark = ",", grouping_mark = "."))
+# [1] 33457.32
+```
+
+### Strings {#parsestring}
+
+貌似無用的函數，其實不然。問題在，同樣的字串也有許多種不同的表示方式。例如我們使用 `chatToRaw()` 函數，如：
+
+```{r, cache=TRUE, eval=FALSE}
+charToRaw("Politics")
+# [1] 50 6f 6c 69 74 69 63 73
+```
+
+這種編碼（encoding）方式即 ASCII，每 byte 的資訊，都會被表成十六進位的數字，如 `50` 即 P、`6f` 即 o 等。ASCII 用來表示英文字母是不錯，但問題在對其他的語言顯然力不從心。
+
+今日，多數的編碼方式都是 UTF-8，可以表示各種語言，甚至表情符號。因此，`readr` 也是使用 UTF-8，即假設資料是以 UTF-8 的方式來編碼。可是又會反過來遇到一個問題，即如果我們的資料是由古老的電腦系統所生成，並非以 UTF-8 來編碼的話，那怎麼辦？
+
+這時候 `parse_character()` 就派上用場了。我們可以在引數 `locale` 中指定編碼的格式，如：
+
+```{r, cache=TRUE, eval=FALSE}
+parse_character("El Ni\xf1o was particularly bad this year", locale = locale(encoding = "Latin1"))
+# [1] "El Niño was particularly bad this year"
+```
+
+
+下一個問題又來了：如果我們不知道它的編碼格式，那怎麼辦？我們可以使用 `guess_encoding()` 函數。當然文字數量多的時候它會猜得比較準，但現在這裡就是一個範例。
+
+```{r, cache=TRUE}
+guess_encoding(charToRaw("El Ni\xf1o was particularly bad this year"))
+```
+
+:::{.comment}
+其他關於編碼的問題，詳情可見 [What Every Programmer Absolutely, Positively Needs To Know About Encodings And Character Sets To Work With Text](https://kunststube.net/encoding/)。
+:::
+
+### Factors {#parsefactor}
+
+以 `parse_factor()` 搭配 `levels` 可以解析 factors，如：
+
+```{r, cache=TRUE}
+fruit <- c("apple", "banana")
+parse_factor(c("apple", "banana"), levels = fruit)
+```
+
+如果輸入非預期的值會得到 warning（factors 必須是已知變數值的類別變數），如：
+
+```{r, cache=TRUE}
+fruit <- c("apple", "banana")
+parse_factor(c("apple", "banana", "bannn"), levels = fruit)
+```
+
+
+### Dates, Date-Times, and Times {#parsedatetime}
+
+關於日期與時間，有三種 parser：
+
+1.  `parse_datetime()`：要輸入 ISO8601 的 date-time，即依序輸入年、月、日、時、分、秒（可參照[維基百科](https://en.wikipedia.org/wiki/ISO_8601)說明），如：
+
+    ```{r, cache=TRUE, eval=FALSE}
+    parse_datetime("20201223")
+    # [1] "2020-12-23 UTC"
+
+    # 如果沒有輸入時間的話就會被設置為午夜
+    parse_datetime("2020-03-14")
+    # [1] "2020-03-14 UTC"
+
+    parse_datetime("2021-09-01T14:17:28")
+    # [1] "2021-09-01 14:17:28 UTC"
+    ```
+
+2.  `parse_date()`：輸入年、月、日，中間以 `-` 或 `/` 隔開，如：
+
+    ```{r, cache=TRUE, eval=FALSE}
+    parse_date("2021-04-23")
+    # [1] "2021-04-23"
+
+    parse_date("2021/08/15")
+    # [1] "2021-08-15"
+    ```
+
+3.  `parse_time()`：輸入時、分、秒、`am` 或 `pm`（後兩者為選擇性的），前三者之間以冒號隔開，時間與上下午之間以空格隔開，如：
+
+    ```{r, cache=TRUE, eval=FALSE}
+    library(hms)
+    parse_time("01:23")
+    # 01:23:00
+    parse_time("02:24:25")
+    # 02:24:25
+    parse_time("03:23:56 pm")
+    # 15:23:56
+    ```
+
+自訂年月日時間的格式方式如下。
+
+:::{.comment}
+**Year**
+
+-  `%Y` (4 digits).
+-  `%y` (2 digits; 00-69 → 2000-2069, 70-99 → 1970-1999).
+
+**Month**
+
+-  `%m` (2 digits).
+-  `%b` (abbreviated name, like “Jan”).
+-  `%B` (full name, “January”).
+
+**Day**
+
+-  `%d` (2 digits).
+-  `%e` (optional leading space).
+
+**Time**
+
+-  `%H` (0--23 hour format).
+-  `%I` (0--12, must be used with `%p`).
+-  `%p` (a.m./p.m. indicator).
+-  `%M` (minutes).
+-  `%S` (integer seconds).
+-  `%OS` (real seconds).
+-  `%Z` (time zone [a name, e.g., `America/Chicago`]). 
+-  `%z` (as offset from UTC, e.g., `+0800`).
+
+**Nondigits**
+
+-  `%.` (skips one nondigit character).
+-  `%*` (skips any number of nondigits).
+:::
+
+```{r, cache=TRUE, eval=FALSE}
+parse_date("01/02/15", "%m/%d/%y")
+# [1] "2015-01-02"
+
+parse_date("01/02/15", "%d/%m/%y")
+# [1] "2015-02-01"
+
+parse_date("01/02/15", "%y/%m/%d")
+# [1] "2001-02-15"
+```
+
+
+## Parsing a File
+
+:::{.comment}
+所以 `readr` 到底怎麼解析檔案？它如何猜測各個 column 的型態？如果 `readr` 所猜測的並非我們所要的，那該怎麼辦？
+:::
+
+### 策略
+
+`readr` 的方式是先讀入前 1000 列的資料，並運用捷思來猜測各行的型態。我們可以使用 `guess_parser()` 來模擬 `readr` 的猜測過程，其將會回傳 `readr` 的猜測；而使用 `parse_guess()` 可以解析向量，如：
+
+```{r, cache=TRUE, eval=FALSE}
+guess_parser("2021-09-22")
+# [1] "date"
+
+guess_parser("04:23")
+# [1] "time"
+
+guess_parser("2021-04-12T04:12")
+# [1] "datetime"
+
+guess_parser(c(TRUE, NA))
+# [1] "logical"
+
+guess_parser(c("TRUE", NA))
+# [1] "logical"
+
+guess_parser(c(2, 4.5, 6))
+# [1] "double"
+
+str(parse_guess("2021-04-12"))
+#  Date[1:1], format: "2021-04-12"
+```
+
+:::{.comment}
+詳細而言，捷思法就如：
+
+-  logical：只包含 “F”、“T”、“FALSE” 或 “TRUE”。
+-  integer：只包含數字與 `-`。
+-  double：只包含合法的 doubles。
+-  number：包含有 grouping mark 的合法 doubles。
+-  time：包含預設的時間格式。
+-  date：包含預設的日期格式。
+-  date-time：包含 ISO8601 格式者。
+
+如果都不滿足，那就還是會是字串向量。
+:::
+
+### 問題
+
+問題在於如果檔案很大，那這招是行不通的：
+
+1.  前 1000 列可能只是特例。
+
+2.  如果有太多缺漏值，`readr` 會把它猜成字元向量，但也許應該是別的型態。
+
+以下有一個出問題的範例：
+
+```{r, cache=TRUE}
+challenge <- read_csv(readr_example("challenge.csv"))
+problems(challenge)
+```
+
+此時，我們應該是逐行檢視應該如何解析，其中 `col_type` 即告訴 R 要載入什麼類型的資料，如：
+
+```{r, cache=TRUE, eval=FALSE}
+challenge <- read_csv(
+  readr_example("challenge.csv"),
+  col_types = cols(
+    x = col_integer(),
+    y = col_character()
+  )
+)
+```
+
+看起來解決了前幾列的問題，但我們用 `tail()` 一看就知道 `x` 最後面幾列都是 doubles，且 `y` 最後面幾列都是日期，所以應該改成：
+
+```{r, cache=TRUE}
+challenge <- read_csv(
+    readr_example("challenge.csv"),
+    col_types = cols(
+      x = col_double(),
+      y = col_date()
+  )
+)
+```
+
+### 其他策略
+
+1.  我們也可以改變 `readr` 要一開始要檢查的列數，如：
+
+    ```{r, cache=TRUE}
+    challenge2 <- read_csv(
+      readr_example("challenge.csv"),
+      guess_max = 1001
+    )
+    ```
+    
+2.  全部都先讀取成字元向量，有時候也很便於診斷出問題出在哪，如：
+
+    ```{r, cache=TRUE}
+    challenge2 <- read_csv(readr_example("challenge.csv"),
+        col_types = cols(.default = col_character())
+    )
+    ```
+    
+    然後我們也可以配合使用 `type_convert()`，如：
+    
+    ```{r, cache=TRUE}
+    type_convert(challenge2)
+    ```
+    
+3.  如果有很嚴重的解析問題，可以先以 `read_lines` 讀字元向量進來，甚至以 `read_file()` 讀長度為 1 的字元向量進來，再使用其他解析字串的技巧解決這個問題。
+
+## 寫入檔案
+
+`readr` 提供了兩個函數可以幫助我們把資料寫入磁碟：`write_csv()` 與 `write_tsv()`。兩個函數所輸出的檔案都會以 UTF-8 編碼，且日期時間會以 ISO8601 格式，如：
+
+```{r, cache=TRUE, eval=FALSE}
+write_csv(challenge, "challenge.csv")
+```
+
+想要輸出成 Excel 格式，則可以使用 `write_excel_csv()`。
+
+不過以上這種做法就有一個風險：**要重新讀入檔案時還要重新煩惱解析的問題**。
+
+## 其他類型的資料
+
+表格類型的資料可以使用：
+
+-  `haven`：用於讀取 SPSS、Stata 與 SAS 檔。
+
+-  `readxl`：用以讀取 Excel 檔（`.xls` 與 `.xlsx` 檔）。
+
+-  `DBI`：與 `RMySQL`、`RSQLite` 或 `RPostgreSQL` 配合使用，可以跑 SQL queries，然後從資料庫回傳一個 data frame。
+
+階層資料（hierarchical data）可以使用：
+
+-  `jsonlite`：用以讀取 JSON 檔。
+
+-  `xml2`：用以讀取 XML 檔。
+
+其他類型的檔案，可以參考 [R Data Import/Export](https://cran.r-project.org/doc/manuals/r-release/R-data.html) 或 [rio](https://github.com/leeper/rio)。

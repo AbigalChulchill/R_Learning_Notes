@@ -1,0 +1,5 @@
+# 以 `forcats` 處理 Factors {#forcats}
+
+-  本章為 @wickhamDataScience2016 第 12 章內容。
+
+---

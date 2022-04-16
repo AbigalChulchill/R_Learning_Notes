@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 R 資料分析 | R 學習筆記</title>
+  <meta name="description" content="8 R 資料分析 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 R 資料分析 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 R 資料分析 | R 學習筆記" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="探索性資料分析-exploratory-data-analysis.html"/>
+<link rel="next" href="ref.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 第一部分：基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="rlang.html"><a href="rlang.html#變數與基本的運算"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="rlang.html"><a href="rlang.html#向量"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="rlang.html"><a href="rlang.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="rlang.html"><a href="rlang.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="rlang.html"><a href="rlang.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="rlang.html"><a href="rlang.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="rlang.html"><a href="rlang.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="rlang.html"><a href="rlang.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="rlang.html"><a href="rlang.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="rlang.html"><a href="rlang.html#矩陣"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="rlang.html"><a href="rlang.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="rlang.html"><a href="rlang.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="rlang.html"><a href="rlang.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="rlang.html"><a href="rlang.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="rlang.html"><a href="rlang.html#factors"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="rlang.html"><a href="rlang.html#data-frames"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="rlang.html"><a href="rlang.html#dataframesubsetting"><i class="fa fa-check"></i><b>1.5.1</b> 存取 data frames 中的元素與 subset</a></li>
+<li class="chapter" data-level="1.5.2" data-path="rlang.html"><a href="rlang.html#dataframeordering"><i class="fa fa-check"></i><b>1.5.2</b> 排序</a></li>
+<li class="chapter" data-level="1.5.3" data-path="rlang.html"><a href="rlang.html#其他操作-1"><i class="fa fa-check"></i><b>1.5.3</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="rlang.html"><a href="rlang.html#lists"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="control.html"><a href="control.html#conditionals"><i class="fa fa-check"></i><b>2.1</b> Conditionals</a></li>
+<li class="chapter" data-level="2.2" data-path="control.html"><a href="control.html#loops"><i class="fa fa-check"></i><b>2.2</b> Loops</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="control.html"><a href="control.html#for-迴圈"><i class="fa fa-check"></i><b>2.2.1</b> <code>for</code> 迴圈</a></li>
+<li class="chapter" data-level="2.2.2" data-path="control.html"><a href="control.html#while-迴圈"><i class="fa fa-check"></i><b>2.2.2</b> <code>while</code> 迴圈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="control.html"><a href="control.html#functions-and-operators"><i class="fa fa-check"></i><b>2.3</b> Functions and Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="control.html"><a href="control.html#創建新函數"><i class="fa fa-check"></i><b>2.3.1</b> 創建新函數</a></li>
+<li class="chapter" data-level="2.3.2" data-path="control.html"><a href="control.html#defaultargument"><i class="fa fa-check"></i><b>2.3.2</b> 引數的預設值</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II 資料庫與基本的資料前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rdata.html"><a href="rdata.html#資料來源匯入與匯出"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="rdata.html"><a href="rdata.html#tabulated-file-types"><i class="fa fa-check"></i><b>3.1.1</b> Tabulated File Types</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rdata.html"><a href="rdata.html#匯入與匯出"><i class="fa fa-check"></i><b>3.1.2</b> 匯入與匯出</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rdata.html"><a href="rdata.html#資料收集"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="rdata.html"><a href="rdata.html#data-repositories"><i class="fa fa-check"></i><b>3.2.1</b> Data Repositories</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rdata.html"><a href="rdata.html#apis"><i class="fa fa-check"></i><b>3.2.2</b> APIs</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rdata.html"><a href="rdata.html#web-scraping"><i class="fa fa-check"></i><b>3.2.3</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rdata.html"><a href="rdata.html#小結"><i class="fa fa-check"></i><b>3.3</b> 小結</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> 資料前處理</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#data-tables"><i class="fa fa-check"></i><b>4.1</b> Data Tables</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="preprocessing.html"><a href="preprocessing.html#排序-ordering"><i class="fa fa-check"></i><b>4.1.1</b> 排序 Ordering</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preprocessing.html"><a href="preprocessing.html#子集-subsetting"><i class="fa fa-check"></i><b>4.1.2</b> 子集 Subsetting</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preprocessing.html"><a href="preprocessing.html#加總-aggregation"><i class="fa fa-check"></i><b>4.1.3</b> 加總 Aggregation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preprocessing.html"><a href="preprocessing.html#keying"><i class="fa fa-check"></i><b>4.1.4</b> Keying</a></li>
+<li class="chapter" data-level="4.1.5" data-path="preprocessing.html"><a href="preprocessing.html#編輯表格-updating-by-reference"><i class="fa fa-check"></i><b>4.1.5</b> 編輯表格 Updating by Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#merging"><i class="fa fa-check"></i><b>4.2</b> Merging</a></li>
+<li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#實例"><i class="fa fa-check"></i><b>4.3</b> 實例</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="preprocessing.html"><a href="preprocessing.html#thesportsdb-nba-dataset-preprocessing"><i class="fa fa-check"></i><b>4.3.1</b> TheSportsDB NBA Dataset Preprocessing</a></li>
+<li class="chapter" data-level="4.3.2" data-path="preprocessing.html"><a href="preprocessing.html#section"><i class="fa fa-check"></i><b>4.3.2</b> </a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III 資料探索 Data Exploring</b></span></li>
+<li class="chapter" data-level="5" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html"><i class="fa fa-check"></i><b>5</b> 以 <code>ggplot2</code> 進行資料視覺化</a></li>
+<li class="chapter" data-level="6" data-path="以-dplyr-進行資料轉換.html"><a href="以-dplyr-進行資料轉換.html"><i class="fa fa-check"></i><b>6</b> 以 <code>dplyr</code> 進行資料轉換</a></li>
+<li class="chapter" data-level="7" data-path="探索性資料分析-exploratory-data-analysis.html"><a href="探索性資料分析-exploratory-data-analysis.html"><i class="fa fa-check"></i><b>7</b> 探索性資料分析 Exploratory Data Analysis</a></li>
+<li class="part"><span><b>IV 資料分析</b></span></li>
+<li class="chapter" data-level="8" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>8</b> R 資料分析</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="analysis.html"><a href="analysis.html#敘述統計"><i class="fa fa-check"></i><b>8.1</b> 敘述統計</a></li>
+<li class="chapter" data-level="8.2" data-path="analysis.html"><a href="analysis.html#統計推論"><i class="fa fa-check"></i><b>8.2</b> 統計推論</a></li>
+<li class="chapter" data-level="8.3" data-path="analysis.html"><a href="analysis.html#多變數統計"><i class="fa fa-check"></i><b>8.3</b> 多變數統計</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown">
+Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analysis" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> R 資料分析</h1>
+<div id="敘述統計" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> 敘述統計</h2>
+</div>
+<div id="統計推論" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> 統計推論</h2>
+</div>
+<div id="多變數統計" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> 多變數統計</h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="探索性資料分析-exploratory-data-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ref.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+# 多變數迴歸 {#multireg}
+
+:::{.note}
+本章為 @ismay2019statistical 第 6 章內容。
+:::
+
+>  I would rather discover one true cause than gain the kingdom of Persia.
+>
+>  --- Democritus

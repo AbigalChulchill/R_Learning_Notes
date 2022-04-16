@@ -1,0 +1,274 @@
+# 控制結構與函數 {#control}
+
+:::{.note}
+本章為 @zamorasaizIntroductionDataAnalysis2020 節 2.3 與 2.4 內容。
+:::
+
+## Conditionals
+
+
+條件句的語法如下：
+
+```{r eval=FALSE, include=TRUE}
+if ("condition is satisfied") {
+  "do something"
+}
+```
+
+例如：
+
+```{r}
+x <- 3
+if (x > 0) {
+  print("Positive")
+}
+```
+
+如果我們希望在條件沒有滿足時執行其他動作，就得使用 `else`，其語法如：
+
+```{r eval=FALSE}
+if ("condition is satisfied"){ 
+  "do something"
+} else {
+  "otherwise do something else"
+}
+```
+
+例如：
+
+```{r, results='hide'}
+x <- 0
+if (x > 0) {
+  print("Positive")
+} else {
+  print("Negative")
+}
+```
+
+上述的 codes 其實在邏輯上是正確的，但顯然與我們希望電腦能做的事有落差（$x=0$ 非正也非負才對）。所以，如果有好幾個條件要確認，也能多用幾個 `else` blocks，如：
+
+```{r eval=FALSE}
+x <- 0
+if (x > 0) {
+  print("Positive")
+} else if (x < 0) {
+  print("Negative")
+} else {
+  print("Zero")
+}
+```
+
+不過，要注意的是上述的結構在 R 的運行速度較慢，不如以 `ifelse()` 函數，把上述的結構寫成一行，其語法即：
+
+```{r eval=FALSE}
+ifelse("condition", "task if TRUE", "task if FALSE")
+```
+
+前開判別變數為正或負的條件結構也能寫成：
+
+```{r}
+x <- 9
+ifelse(x > 0, "Positive", "Negative")
+```
+
+只要在向量使用 binary operator，同樣的條件就也可以被確認多次。例如如果要確認向量中的元素是否小於 5，我們可以寫成：
+
+```{r}
+ifelse((1 : 10) < 5, "Fail", "Pass")
+```
+
+## Loops
+
+> `for` 用於重複次數預先指定的時候，`while` 則反之，將持續運行直到條件無法滿足。
+
+### `for` 迴圈
+
+`for` 迴圈的語法為：
+
+```{r eval=FALSE}
+for ("counter" in "vector of indices") { 
+  "do something"
+}
+```
+
+例如印出 1--10 可以如此：
+
+```{r}
+for (i in 1 : 10) {
+  print(i)
+}
+```
+
+因為 `[1]` 出現了十次，我們可知這段程式碼有十次輸出，每次輸出包含一個 row，顯然這是 `print(i)` 運行十次的結果。在此迴圈中，每次執行都會使 `i` 的值增加，所以如果我們此時在 console 輸入 `i`，將會回傳 `10`，顯示 `i` 作為一個變數，其值已經變成 10 了。
+
+那如果我們要把連續的整數和存成一個向量該怎麼做呢？
+
+```{r}
+v <- c()
+
+s <- 0
+for (i in 1 : 10) {
+  s <- s + i
+  v[i] <- s
+}
+v
+```
+
+其中，`s` 的作用就是在迴圈結束後儲存剛剛的結果，以便與下一個數相加。如此，可以依序將 $1$、$1+2$、$1+2+3$、$\cdots{}$、$1+\cdots{}+10$ 存到向量 `v` 並印出。
+
+以下還有幾個 `for` 迴圈運作的簡單範例。例如印出 1--19 的奇數，可以：
+
+```{r}
+odd <- 2 * (1 : 10) - 1
+for (i in odd) {
+  print(i)
+}
+```
+
+我們也可以把 `for` 迴圈與 `if` 條件句結合，要把某個向量中低於某個數字的元素印出 `FAIL`，如：
+
+```{r}
+for (i in 1 : 10) {
+  if (i < 5) {
+    print("Fail")
+  } else {
+    print("Pass")
+  }
+}
+```
+
+
+### `while` 迴圈
+
+除了 `for` 迴圈以外，還有  `while` 迴圈，其語法為：
+
+```{r eval=FALSE}
+while ("condition holds") { 
+  "do something"
+}
+```
+
+以下為一個 `while` 迴圈的簡單範例：
+
+```{r}
+i <- 0
+while (i < 10) {
+  print(c(i,"is less than 10"))
+  i <- i + 1
+}
+```
+
+第一圈 `i` 為 0，運行到 `print()` 時將會印出包含 "0" 與 "is less than 10" 元素的向量，而 `i <- i + 1` 相當於計數器，第一個迴圈結束後，變數 `i` 就會變成 1，以此類推。在第十個迴圈結束後，變數 `i` 將會變成 10，而就不符合 `while` 迴圈繼續執行的條件了，迴圈至此終止。
+
+
+## Functions and Operators
+
+
+### 創建新函數
+
+R 本身就有很多預設的函數，如 `mean()` 可以取平均，`sum()` 可以加總，`sqrt()` 可以計算數字的平方根，`log()` 與 `exp()` 可以計算數字的對數值與指數值，`sin()`、`cos()`、`tan()` 可以計算三角函數值，`is.logical()` 可以確認型態是否是 logical。
+
+如果要創建我們自己的函數，其語法為：
+
+```{r eval=FALSE}
+function.name <- function(argument1, argument2,...) {
+  "body function"
+}
+```
+
+函數的名字隨意，只要沒有與既存的函數同名或以某些不合法的方式命名即可；引述的數量可多可少；`body function` 則裝載執行程序，裡頭用的值由引數而來，最後一行命令則會回傳成輸出。
+
+例如若想新建一個函數來協助計算 $f(x, y)=x^2 - \frac{y}{5}$ 的話，可以
+
+```{r}
+f <- function(x, y) {
+  x ^ 2 - y / 5  # the output is the evaluation of last line
+}
+```
+
+或者我們也可以寫成：
+
+```{r eval=FALSE}
+f <- function(x, y) x ^ 2 - y / 5
+```
+
+執行的最後一行預設就是輸出了，我們不需要寫出 `return`，但也能把它寫出來，如：
+
+```{r}
+f <- function(x, y) { 
+  return (x ^ 2 - y / 5)
+}
+```
+
+定義函數以後我們就可以使用此函數進行運算。
+
+### 引數的預設值 {#defaultargument}
+
+函數不一定要輸入引數。如果引數有預設值，而未輸入引數的話，即隨預設值。創建一個有預設的引數的函數的語法，如：
+
+```{r eval=FALSE}
+funtion.name <- function(name.argument1=default.value1, 
+                         name.argument2=default.value2,...) {
+  "body function"
+}
+```
+
+以下是一個能輸出連續的數字為向量或矩陣的簡單範例：
+
+```{r}
+mat.vec <- function(a, b=2, flag=FALSE){ 
+  if (flag) {
+    matrix(1 : a, nrow=b)
+  } else {
+    1:a 
+  }
+}
+```
+
+此函數有三個變數：`a` 指矩陣或向量的元素個數；`b` 為如果我們想輸出的是矩陣的話其 rows 的數量；`flag` 決定是輸出矩陣還是向量，若 `flag=TRUE`，將會輸出包含 $1$-至 $a$，而有 $b$ 個 rows 的矩陣（預設為 `b=2`） ，若 `flag=FALSE`，將會輸出包含 $1$ 至 $a$ 的向量（預設為 `flag=FALSE`）。有預設的引數還有一個好處，即就算我們漏輸入了、忘記了有哪些引數，程式碼還是能正常運行，而不會報錯。
+
+函數能輸出的就只有單一個物件。所以如果想要輸出多個元素，可以使用 lists。例如我們可以創建一個函數，其回傳三項資訊：資料長度、總和與平均值，即：
+
+```{r}
+items <- function(x) list(len=length(x),total=sum(x), mean=mean(x))
+```
+
+我們把向量 `1:10` 丟進此函數，可得：
+
+```{r}
+data <- 1 : 10
+result <- items(data)
+result
+```
+
+如果我們想查看函數是如何構成的，可以直接輸入其名，如：
+
+```{r}
+log
+```
+
+如果想要套用函數在多個元素時，可以使用 `lapply(list, function)`，其會把函數套用到 vector 或 list 的所有元素。`sapply()` 則類似於 `lapply()`，不同的是會把輸出簡化成向量或矩陣，而不是元素。其使用範例如：
+
+```{r}
+salutation <- function(x) print("Hello")
+# Note that this output does not depend on the value of x
+output <- sapply(1 : 5, salutation)
+```
+
+或者也可以簡化成：
+
+```{r}
+output <- sapply(1 : 5, function(x) print("Hello"))
+```
+
+以內建的 `cars` datasets 為例，其有兩個變數：`speed` 與 `dist`。當我們想要計算這兩者的算術平均，可以：
+
+```{r}
+lapply(cars, mean)
+```
+
+或者：
+
+```{r}
+sapply(cars, mean)
+```

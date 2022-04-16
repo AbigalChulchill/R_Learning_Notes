@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.3 實例 | R 學習筆記</title>
+  <meta name="description" content="4.3 實例 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.3 實例 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.3 實例 | R 學習筆記" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="merging.html"/>
+<link rel="next" href="ggplot2.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="變數與基本的運算.html"><a href="變數與基本的運算.html"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="向量.html"><a href="向量.html"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="向量.html"><a href="向量.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="向量.html"><a href="向量.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="向量.html"><a href="向量.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="向量.html"><a href="向量.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="向量.html"><a href="向量.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="向量.html"><a href="向量.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="向量.html"><a href="向量.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="矩陣.html"><a href="矩陣.html"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="矩陣.html"><a href="矩陣.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="矩陣.html"><a href="矩陣.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="矩陣.html"><a href="矩陣.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="矩陣.html"><a href="矩陣.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="data-frames.html"><a href="data-frames.html"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="data-frames.html"><a href="data-frames.html#dataframesubsetting"><i class="fa fa-check"></i><b>1.5.1</b> 存取 data frames 中的元素與 subset</a></li>
+<li class="chapter" data-level="1.5.2" data-path="data-frames.html"><a href="data-frames.html#dataframeordering"><i class="fa fa-check"></i><b>1.5.2</b> 排序</a></li>
+<li class="chapter" data-level="1.5.3" data-path="data-frames.html"><a href="data-frames.html#其他操作-1"><i class="fa fa-check"></i><b>1.5.3</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="lists.html"><a href="lists.html"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="conditionals.html"><a href="conditionals.html"><i class="fa fa-check"></i><b>2.1</b> Conditionals</a></li>
+<li class="chapter" data-level="2.2" data-path="loops.html"><a href="loops.html"><i class="fa fa-check"></i><b>2.2</b> Loops</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="loops.html"><a href="loops.html#for-迴圈"><i class="fa fa-check"></i><b>2.2.1</b> <code>for</code> 迴圈</a></li>
+<li class="chapter" data-level="2.2.2" data-path="loops.html"><a href="loops.html#while-迴圈"><i class="fa fa-check"></i><b>2.2.2</b> <code>while</code> 迴圈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="functions-and-operators.html"><a href="functions-and-operators.html"><i class="fa fa-check"></i><b>2.3</b> Functions and Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="functions-and-operators.html"><a href="functions-and-operators.html#創建新函數"><i class="fa fa-check"></i><b>2.3.1</b> 創建新函數</a></li>
+<li class="chapter" data-level="2.3.2" data-path="functions-and-operators.html"><a href="functions-and-operators.html#defaultargument"><i class="fa fa-check"></i><b>2.3.2</b> 引數的預設值</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II 資料庫與基本的資料前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="資料來源匯入與匯出.html"><a href="資料來源匯入與匯出.html"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="資料來源匯入與匯出.html"><a href="資料來源匯入與匯出.html#tabulated-file-types"><i class="fa fa-check"></i><b>3.1.1</b> Tabulated File Types</a></li>
+<li class="chapter" data-level="3.1.2" data-path="資料來源匯入與匯出.html"><a href="資料來源匯入與匯出.html#匯入與匯出"><i class="fa fa-check"></i><b>3.1.2</b> 匯入與匯出</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="資料收集.html"><a href="資料收集.html"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="資料收集.html"><a href="資料收集.html#data-repositories"><i class="fa fa-check"></i><b>3.2.1</b> Data Repositories</a></li>
+<li class="chapter" data-level="3.2.2" data-path="資料收集.html"><a href="資料收集.html#apis"><i class="fa fa-check"></i><b>3.2.2</b> APIs</a></li>
+<li class="chapter" data-level="3.2.3" data-path="資料收集.html"><a href="資料收集.html#rvestweb"><i class="fa fa-check"></i><b>3.2.3</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="小結.html"><a href="小結.html"><i class="fa fa-check"></i><b>3.3</b> 小結</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> 資料前處理</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="datatable.html"><a href="datatable.html"><i class="fa fa-check"></i><b>4.1</b> Data Tables</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="datatable.html"><a href="datatable.html#排序-ordering"><i class="fa fa-check"></i><b>4.1.1</b> 排序 Ordering</a></li>
+<li class="chapter" data-level="4.1.2" data-path="datatable.html"><a href="datatable.html#子集-subsetting"><i class="fa fa-check"></i><b>4.1.2</b> 子集 Subsetting</a></li>
+<li class="chapter" data-level="4.1.3" data-path="datatable.html"><a href="datatable.html#加總-aggregation"><i class="fa fa-check"></i><b>4.1.3</b> 加總 Aggregation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="datatable.html"><a href="datatable.html#keying"><i class="fa fa-check"></i><b>4.1.4</b> Keying</a></li>
+<li class="chapter" data-level="4.1.5" data-path="datatable.html"><a href="datatable.html#編輯表格-updating-by-reference"><i class="fa fa-check"></i><b>4.1.5</b> 編輯表格 Updating by Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="merging.html"><a href="merging.html"><i class="fa fa-check"></i><b>4.2</b> Merging</a></li>
+<li class="chapter" data-level="4.3" data-path="實例.html"><a href="實例.html"><i class="fa fa-check"></i><b>4.3</b> 實例</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="實例.html"><a href="實例.html#thesportsdb-nba-dataset-preprocessing"><i class="fa fa-check"></i><b>4.3.1</b> TheSportsDB NBA Dataset Preprocessing</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III 以 <code>tidyverse</code> 進行資料探索</b></span></li>
+<li class="chapter" data-level="5" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>5</b> 以 <code>ggplot2</code> 進行資料視覺化</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="create.html"><a href="create.html"><i class="fa fa-check"></i><b>5.1</b> 創建一個 <code>ggplot</code></a></li>
+<li class="chapter" data-level="5.2" data-path="the-layered-grammar-of-graphics.html"><a href="the-layered-grammar-of-graphics.html"><i class="fa fa-check"></i><b>5.2</b> The Layered Grammar of Graphics</a></li>
+<li class="chapter" data-level="5.3" data-path="aesthetic-mappings.html"><a href="aesthetic-mappings.html"><i class="fa fa-check"></i><b>5.3</b> Aesthetic Mappings</a></li>
+<li class="chapter" data-level="5.4" data-path="facets.html"><a href="facets.html"><i class="fa fa-check"></i><b>5.4</b> Facets</a></li>
+<li class="chapter" data-level="5.5" data-path="幾何物件.html"><a href="幾何物件.html"><i class="fa fa-check"></i><b>5.5</b> 幾何物件</a></li>
+<li class="chapter" data-level="5.6" data-path="統計轉換.html"><a href="統計轉換.html"><i class="fa fa-check"></i><b>5.6</b> 統計轉換</a></li>
+<li class="chapter" data-level="5.7" data-path="position-adjustment.html"><a href="position-adjustment.html"><i class="fa fa-check"></i><b>5.7</b> Position Adjustment</a></li>
+<li class="chapter" data-level="5.8" data-path="coordinatedsystem.html"><a href="coordinatedsystem.html"><i class="fa fa-check"></i><b>5.8</b> 座標系統</a></li>
+<li class="chapter" data-level="5.9" data-path="標籤-1.html"><a href="標籤-1.html"><i class="fa fa-check"></i><b>5.9</b> 標籤</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>6</b> 以 <code>dplyr</code> 轉換資料</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="前言.html"><a href="前言.html"><i class="fa fa-check"></i><b>6.1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="前言.html"><a href="前言.html#前置作業-1"><i class="fa fa-check"></i><b>6.1.1</b> 前置作業</a></li>
+<li class="chapter" data-level="6.1.2" data-path="前言.html"><a href="前言.html#nycflights13"><i class="fa fa-check"></i><b>6.1.2</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="6.1.3" data-path="前言.html"><a href="前言.html#基礎-dplyr"><i class="fa fa-check"></i><b>6.1.3</b> 基礎 <code>dplyr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="filter.html"><a href="filter.html"><i class="fa fa-check"></i><b>6.2</b> Filter Rows with <code>filter()</code></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="filter.html"><a href="filter.html#比較"><i class="fa fa-check"></i><b>6.2.1</b> 比較</a></li>
+<li class="chapter" data-level="6.2.2" data-path="filter.html"><a href="filter.html#邏輯運算子"><i class="fa fa-check"></i><b>6.2.2</b> 邏輯運算子</a></li>
+<li class="chapter" data-level="6.2.3" data-path="filter.html"><a href="filter.html#缺漏值"><i class="fa fa-check"></i><b>6.2.3</b> 缺漏值</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="arrange.html"><a href="arrange.html"><i class="fa fa-check"></i><b>6.3</b> Arrange Rows with <code>arrange()</code></a></li>
+<li class="chapter" data-level="6.4" data-path="select.html"><a href="select.html"><i class="fa fa-check"></i><b>6.4</b> Select Columns with <code>select()</code></a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="select.html"><a href="select.html#常用的-5-個函數"><i class="fa fa-check"></i><b>6.4.1</b> 常用的 5 個函數</a></li>
+<li class="chapter" data-level="6.4.2" data-path="select.html"><a href="select.html#重新命名rename"><i class="fa fa-check"></i><b>6.4.2</b> 重新命名：<code>rename()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="mutate.html"><a href="mutate.html"><i class="fa fa-check"></i><b>6.5</b> Add New Variables with <code>mutate()</code></a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="mutate.html"><a href="mutate.html#useful-creation-functions"><i class="fa fa-check"></i><b>6.5.1</b> Useful Creation Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="summarize.html"><a href="summarize.html"><i class="fa fa-check"></i><b>6.6</b> Grouped Summaries with <code>summarize()</code></a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="summarize.html"><a href="summarize.html#以-pipe-結合多重運算"><i class="fa fa-check"></i><b>6.6.1</b> 以 Pipe 結合多重運算</a></li>
+<li class="chapter" data-level="6.6.2" data-path="summarize.html"><a href="summarize.html#missingvaluesdplyr"><i class="fa fa-check"></i><b>6.6.2</b> 缺漏值</a></li>
+<li class="chapter" data-level="6.6.3" data-path="summarize.html"><a href="summarize.html#計數"><i class="fa fa-check"></i><b>6.6.3</b> 計數</a></li>
+<li class="chapter" data-level="6.6.4" data-path="summarize.html"><a href="summarize.html#有用的歸納函數"><i class="fa fa-check"></i><b>6.6.4</b> 有用的歸納函數</a></li>
+<li class="chapter" data-level="6.6.5" data-path="summarize.html"><a href="summarize.html#依據多變數分組"><i class="fa fa-check"></i><b>6.6.5</b> 依據多變數分組</a></li>
+<li class="chapter" data-level="6.6.6" data-path="summarize.html"><a href="summarize.html#取消分組"><i class="fa fa-check"></i><b>6.6.6</b> 取消分組</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="grouped-mutates-and-filters.html"><a href="grouped-mutates-and-filters.html"><i class="fa fa-check"></i><b>6.7</b> Grouped Mutates (and Filters)</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="EDA.html"><a href="EDA.html"><i class="fa fa-check"></i><b>7</b> 探索性資料分析</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="事前準備.html"><a href="事前準備.html"><i class="fa fa-check"></i><b>7.1</b> 事前準備</a></li>
+<li class="chapter" data-level="7.2" data-path="問題.html"><a href="問題.html"><i class="fa fa-check"></i><b>7.2</b> 問題</a></li>
+<li class="chapter" data-level="7.3" data-path="variation.html"><a href="variation.html"><i class="fa fa-check"></i><b>7.3</b> Variation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="variation.html"><a href="variation.html#視覺化分配"><i class="fa fa-check"></i><b>7.3.1</b> 視覺化分配</a></li>
+<li class="chapter" data-level="7.3.2" data-path="variation.html"><a href="variation.html#代表性的變數值"><i class="fa fa-check"></i><b>7.3.2</b> 代表性的變數值</a></li>
+<li class="chapter" data-level="7.3.3" data-path="variation.html"><a href="variation.html#不尋常的變數值"><i class="fa fa-check"></i><b>7.3.3</b> 不尋常的變數值</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="missing-value.html"><a href="missing-value.html"><i class="fa fa-check"></i><b>7.4</b> Missing Value</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="missing-value.html"><a href="missing-value.html#替換掉-outliers"><i class="fa fa-check"></i><b>7.4.1</b> 替換掉 Outliers</a></li>
+<li class="chapter" data-level="7.4.2" data-path="missing-value.html"><a href="missing-value.html#比較-na-與否"><i class="fa fa-check"></i><b>7.4.2</b> 比較 <code>NA</code> 與否</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="covariation.html"><a href="covariation.html"><i class="fa fa-check"></i><b>7.5</b> Covariation</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="covariation.html"><a href="covariation.html#類別與連續變數"><i class="fa fa-check"></i><b>7.5.1</b> 類別與連續變數</a></li>
+<li class="chapter" data-level="7.5.2" data-path="covariation.html"><a href="covariation.html#兩個類別變數"><i class="fa fa-check"></i><b>7.5.2</b> 兩個類別變數</a></li>
+<li class="chapter" data-level="7.5.3" data-path="covariation.html"><a href="covariation.html#兩個連續變數"><i class="fa fa-check"></i><b>7.5.3</b> 兩個連續變數</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="模式與模型.html"><a href="模式與模型.html"><i class="fa fa-check"></i><b>7.6</b> 模式與模型</a></li>
+</ul></li>
+<li class="part"><span><b>IV 以 <code>tidyverse</code> 進行資料整理</b></span></li>
+<li class="chapter" data-level="8" data-path="tibble.html"><a href="tibble.html"><i class="fa fa-check"></i><b>8</b> 以 <code>tibble</code> 處理 Tibbles</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="創建-tibbles.html"><a href="創建-tibbles.html"><i class="fa fa-check"></i><b>8.1</b> 創建 Tibbles</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="創建-tibbles.html"><a href="創建-tibbles.html#把-data-frames-轉換-tibbles"><i class="fa fa-check"></i><b>8.1.1</b> 把 Data Frames 轉換 Tibbles</a></li>
+<li class="chapter" data-level="8.1.2" data-path="創建-tibbles.html"><a href="創建-tibbles.html#透過向量創建-tibbles"><i class="fa fa-check"></i><b>8.1.2</b> 透過向量創建 Tibbles</a></li>
+<li class="chapter" data-level="8.1.3" data-path="創建-tibbles.html"><a href="創建-tibbles.html#以-transposed-tibble-tribble-創建-tibbles"><i class="fa fa-check"></i><b>8.1.3</b> 以 Transposed Tibble <code>tribble()</code> 創建 Tibbles</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="tibbles-與-data-frames-的比較.html"><a href="tibbles-與-data-frames-的比較.html"><i class="fa fa-check"></i><b>8.2</b> Tibbles 與 Data Frames 的比較</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="tibbles-與-data-frames-的比較.html"><a href="tibbles-與-data-frames-的比較.html#printing"><i class="fa fa-check"></i><b>8.2.1</b> Printing</a></li>
+<li class="chapter" data-level="8.2.2" data-path="tibbles-與-data-frames-的比較.html"><a href="tibbles-與-data-frames-的比較.html#subsetting"><i class="fa fa-check"></i><b>8.2.2</b> Subsetting</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="古老的程式碼.html"><a href="古老的程式碼.html"><i class="fa fa-check"></i><b>8.3</b> 古老的程式碼</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="readr.html"><a href="readr.html"><i class="fa fa-check"></i><b>9</b> 以 <code>readr</code> 匯入資料</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="簡介.html"><a href="簡介.html"><i class="fa fa-check"></i><b>9.1</b> 簡介</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="簡介.html"><a href="簡介.html#與-base-r-比較"><i class="fa fa-check"></i><b>9.1.1</b> 與 base R 比較</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html"><i class="fa fa-check"></i><b>9.2</b> Parsing a Vector</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsenumber"><i class="fa fa-check"></i><b>9.2.1</b> Numbers</a></li>
+<li class="chapter" data-level="9.2.2" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsestring"><i class="fa fa-check"></i><b>9.2.2</b> Strings</a></li>
+<li class="chapter" data-level="9.2.3" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsefactor"><i class="fa fa-check"></i><b>9.2.3</b> Factors</a></li>
+<li class="chapter" data-level="9.2.4" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsedatetime"><i class="fa fa-check"></i><b>9.2.4</b> Dates, Date-Times, and Times</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="parsing-a-file.html"><a href="parsing-a-file.html"><i class="fa fa-check"></i><b>9.3</b> Parsing a File</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="parsing-a-file.html"><a href="parsing-a-file.html#策略"><i class="fa fa-check"></i><b>9.3.1</b> 策略</a></li>
+<li class="chapter" data-level="9.3.2" data-path="parsing-a-file.html"><a href="parsing-a-file.html#問題-1"><i class="fa fa-check"></i><b>9.3.2</b> 問題</a></li>
+<li class="chapter" data-level="9.3.3" data-path="parsing-a-file.html"><a href="parsing-a-file.html#其他策略"><i class="fa fa-check"></i><b>9.3.3</b> 其他策略</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="寫入檔案.html"><a href="寫入檔案.html"><i class="fa fa-check"></i><b>9.4</b> 寫入檔案</a></li>
+<li class="chapter" data-level="9.5" data-path="其他類型的資料.html"><a href="其他類型的資料.html"><i class="fa fa-check"></i><b>9.5</b> 其他類型的資料</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="tidyr.html"><a href="tidyr.html"><i class="fa fa-check"></i><b>10</b> 以 <code>tidyr</code> 整理資料</a></li>
+<li class="chapter" data-level="11" data-path="dplyr2.html"><a href="dplyr2.html"><i class="fa fa-check"></i><b>11</b> 以 <code>dplyr</code> 處理關聯性資料</a></li>
+<li class="chapter" data-level="12" data-path="stringr.html"><a href="stringr.html"><i class="fa fa-check"></i><b>12</b> 以 <code>stringr</code> 處理字串</a></li>
+<li class="chapter" data-level="13" data-path="forcats.html"><a href="forcats.html"><i class="fa fa-check"></i><b>13</b> 以 <code>forcats</code> 處理 Factors</a></li>
+<li class="chapter" data-level="14" data-path="lubridate.html"><a href="lubridate.html"><i class="fa fa-check"></i><b>14</b> 以 <code>lubridate</code> 處理日期時間</a></li>
+<li class="part"><span><b>V 編寫程式與 <code>tidyverse</code></b></span></li>
+<li class="chapter" data-level="15" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html"><i class="fa fa-check"></i><b>15</b> 以 <code>magrittr</code> 使用 Pipes</a></li>
+<li class="part"><span><b>VI R 與社會科學計量</b></span></li>
+<li class="chapter" data-level="16" data-path="單變數迴歸.html"><a href="單變數迴歸.html"><i class="fa fa-check"></i><b>16</b> 單變數迴歸</a>
+<ul>
+<li class="chapter" data-level="" data-path="單變數迴歸.html"><a href="單變數迴歸.html#需要的套件"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="16.1" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html"><i class="fa fa-check"></i><b>16.1</b> 解釋變數為連續變數</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html#探索性資料分析"><i class="fa fa-check"></i><b>16.1.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="16.1.2" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html#簡單線性迴歸"><i class="fa fa-check"></i><b>16.1.2</b> 簡單線性迴歸</a></li>
+<li class="chapter" data-level="16.1.3" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html#observedfitted-values-and-residuals"><i class="fa fa-check"></i><b>16.1.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html"><i class="fa fa-check"></i><b>16.2</b> 解釋變數為類別變數</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html#探索性資料分析-1"><i class="fa fa-check"></i><b>16.2.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="16.2.2" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html#線性迴歸"><i class="fa fa-check"></i><b>16.2.2</b> 線性迴歸</a></li>
+<li class="chapter" data-level="16.2.3" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html#observedfitted-values-and-residuals-1"><i class="fa fa-check"></i><b>16.2.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="多變數迴歸.html"><a href="多變數迴歸.html"><i class="fa fa-check"></i><b>17</b> 多變數迴歸</a></li>
+<li class="chapter" data-level="18" data-path="IV.html"><a href="IV.html"><i class="fa fa-check"></i><b>18</b> 工具變數</a></li>
+<li class="chapter" data-level="19" data-path="邊界估計.html"><a href="邊界估計.html"><i class="fa fa-check"></i><b>19</b> 邊界估計</a></li>
+<li class="chapter" data-level="20" data-path="縱貫資料.html"><a href="縱貫資料.html"><i class="fa fa-check"></i><b>20</b> 縱貫資料</a></li>
+<li class="chapter" data-level="21" data-path="合成控制.html"><a href="合成控制.html"><i class="fa fa-check"></i><b>21</b> 合成控制</a></li>
+<li class="chapter" data-level="22" data-path="探索性因素分析.html"><a href="探索性因素分析.html"><i class="fa fa-check"></i><b>22</b> 探索性因素分析</a></li>
+<li class="chapter" data-level="23" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html"><i class="fa fa-check"></i><b>23</b> 驗證性因素分析</a></li>
+<li class="part"><span><b>VII 網路與資料技術入門</b></span></li>
+<li class="chapter" data-level="24" data-path="html.html"><a href="html.html"><i class="fa fa-check"></i><b>24</b> HTML</a>
+<ul>
+<li class="chapter" data-level="24.1" data-path="sourcecode.html"><a href="sourcecode.html"><i class="fa fa-check"></i><b>24.1</b> 瀏覽器呈現與原始碼</a></li>
+<li class="chapter" data-level="24.2" data-path="htmlsyntax.html"><a href="htmlsyntax.html"><i class="fa fa-check"></i><b>24.2</b> 語法規則</a>
+<ul>
+<li class="chapter" data-level="24.2.1" data-path="htmlsyntax.html"><a href="htmlsyntax.html#標籤元素與屬性"><i class="fa fa-check"></i><b>24.2.1</b> 標籤、元素與屬性</a></li>
+<li class="chapter" data-level="24.2.2" data-path="htmlsyntax.html"><a href="htmlsyntax.html#樹結構"><i class="fa fa-check"></i><b>24.2.2</b> 樹結構</a></li>
+<li class="chapter" data-level="24.2.3" data-path="htmlsyntax.html"><a href="htmlsyntax.html#註釋"><i class="fa fa-check"></i><b>24.2.3</b> 註釋</a></li>
+<li class="chapter" data-level="24.2.4" data-path="htmlsyntax.html"><a href="htmlsyntax.html#保留與特殊字元"><i class="fa fa-check"></i><b>24.2.4</b> 保留與特殊字元</a></li>
+<li class="chapter" data-level="24.2.5" data-path="htmlsyntax.html"><a href="htmlsyntax.html#文件類型定義"><i class="fa fa-check"></i><b>24.2.5</b> 文件類型定義</a></li>
+<li class="chapter" data-level="24.2.6" data-path="htmlsyntax.html"><a href="htmlsyntax.html#空白與換行"><i class="fa fa-check"></i><b>24.2.6</b> 空白與換行</a></li>
+</ul></li>
+<li class="chapter" data-level="24.3" data-path="tagsattri.html"><a href="tagsattri.html"><i class="fa fa-check"></i><b>24.3</b> 標籤與屬性</a>
+<ul>
+<li class="chapter" data-level="24.3.1" data-path="tagsattri.html"><a href="tagsattri.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>24.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
+<li class="chapter" data-level="24.3.2" data-path="tagsattri.html"><a href="tagsattri.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>24.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
+<li class="chapter" data-level="24.3.3" data-path="tagsattri.html"><a href="tagsattri.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>24.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
+<li class="chapter" data-level="24.3.4" data-path="tagsattri.html"><a href="tagsattri.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>24.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
+<li class="chapter" data-level="24.3.5" data-path="tagsattri.html"><a href="tagsattri.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>24.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
+<li class="chapter" data-level="24.3.6" data-path="tagsattri.html"><a href="tagsattri.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>24.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
+<li class="chapter" data-level="24.3.7" data-path="tagsattri.html"><a href="tagsattri.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>24.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
+<li class="chapter" data-level="24.3.8" data-path="tagsattri.html"><a href="tagsattri.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>24.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
+<li class="chapter" data-level="24.3.9" data-path="tagsattri.html"><a href="tagsattri.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>24.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
+<li class="chapter" data-level="24.3.10" data-path="tagsattri.html"><a href="tagsattri.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>24.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
+<li class="chapter" data-level="24.3.11" data-path="tagsattri.html"><a href="tagsattri.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>24.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
+</ul></li>
+<li class="chapter" data-level="24.4" data-path="parsing.html"><a href="parsing.html"><i class="fa fa-check"></i><b>24.4</b> 解析</a>
+<ul>
+<li class="chapter" data-level="24.4.1" data-path="parsing.html"><a href="parsing.html#discarding-nodes"><i class="fa fa-check"></i><b>24.4.1</b> Discarding nodes</a></li>
+<li class="chapter" data-level="24.4.2" data-path="parsing.html"><a href="parsing.html#提取資訊"><i class="fa fa-check"></i><b>24.4.2</b> 提取資訊</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>25</b> XML 與 JSON</a></li>
+<li class="chapter" data-level="26" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>26</b> XPath</a></li>
+<li class="chapter" data-level="27" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>27</b> HTTP</a></li>
+<li class="chapter" data-level="28" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>28</b> AJAX</a></li>
+<li class="chapter" data-level="29" data-path="sql-與關聯性資料庫.html"><a href="sql-與關聯性資料庫.html"><i class="fa fa-check"></i><b>29</b> SQL 與關聯性資料庫</a></li>
+<li class="chapter" data-level="30" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>30</b> 正規表達式</a></li>
+<li class="part"><span><b>VIII 網路爬蟲</b></span></li>
+<li class="chapter" data-level="31" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>31</b> 網路爬蟲</a></li>
+<li class="part"><span><b>IX 自然語言的特色</b></span></li>
+<li class="chapter" data-level="32" data-path="語言與建模.html"><a href="語言與建模.html"><i class="fa fa-check"></i><b>32</b> 語言與建模</a></li>
+<li class="chapter" data-level="33" data-path="斷詞.html"><a href="斷詞.html"><i class="fa fa-check"></i><b>33</b> 斷詞</a></li>
+<li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="實例" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> 實例</h2>
+<p>除了前章所介紹的指令，本節還會介紹用以：</p>
+<ul>
+<li>資料清理的 <code>na.omit()</code>、<code>duplicated()</code>；</li>
+<li>文字轉換的 <code>substr()</code>、<code>tstrplit()</code>、<code>grepl()</code>。</li>
+</ul>
+<p><code>na.omit()</code> 可以剔除表格中有 <code>NA</code> 的觀察值（rows）；<code>duplicated()</code> 則可以幫助我們刪除重複的觀察值。例如我們新建一個 data table：</p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="實例.html#cb270-1" aria-hidden="true" tabindex="-1"></a>dupli.table <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID=</span><span class="fu">c</span>(<span class="st">&quot;E123456789&quot;</span>, <span class="st">&quot;N123456789&quot;</span>, <span class="st">&quot;N213456897&quot;</span>, <span class="st">&quot;N123456789&quot;</span>, <span class="st">&quot;A123456789&quot;</span>, <span class="st">&quot;N213456897&quot;</span>, <span class="st">&quot;E213456897&quot;</span>), <span class="at">sex=</span><span class="fu">c</span>(<span class="st">&quot;M&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;F&quot;</span>), <span class="at">major=</span><span class="fu">c</span>(<span class="st">&quot;Econ&quot;</span>, <span class="cn">NA</span>, <span class="st">&quot;Math&quot;</span>, <span class="st">&quot;OR&quot;</span>, <span class="st">&quot;EE&quot;</span>, <span class="st">&quot;CS&quot;</span>, <span class="st">&quot;Eng&quot;</span>))</span></code></pre></div>
+<p>使用 <code>na.omit()</code> 即會刪除有 <code>NA</code> 的觀察值：</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="實例.html#cb271-1" aria-hidden="true" tabindex="-1"></a>dupli.table <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(dupli.table)</span>
+<span id="cb271-2"><a href="實例.html#cb271-2" aria-hidden="true" tabindex="-1"></a>dupli.table</span></code></pre></div>
+<pre><code>##            ID sex major
+## 1: E123456789   M  Econ
+## 2: N213456897   F  Math
+## 3: N123456789   M    OR
+## 4: A123456789   M    EE
+## 5: N213456897   F    CS
+## 6: E213456897   F   Eng</code></pre>
+<p>使用 <code>duplicated()</code> 可以協助我們找到特定的 columns 重複的觀察值，例如：</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="實例.html#cb273-1" aria-hidden="true" tabindex="-1"></a>duplicated.rows1 <span class="ot">&lt;-</span> <span class="fu">duplicated</span>(dupli.table[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)])  <span class="co"># 設定第一個與第三個 cols</span></span>
+<span id="cb273-2"><a href="實例.html#cb273-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 得到 &quot;FALSE FALSE FALSE FALSE FALSE FALSE&quot;</span></span>
+<span id="cb273-3"><a href="實例.html#cb273-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 表示完全沒有在第一個與第三個 cols 都重複的觀察值</span></span>
+<span id="cb273-4"><a href="實例.html#cb273-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-5"><a href="實例.html#cb273-5" aria-hidden="true" tabindex="-1"></a>duplicated.rows2 <span class="ot">&lt;-</span> <span class="fu">duplicated</span>(dupli.table[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])  <span class="co"># 設定第一個與第二個 cols</span></span>
+<span id="cb273-6"><a href="實例.html#cb273-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 得到 &quot;FALSE FALSE FALSE FALSE  TRUE FALSE&quot;</span></span>
+<span id="cb273-7"><a href="實例.html#cb273-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 表示第五個觀察值重複了</span></span>
+<span id="cb273-8"><a href="實例.html#cb273-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-9"><a href="實例.html#cb273-9" aria-hidden="true" tabindex="-1"></a>duplicated.rows3 <span class="ot">&lt;-</span> <span class="fu">duplicated</span>(dupli.table[, <span class="dv">1</span>])  <span class="co"># 設定第一個 cols</span></span>
+<span id="cb273-10"><a href="實例.html#cb273-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 等價於 duplicated.rows3 &lt;- duplicated(dupli.table$ID)</span></span>
+<span id="cb273-11"><a href="實例.html#cb273-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 得到 &quot;FALSE FALSE FALSE FALSE  TRUE FALSE&quot;</span></span>
+<span id="cb273-12"><a href="實例.html#cb273-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 表示第五個觀察值重複了</span></span></code></pre></div>
+<p>那要怎樣刪除重複的觀察值呢？我們可以：</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="實例.html#cb274-1" aria-hidden="true" tabindex="-1"></a>dupli.table <span class="ot">&lt;-</span> dupli.table[<span class="sc">!</span>duplicated.rows2]</span>
+<span id="cb274-2"><a href="實例.html#cb274-2" aria-hidden="true" tabindex="-1"></a>dupli.table</span></code></pre></div>
+<pre><code>##            ID sex major
+## 1: E123456789   M  Econ
+## 2: N213456897   F  Math
+## 3: N123456789   M    OR
+## 4: A123456789   M    EE
+## 5: E213456897   F   Eng</code></pre>
+<div id="thesportsdb-nba-dataset-preprocessing" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> TheSportsDB NBA Dataset Preprocessing</h3>
+<p>上一章使用：</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="實例.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb276-2"><a href="實例.html#cb276-2" aria-hidden="true" tabindex="-1"></a>nbagames <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://www.thesportsdb.com/season.php?l=4387&amp;s=2020-2021&quot;</span>)</span>
+<span id="cb276-3"><a href="實例.html#cb276-3" aria-hidden="true" tabindex="-1"></a>games <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(nbagames,<span class="st">&quot;td&quot;</span>))</span></code></pre></div>
+<p>得到的 <code>games</code> 儲存了許多無用的字元：</p>
+<pre><code>  [1] &quot;&quot;                         &quot;12 Dec 2020&quot;              &quot;&quot;                         &quot;\n\t\t\t\t\n\t\t\t\tr00 &quot;
+  [5] &quot;Atlanta Hawks&quot;            &quot;112 - 116&quot;                &quot; Orlando Magic&quot;           &quot;12 Dec 2020&quot;             
+  [9] &quot;&quot;                         &quot;\n\t\t\t\t\n\t\t\t\tr00 &quot; &quot;Detroit Pistons&quot;          &quot;84 - 90&quot;       
+...</code></pre>
+<p>首先我們要先把空的項目刪除：</p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="實例.html#cb278-1" aria-hidden="true" tabindex="-1"></a>games <span class="ot">&lt;-</span> games[<span class="sc">!</span>games<span class="sc">==</span><span class="st">&quot;&quot;</span>]</span></code></pre></div>
+<p>接著，我們想把包含 <code>\n</code> 的項目刪除。但是，他們都長得不太一樣，於是我們要以 <code>grepl(text-to-find, where-to-find-it)</code> 來刪除：</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="實例.html#cb279-1" aria-hidden="true" tabindex="-1"></a>games <span class="ot">&lt;-</span> games[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,games)]</span></code></pre></div>
+<p>現在這樣就正常很多了。而現在儲存的方式是向量，我們可以將其轉成有 4 個 column 的矩陣，然後將其轉換成 data table，並冠上 column names：</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="實例.html#cb280-1" aria-hidden="true" tabindex="-1"></a>games<span class="fl">.2021</span> <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(<span class="fu">matrix</span>(games, <span class="at">ncol=</span><span class="dv">4</span>, <span class="at">byrow=</span>T))</span>
+<span id="cb280-2"><a href="實例.html#cb280-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(games<span class="fl">.2021</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Date&quot;</span>,<span class="st">&quot;TeamA&quot;</span>,<span class="st">&quot;Result&quot;</span>,<span class="st">&quot;TeamB&quot;</span>)</span></code></pre></div>
+<p>不過，比分還是無法計算，因為現在是兩個數字。<code>data.table</code> 中的函數 <code>tstrsplit(variable, separator, keep)</code> 可以用以切開資訊，如：</p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="實例.html#cb281-1" aria-hidden="true" tabindex="-1"></a>games<span class="fl">.2021</span>[, <span class="fu">tstrsplit</span>(Result, <span class="st">&quot;-&quot;</span>)]</span>
+<span id="cb281-2"><a href="實例.html#cb281-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 相當於 games.2021[, tstrsplit(Result, &quot; &quot;, keep = c(1, 3))]</span></span></code></pre></div>
+<pre><code>        V1   V2
+   1: 112   116
+   2:  84    90
+   3: 104   125
+   4:  87    81
+   5: 127   102
+  ---          
+1217: 118   108
+1218: 120   100
+1219: 109   103
+1220: 119   123
+1221: 105    98</code></pre>
+<p>因此，我們如果要新增兩個 columns，分別是 A 隊與 B 隊的分數，可以：</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="實例.html#cb283-1" aria-hidden="true" tabindex="-1"></a>games<span class="fl">.2021</span>[, <span class="fu">c</span>(<span class="st">&quot;PointsA&quot;</span>, <span class="st">&quot;PointsB&quot;</span>)<span class="sc">:</span><span class="er">=</span><span class="fu">tstrsplit</span>(Result, <span class="st">&quot;-&quot;</span>)]</span>
+<span id="cb283-2"><a href="實例.html#cb283-2" aria-hidden="true" tabindex="-1"></a>games<span class="fl">.2021</span><span class="sc">$</span>Result <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
+<p>得：</p>
+<pre><code>             Date                  TeamA                 TeamB PointsA PointsB
+   1: 12 Dec 2020          Atlanta Hawks         Orlando Magic    112      116
+   2: 12 Dec 2020        Detroit Pistons       New York Knicks     84       90
+   3: 12 Dec 2020          Chicago Bulls       Houston Rockets    104      125
+   4: 12 Dec 2020     Los Angeles Lakers  Los Angeles Clippers     87       81
+   5: 12 Dec 2020 Portland Trail Blazers      Sacramento Kings    127      102
+  ---                                                                         
+1217: 09 Jul 2021           Phoenix Suns       Milwaukee Bucks    118      108
+1218: 12 Jul 2021        Milwaukee Bucks          Phoenix Suns    120      100
+1219: 15 Jul 2021        Milwaukee Bucks          Phoenix Suns    109      103
+1220: 18 Jul 2021           Phoenix Suns       Milwaukee Bucks    119      123
+1221: 21 Jul 2021        Milwaukee Bucks          Phoenix Suns    105       98</code></pre>
+
+</div>
+</div>
+<!-- </div> -->
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="merging.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ggplot2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["R_learning_notes.pdf", "R_learning_notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

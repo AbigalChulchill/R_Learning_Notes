@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 以 ggplot2 進行資料視覺化 | R 學習筆記</title>
+  <meta name="description" content="5 以 ggplot2 進行資料視覺化 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 以 ggplot2 進行資料視覺化 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 以 ggplot2 進行資料視覺化 | R 學習筆記" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="preprocessing.html"/>
+<link rel="next" href="dplyr.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="rlang.html"><a href="rlang.html#變數與基本的運算"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="rlang.html"><a href="rlang.html#向量"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="rlang.html"><a href="rlang.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="rlang.html"><a href="rlang.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="rlang.html"><a href="rlang.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="rlang.html"><a href="rlang.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="rlang.html"><a href="rlang.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="rlang.html"><a href="rlang.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="rlang.html"><a href="rlang.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="rlang.html"><a href="rlang.html#矩陣"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="rlang.html"><a href="rlang.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="rlang.html"><a href="rlang.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="rlang.html"><a href="rlang.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="rlang.html"><a href="rlang.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="rlang.html"><a href="rlang.html#factors"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="rlang.html"><a href="rlang.html#data-frames"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="rlang.html"><a href="rlang.html#dataframesubsetting"><i class="fa fa-check"></i><b>1.5.1</b> 存取 data frames 中的元素與 subset</a></li>
+<li class="chapter" data-level="1.5.2" data-path="rlang.html"><a href="rlang.html#dataframeordering"><i class="fa fa-check"></i><b>1.5.2</b> 排序</a></li>
+<li class="chapter" data-level="1.5.3" data-path="rlang.html"><a href="rlang.html#其他操作-1"><i class="fa fa-check"></i><b>1.5.3</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="rlang.html"><a href="rlang.html#lists"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="control.html"><a href="control.html#conditionals"><i class="fa fa-check"></i><b>2.1</b> Conditionals</a></li>
+<li class="chapter" data-level="2.2" data-path="control.html"><a href="control.html#loops"><i class="fa fa-check"></i><b>2.2</b> Loops</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="control.html"><a href="control.html#for-迴圈"><i class="fa fa-check"></i><b>2.2.1</b> <code>for</code> 迴圈</a></li>
+<li class="chapter" data-level="2.2.2" data-path="control.html"><a href="control.html#while-迴圈"><i class="fa fa-check"></i><b>2.2.2</b> <code>while</code> 迴圈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="control.html"><a href="control.html#functions-and-operators"><i class="fa fa-check"></i><b>2.3</b> Functions and Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="control.html"><a href="control.html#創建新函數"><i class="fa fa-check"></i><b>2.3.1</b> 創建新函數</a></li>
+<li class="chapter" data-level="2.3.2" data-path="control.html"><a href="control.html#defaultargument"><i class="fa fa-check"></i><b>2.3.2</b> 引數的預設值</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II 資料庫與基本的資料前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rdata.html"><a href="rdata.html#資料來源匯入與匯出"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="rdata.html"><a href="rdata.html#tabulated-file-types"><i class="fa fa-check"></i><b>3.1.1</b> Tabulated File Types</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rdata.html"><a href="rdata.html#匯入與匯出"><i class="fa fa-check"></i><b>3.1.2</b> 匯入與匯出</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rdata.html"><a href="rdata.html#資料收集"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="rdata.html"><a href="rdata.html#data-repositories"><i class="fa fa-check"></i><b>3.2.1</b> Data Repositories</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rdata.html"><a href="rdata.html#apis"><i class="fa fa-check"></i><b>3.2.2</b> APIs</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rdata.html"><a href="rdata.html#web-scraping"><i class="fa fa-check"></i><b>3.2.3</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rdata.html"><a href="rdata.html#小結"><i class="fa fa-check"></i><b>3.3</b> 小結</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> 資料前處理</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#datatable"><i class="fa fa-check"></i><b>4.1</b> Data Tables</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="preprocessing.html"><a href="preprocessing.html#排序-ordering"><i class="fa fa-check"></i><b>4.1.1</b> 排序 Ordering</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preprocessing.html"><a href="preprocessing.html#子集-subsetting"><i class="fa fa-check"></i><b>4.1.2</b> 子集 Subsetting</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preprocessing.html"><a href="preprocessing.html#加總-aggregation"><i class="fa fa-check"></i><b>4.1.3</b> 加總 Aggregation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preprocessing.html"><a href="preprocessing.html#keying"><i class="fa fa-check"></i><b>4.1.4</b> Keying</a></li>
+<li class="chapter" data-level="4.1.5" data-path="preprocessing.html"><a href="preprocessing.html#編輯表格-updating-by-reference"><i class="fa fa-check"></i><b>4.1.5</b> 編輯表格 Updating by Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#merging"><i class="fa fa-check"></i><b>4.2</b> Merging</a></li>
+<li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#實例"><i class="fa fa-check"></i><b>4.3</b> 實例</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="preprocessing.html"><a href="preprocessing.html#thesportsdb-nba-dataset-preprocessing"><i class="fa fa-check"></i><b>4.3.1</b> TheSportsDB NBA Dataset Preprocessing</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III 以 <code>tidyverse</code> 進行資料探索</b></span></li>
+<li class="chapter" data-level="5" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html"><i class="fa fa-check"></i><b>5</b> 以 <code>ggplot2</code> 進行資料視覺化</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#create"><i class="fa fa-check"></i><b>5.1</b> 創建一個 <code>ggplot</code></a></li>
+<li class="chapter" data-level="5.2" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#the-layered-grammar-of-graphics"><i class="fa fa-check"></i><b>5.2</b> The Layered Grammar of Graphics</a></li>
+<li class="chapter" data-level="5.3" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#aesthetic-mappings"><i class="fa fa-check"></i><b>5.3</b> Aesthetic Mappings</a></li>
+<li class="chapter" data-level="5.4" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#facets"><i class="fa fa-check"></i><b>5.4</b> Facets</a></li>
+<li class="chapter" data-level="5.5" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#幾何物件"><i class="fa fa-check"></i><b>5.5</b> 幾何物件</a></li>
+<li class="chapter" data-level="5.6" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#統計轉換"><i class="fa fa-check"></i><b>5.6</b> 統計轉換</a></li>
+<li class="chapter" data-level="5.7" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#position-adjustment"><i class="fa fa-check"></i><b>5.7</b> Position Adjustment</a></li>
+<li class="chapter" data-level="5.8" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#coordinatedsystem"><i class="fa fa-check"></i><b>5.8</b> 座標系統</a></li>
+<li class="chapter" data-level="5.9" data-path="以-ggplot2-進行資料視覺化.html"><a href="以-ggplot2-進行資料視覺化.html#標籤-1"><i class="fa fa-check"></i><b>5.9</b> 標籤</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>6</b> 以 <code>dplyr</code> 轉換資料</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dplyr.html"><a href="dplyr.html#前言"><i class="fa fa-check"></i><b>6.1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="dplyr.html"><a href="dplyr.html#前置作業-1"><i class="fa fa-check"></i><b>6.1.1</b> 前置作業</a></li>
+<li class="chapter" data-level="6.1.2" data-path="dplyr.html"><a href="dplyr.html#nycflights13"><i class="fa fa-check"></i><b>6.1.2</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="6.1.3" data-path="dplyr.html"><a href="dplyr.html#基礎-dplyr"><i class="fa fa-check"></i><b>6.1.3</b> 基礎 <code>dplyr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="dplyr.html"><a href="dplyr.html#filter"><i class="fa fa-check"></i><b>6.2</b> Filter Rows with <code>filter()</code></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="dplyr.html"><a href="dplyr.html#比較"><i class="fa fa-check"></i><b>6.2.1</b> 比較</a></li>
+<li class="chapter" data-level="6.2.2" data-path="dplyr.html"><a href="dplyr.html#邏輯運算子"><i class="fa fa-check"></i><b>6.2.2</b> 邏輯運算子</a></li>
+<li class="chapter" data-level="6.2.3" data-path="dplyr.html"><a href="dplyr.html#缺漏值"><i class="fa fa-check"></i><b>6.2.3</b> 缺漏值</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="dplyr.html"><a href="dplyr.html#arrange"><i class="fa fa-check"></i><b>6.3</b> Arrange Rows with <code>arrange()</code></a></li>
+<li class="chapter" data-level="6.4" data-path="dplyr.html"><a href="dplyr.html#select"><i class="fa fa-check"></i><b>6.4</b> Select Columns with <code>select()</code></a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="dplyr.html"><a href="dplyr.html#常用的-5-個函數"><i class="fa fa-check"></i><b>6.4.1</b> 常用的 5 個函數</a></li>
+<li class="chapter" data-level="6.4.2" data-path="dplyr.html"><a href="dplyr.html#重新命名rename"><i class="fa fa-check"></i><b>6.4.2</b> 重新命名：<code>rename()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="dplyr.html"><a href="dplyr.html#mutate"><i class="fa fa-check"></i><b>6.5</b> Add New Variables with <code>mutate()</code></a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="dplyr.html"><a href="dplyr.html#useful-creation-functions"><i class="fa fa-check"></i><b>6.5.1</b> Useful Creation Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="dplyr.html"><a href="dplyr.html#summarize"><i class="fa fa-check"></i><b>6.6</b> Grouped Summaries with <code>summarize()</code></a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="dplyr.html"><a href="dplyr.html#以-pipe-結合多重運算"><i class="fa fa-check"></i><b>6.6.1</b> 以 Pipe 結合多重運算</a></li>
+<li class="chapter" data-level="6.6.2" data-path="dplyr.html"><a href="dplyr.html#missingvaluesdplyr"><i class="fa fa-check"></i><b>6.6.2</b> 缺漏值</a></li>
+<li class="chapter" data-level="6.6.3" data-path="dplyr.html"><a href="dplyr.html#計數"><i class="fa fa-check"></i><b>6.6.3</b> 計數</a></li>
+<li class="chapter" data-level="6.6.4" data-path="dplyr.html"><a href="dplyr.html#有用的歸納函數"><i class="fa fa-check"></i><b>6.6.4</b> 有用的歸納函數</a></li>
+<li class="chapter" data-level="6.6.5" data-path="dplyr.html"><a href="dplyr.html#依據多變數分組"><i class="fa fa-check"></i><b>6.6.5</b> 依據多變數分組</a></li>
+<li class="chapter" data-level="6.6.6" data-path="dplyr.html"><a href="dplyr.html#取消分組"><i class="fa fa-check"></i><b>6.6.6</b> 取消分組</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="dplyr.html"><a href="dplyr.html#grouped-mutates-and-filters"><i class="fa fa-check"></i><b>6.7</b> Grouped Mutates (and Filters)</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="探索性資料分析.html"><a href="探索性資料分析.html"><i class="fa fa-check"></i><b>7</b> 探索性資料分析</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="探索性資料分析.html"><a href="探索性資料分析.html#事前準備"><i class="fa fa-check"></i><b>7.1</b> 事前準備</a></li>
+<li class="chapter" data-level="7.2" data-path="探索性資料分析.html"><a href="探索性資料分析.html#問題"><i class="fa fa-check"></i><b>7.2</b> 問題</a></li>
+<li class="chapter" data-level="7.3" data-path="探索性資料分析.html"><a href="探索性資料分析.html#variation"><i class="fa fa-check"></i><b>7.3</b> Variation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="探索性資料分析.html"><a href="探索性資料分析.html#視覺化分配"><i class="fa fa-check"></i><b>7.3.1</b> 視覺化分配</a></li>
+<li class="chapter" data-level="7.3.2" data-path="探索性資料分析.html"><a href="探索性資料分析.html#代表性的變數值"><i class="fa fa-check"></i><b>7.3.2</b> 代表性的變數值</a></li>
+<li class="chapter" data-level="7.3.3" data-path="探索性資料分析.html"><a href="探索性資料分析.html#不尋常的變數值"><i class="fa fa-check"></i><b>7.3.3</b> 不尋常的變數值</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="探索性資料分析.html"><a href="探索性資料分析.html#missing-value"><i class="fa fa-check"></i><b>7.4</b> Missing Value</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="探索性資料分析.html"><a href="探索性資料分析.html#替換掉-outliers"><i class="fa fa-check"></i><b>7.4.1</b> 替換掉 Outliers</a></li>
+<li class="chapter" data-level="7.4.2" data-path="探索性資料分析.html"><a href="探索性資料分析.html#比較-na-與否"><i class="fa fa-check"></i><b>7.4.2</b> 比較 <code>NA</code> 與否</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="探索性資料分析.html"><a href="探索性資料分析.html#covariation"><i class="fa fa-check"></i><b>7.5</b> Covariation</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="探索性資料分析.html"><a href="探索性資料分析.html#類別與連續變數"><i class="fa fa-check"></i><b>7.5.1</b> 類別與連續變數</a></li>
+<li class="chapter" data-level="7.5.2" data-path="探索性資料分析.html"><a href="探索性資料分析.html#兩個類別變數"><i class="fa fa-check"></i><b>7.5.2</b> 兩個類別變數</a></li>
+<li class="chapter" data-level="7.5.3" data-path="探索性資料分析.html"><a href="探索性資料分析.html#兩個連續變數"><i class="fa fa-check"></i><b>7.5.3</b> 兩個連續變數</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="探索性資料分析.html"><a href="探索性資料分析.html#模式與模型"><i class="fa fa-check"></i><b>7.6</b> 模式與模型</a></li>
+</ul></li>
+<li class="part"><span><b>IV 以 <code>tidyverse</code> 進行資料整理</b></span></li>
+<li class="chapter" data-level="8" data-path="以-tibble-處理-tibbles.html"><a href="以-tibble-處理-tibbles.html"><i class="fa fa-check"></i><b>8</b> 以 <code>tibble</code> 處理 Tibbles</a></li>
+<li class="chapter" data-level="9" data-path="以-readr-匯入資料.html"><a href="以-readr-匯入資料.html"><i class="fa fa-check"></i><b>9</b> 以 <code>readr</code> 匯入資料</a></li>
+<li class="chapter" data-level="10" data-path="tidyr.html"><a href="tidyr.html"><i class="fa fa-check"></i><b>10</b> 以 <code>tidyr</code> 整理資料</a></li>
+<li class="chapter" data-level="11" data-path="以-dplyr-處理關聯性資料.html"><a href="以-dplyr-處理關聯性資料.html"><i class="fa fa-check"></i><b>11</b> 以 <code>dplyr</code> 處理關聯性資料</a></li>
+<li class="chapter" data-level="12" data-path="stringr.html"><a href="stringr.html"><i class="fa fa-check"></i><b>12</b> 以 <code>stringr</code> 處理字串</a></li>
+<li class="chapter" data-level="13" data-path="以-forcats-處理-factors.html"><a href="以-forcats-處理-factors.html"><i class="fa fa-check"></i><b>13</b> 以 <code>forcats</code> 處理 Factors</a></li>
+<li class="chapter" data-level="14" data-path="以-lubridate-處理日期時間.html"><a href="以-lubridate-處理日期時間.html"><i class="fa fa-check"></i><b>14</b> 以 <code>lubridate</code> 處理日期時間</a></li>
+<li class="part"><span><b>V 編寫程式與 <code>tidyverse</code></b></span></li>
+<li class="chapter" data-level="15" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html"><i class="fa fa-check"></i><b>15</b> 以 <code>magrittr</code> 使用 Pipes</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#part-網路與資料技術入門"><i class="fa fa-check"></i>(PART) 網路與資料技術入門</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#sourcecode"><i class="fa fa-check"></i><b>15.1</b> 瀏覽器呈現與原始碼</a></li>
+<li class="chapter" data-level="15.2" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#htmlsyntax"><i class="fa fa-check"></i><b>15.2</b> 語法規則</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#標籤元素與屬性"><i class="fa fa-check"></i><b>15.2.1</b> 標籤、元素與屬性</a></li>
+<li class="chapter" data-level="15.2.2" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#樹結構"><i class="fa fa-check"></i><b>15.2.2</b> 樹結構</a></li>
+<li class="chapter" data-level="15.2.3" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#註釋"><i class="fa fa-check"></i><b>15.2.3</b> 註釋</a></li>
+<li class="chapter" data-level="15.2.4" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#保留與特殊字元"><i class="fa fa-check"></i><b>15.2.4</b> 保留與特殊字元</a></li>
+<li class="chapter" data-level="15.2.5" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#文件類型定義"><i class="fa fa-check"></i><b>15.2.5</b> 文件類型定義</a></li>
+<li class="chapter" data-level="15.2.6" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#空白與換行"><i class="fa fa-check"></i><b>15.2.6</b> 空白與換行</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#tagsattri"><i class="fa fa-check"></i><b>15.3</b> 標籤與屬性</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>15.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
+<li class="chapter" data-level="15.3.2" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>15.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
+<li class="chapter" data-level="15.3.3" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>15.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
+<li class="chapter" data-level="15.3.4" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>15.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
+<li class="chapter" data-level="15.3.5" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>15.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
+<li class="chapter" data-level="15.3.6" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>15.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
+<li class="chapter" data-level="15.3.7" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>15.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
+<li class="chapter" data-level="15.3.8" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>15.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
+<li class="chapter" data-level="15.3.9" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>15.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
+<li class="chapter" data-level="15.3.10" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>15.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
+<li class="chapter" data-level="15.3.11" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>15.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#parsing"><i class="fa fa-check"></i><b>15.4</b> 解析</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#discarding-nodes"><i class="fa fa-check"></i><b>15.4.1</b> Discarding nodes</a></li>
+<li class="chapter" data-level="15.4.2" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html#提取資訊"><i class="fa fa-check"></i><b>15.4.2</b> 提取資訊</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>16</b> XML 與 JSON</a></li>
+<li class="chapter" data-level="17" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>17</b> XPath</a></li>
+<li class="chapter" data-level="18" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>18</b> HTTP</a></li>
+<li class="chapter" data-level="19" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>19</b> AJAX</a></li>
+<li class="chapter" data-level="20" data-path="sql-與相關的資料庫.html"><a href="sql-與相關的資料庫.html"><i class="fa fa-check"></i><b>20</b> SQL 與相關的資料庫</a></li>
+<li class="chapter" data-level="21" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>21</b> 正規表達式</a></li>
+<li class="part"><span><b>VI 網路爬蟲與文字探勘</b></span></li>
+<li class="chapter" data-level="22" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>22</b> 網路爬蟲</a></li>
+<li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="以-ggplot2-進行資料視覺化" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> 以 <code>ggplot2</code> 進行資料視覺化</h1>
+<ul>
+<li>本章為 <span class="citation"><a href="#ref-wickhamDataScience2016" role="doc-biblioref">Wickham and Grolemund</a> (<a href="#ref-wickhamDataScience2016" role="doc-biblioref">2016</a>)</span> 第 1 章內容。</li>
+</ul>
+<hr />
+<p>本部分要談的是資料探索。</p>
+<div class="figure" style="text-align: center"><span id="fig:dataexploring"></span>
+<img src="images/%E6%88%AA%E5%9C%96%202021-07-24%20%E4%B8%8B%E5%8D%883.22.11.png" alt="Data exploring." width="550" />
+<p class="caption">
+Figure 5.1: Data exploring.
+</p>
+</div>
+<div id="前置作業" class="section level4 unnumbered">
+<h4>前置作業</h4>
+<p>此章的目的則是要學習以 <code>ggplot2</code> 進行簡單的資料視覺化。我們先要載入 <code>tidyverse</code>，其包含了 <code>ggplot2</code>。在 Console 輸入：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="以-ggplot2-進行資料視覺化.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.3     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.1.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div id="create" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> 創建一個 <code>ggplot</code></h2>
+<blockquote>
+<p>引擎大的車子相較於引擎小的車子使用更多的汽油嗎？</p>
+</blockquote>
+<p>我們可以使用 <code>tidyverse</code> 中 <code>mpg</code> 這個 data frame 來嘗試回答這個問題。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="以-ggplot2-進行資料視覺化.html#cb6-1" aria-hidden="true" tabindex="-1"></a>mpg</span></code></pre></div>
+<pre><code>## # A tibble: 234 × 11
+##    manufacturer model      displ  year   cyl trans drv     cty   hwy fl    class
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 audi         a4           1.8  1999     4 auto… f        18    29 p     comp…
+##  2 audi         a4           1.8  1999     4 manu… f        21    29 p     comp…
+##  3 audi         a4           2    2008     4 manu… f        20    31 p     comp…
+##  4 audi         a4           2    2008     4 auto… f        21    30 p     comp…
+##  5 audi         a4           2.8  1999     6 auto… f        16    26 p     comp…
+##  6 audi         a4           2.8  1999     6 manu… f        18    26 p     comp…
+##  7 audi         a4           3.1  2008     6 auto… f        18    27 p     comp…
+##  8 audi         a4 quattro   1.8  1999     4 manu… 4        18    26 p     comp…
+##  9 audi         a4 quattro   1.8  1999     4 auto… 4        16    25 p     comp…
+## 10 audi         a4 quattro   2    2008     4 manu… 4        20    28 p     comp…
+## # … with 224 more rows</code></pre>
+<p>其中，<code>displ</code> 為引擎的大小，單位是公升數；<code>hwy</code> 為汽車在高速公路上的燃油效率，以每加侖英里（miles per gallon, mpg）為單位，較低的話代表同樣的里程得要使用更多的油。</p>
+<p>我們可以把 <code>displ</code> 放在 <span class="math inline">\(x\)</span> 軸，而把 <code>hwy</code> 放在 <span class="math inline">\(y\)</span> 軸，創建一個 <code>ggplot</code>：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="以-ggplot2-進行資料視覺化.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><code>ggplot()</code> 可以創造一個座標系統，而我們可以在上面加上圖層。其中，第一個引數為此圖所要使用的 dataset，例如此處為 <code>ggplot(dataset=mpg)</code>，但這時候不會得到任何東西，只有一張空白的圖。而我們可以再加上其他圖層，如使用 <code>geom_point()</code>，可以用來繪製散佈圖（scatterplot）。而 <code>geom_point()</code> 函數有引數 <code>mapping</code>，與 <code>aes()</code> 搭配使用，可以讓我們指定 <span class="math inline">\(x\)</span> 軸與 <span class="math inline">\(y\)</span> 軸分別要是什麼變數。</p>
+<p>此外，從此圖看起來，引擎大小與燃油效率呈現負向關係，即引擎更大的車，使用更多油。</p>
+</div>
+<div id="the-layered-grammar-of-graphics" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> The Layered Grammar of Graphics</h2>
+<p><code>ggplot2</code> 的語法大致如下，層層堆疊各種函數。在 geom 中，除了 <code>mapping=aes()</code>，我們還可以加上其他種類的 <code>stat</code> 與 “position adjustment”；若有需要，也可以加上不同的「座標系統」與 “facet function”。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="以-ggplot2-進行資料視覺化.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATA<span class="sc">&gt;</span>) <span class="sc">+</span> </span>
+<span id="cb9-2"><a href="以-ggplot2-進行資料視覺化.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>GEOM_FUNCTION<span class="sc">&gt;</span>(</span>
+<span id="cb9-3"><a href="以-ggplot2-進行資料視覺化.html#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="sc">&lt;</span>MAPPINGS<span class="sc">&gt;</span>),</span>
+<span id="cb9-4"><a href="以-ggplot2-進行資料視覺化.html#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="sc">&lt;</span>STAT<span class="sc">&gt;</span>,</span>
+<span id="cb9-5"><a href="以-ggplot2-進行資料視覺化.html#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="sc">&lt;</span>POSITION<span class="sc">&gt;</span>)<span class="sc">+</span></span>
+<span id="cb9-6"><a href="以-ggplot2-進行資料視覺化.html#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>COORDINATE_FUNCTION<span class="sc">&gt;</span> <span class="sc">+</span></span>
+<span id="cb9-7"><a href="以-ggplot2-進行資料視覺化.html#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>FACET_FUNCTION<span class="sc">&gt;</span></span></code></pre></div>
+<p>以下將逐一簡介這些參數（以 <code>&lt;&gt;</code> 包圍的字串）的使用方式。</p>
+</div>
+<div id="aesthetic-mappings" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Aesthetic Mappings</h2>
+<p>我們可以新增第三個變數，例如 <code>mpg</code> 中的 <code>class</code> 到兩向度的散佈圖，讓上面的點映射到 <em>aesthetic</em>。<em>Aesthetic</em> 是一種物件的視覺性質，包含了點的 color、size、shape 等。使用 <em>aesthetic</em> 在 <code>aes()</code> 中使用 <code>aesthetic.name = variable.name</code> 即可，而如果我們不想要旁邊的圖例，可以使用 <code>show.legend = FALSE</code>，如：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="以-ggplot2-進行資料視覺化.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data = mpg) + </span></span>
+<span id="cb10-2"><a href="以-ggplot2-進行資料視覺化.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point(mapping = aes(x = displ, y = hwy, color = class), show.legend = FALSE)</span></span>
+<span id="cb10-3"><a href="以-ggplot2-進行資料視覺化.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> class))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>此外，如果我們映射 <code>color</code> 到一個邏輯條件，則如：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="以-ggplot2-進行資料視覺化.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> displ <span class="sc">&lt;</span> <span class="dv">5</span>))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>我們也可以使用 <code>size = class</code>。但要注意的是此時會出現 <code>Warning</code>，因為把一個無序的變數 <code>class</code> 映射到一個有序的 aesthetic <code>size</code> 並不是一個好方法：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="以-ggplot2-進行資料視覺化.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">size =</span> class))</span></code></pre></div>
+<pre><code>## Warning: Using size for a discrete variable is not advised.</code></pre>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>我們也可以映射 <code>class</code> 到 <code>alpha</code> 或 <code>shape</code>，分別代表透明度與形狀，但也都會出現 <code>Warning</code>：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="以-ggplot2-進行資料視覺化.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">alpha =</span> class))</span></code></pre></div>
+<pre><code>## Warning: Using alpha for a discrete variable is not advised.</code></pre>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="以-ggplot2-進行資料視覺化.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">shape =</span> class))</span></code></pre></div>
+<pre><code>## Warning: The shape palette can deal with a maximum of 6 discrete values because
+## more than 6 becomes difficult to discriminate; you have 7. Consider
+## specifying shapes manually if you must have them.</code></pre>
+<pre><code>## Warning: Removed 62 rows containing missing values (geom_point).</code></pre>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>我們也可以從 <code>geom</code> 手動選擇 aesthetic properties，例如我們可以在 <code>geom()</code> 中加上 <code>color = "blue"</code>，讓所有點都變成藍色：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="以-ggplot2-進行資料視覺化.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>這樣的話，就只是改變顏色，顏色並未傳達更多資訊。不過，事實上 <code>ggplot2</code> 也可以手動設置 aesthetic，不過此處從略。</p>
+</div>
+<div id="facets" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Facets</h2>
+<blockquote>
+<p>注意：類別變數才能繪製成 facets！</p>
+</blockquote>
+<p>除了把變數映射到 aesthetics，我們也可以把<strong>類別變數</strong>繪製成 facets，即分別繪製資料不同的子集。要繪製 facets，我們可以使用 <code>facet_wrap()</code>，其第一個引數是一個 formula，即 <code>~ 變數名稱</code>。此外，也可以 <code>nrow</code> 或 <code>ncol</code> 來指定要有幾個 rows 或 columns。如我們要根據 <code>class</code> 來繪製 facets，而排成兩個 rows 的形式，即：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="以-ggplot2-進行資料視覺化.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="以-ggplot2-進行資料視覺化.html#cb20-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="以-ggplot2-進行資料視覺化.html#cb20-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span> class, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>如果我們要把 facets 畫成兩個變數的組合，那就必須使用 <code>facet_gird()</code>，其語法如 <code>facet_grid(row ~ col)</code>。以下的例子，因為 <code>drv</code> 共有三種值：<code>4</code>、<code>f</code>、<code>r</code>，而 <code>cyl</code> 共有四種值：<code>4</code>、<code>5</code>、<code>6</code>、<code>8</code>，所以：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="以-ggplot2-進行資料視覺化.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="以-ggplot2-進行資料視覺化.html#cb21-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy)) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="以-ggplot2-進行資料視覺化.html#cb21-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_grid</span>(drv <span class="sc">~</span> cyl)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>如果 row 或 column 其中一者不想要有變數，可以使用 <code>facet_grid()</code>。</p>
+</div>
+<div id="幾何物件" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> 幾何物件</h2>
+<p><em>Geom</em> 是一種圖用來表示資料的幾何物件。例如，bar charts 使用 bar geoms，line charts 使用 line geoms，boxplots 使用 boxplot geoms 等。</p>
+<p>要改變圖的 geom，即改變 <code>ggplot()</code> 所加的 geom function，例如我們把剛剛的 <code>geom_point()</code> 改成 <code>geom_smooth</code> 的話將會得到：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="以-ggplot2-進行資料視覺化.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 對於 geom_smooth() 中的 method 與 formula 用法可見其文檔</span></span>
+<span id="cb22-2"><a href="以-ggplot2-進行資料視覺化.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="以-ggplot2-進行資料視覺化.html#cb22-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy), <span class="at">method =</span> <span class="st">&#39;loess&#39;</span>, <span class="at">formula =</span> <span class="st">&#39;y ~ x&#39;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>我們也可以設置 aesthetic。雖然不能設置線的 shape，但可以設定線的 linetype。例如，我們可以根據變數 <code>drv</code> 來繪製三條不同的線：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="以-ggplot2-進行資料視覺化.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> </span>
+<span id="cb23-2"><a href="以-ggplot2-進行資料視覺化.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">linetype =</span> drv),</span>
+<span id="cb23-3"><a href="以-ggplot2-進行資料視覺化.html#cb23-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;y ~ x&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>或者也可以疊加兩種 geom：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="以-ggplot2-進行資料視覺化.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> </span>
+<span id="cb24-2"><a href="以-ggplot2-進行資料視覺化.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> drv, <span class="at">linetype =</span> drv),</span>
+<span id="cb24-3"><a href="以-ggplot2-進行資料視覺化.html#cb24-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;y ~ x&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb24-4"><a href="以-ggplot2-進行資料視覺化.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> drv))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>如果把引數放在 <code>ggplot()</code> 中，則會被視為 global mapping，將會套用到圖中的所有 geom；而放在 <code>geom()</code> 中則會被視為 local mapping，只會套用到該 geom。所以上述的程式碼也可以簡化為：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="以-ggplot2-進行資料視覺化.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy, <span class="at">color =</span> drv)) <span class="sc">+</span> </span>
+<span id="cb25-2"><a href="以-ggplot2-進行資料視覺化.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> drv), <span class="at">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="at">formula =</span> <span class="st">&quot;y ~ x&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb25-3"><a href="以-ggplot2-進行資料視覺化.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="統計轉換" class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> 統計轉換</h2>
+<p><code>diamonds</code> 是 <code>ggplot2</code> 中的一個 dataset，約有 54000 顆鑽石的資料，包含 <code>carat</code>、<code>cut</code>、<code>color</code>、<code>clarity</code>、<code>depth</code>、<code>table</code>、<code>price</code> 等變數。使用 <code>geom_bar()</code> 可以依據某個變數畫出長條圖（bar chart），例如我們想要知道各種 cuts 到底有分別有多少鑽石，可以：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="以-ggplot2-進行資料視覺化.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>在此，<span class="math inline">\(x\)</span> 軸為 <code>cut</code>，是 <code>diamonds</code> 中的變數；<span class="math inline">\(y\)</span> 軸為 <code>count</code>，並非 <code>diamonds</code> 中的變數，而是自動計算在各個 <code>cut</code> 中鑽石的數量。某些圖會計算新的變數然，例如：</p>
+<ol style="list-style-type: decimal">
+<li>長條圖、直方圖（histogram）或 frequency polygons 都會計算個數。</li>
+<li>Smoothers 會適配模型然後畫出預測。</li>
+<li>Boxplots 會計算分佈。</li>
+</ol>
+<p>用來計算新的值的演算法稱之為 <em>stat</em>，為 statistical transformation 的簡稱。例如以 <code>?geom_bar</code> 查看 <code>geom_bar()</code> 的幫助頁面，會發現其使用 <code>stat_count()</code>。因為每個 geom 都有一個預設的 stat，反之亦然，所以我們可以把 geom 與 stat 交換使用。也因此，如果把上圖的 <code>geom_bar()</code> 換成 <code>stat_count()</code> 也會到相同的結果。</p>
+<p>什麼時候需要明確地使用 stat 呢？</p>
+<ol style="list-style-type: decimal">
+<li><p>想要替換預設的 stat 的時候。</p></li>
+<li><p>想要換原本的 mapping 時。</p></li>
+</ol>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="以-ggplot2-進行資料視覺化.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="以-ggplot2-進行資料視覺化.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb27-3"><a href="以-ggplot2-進行資料視覺化.html#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> ..prop.., <span class="at">group =</span> <span class="dv">1</span>)</span>
+<span id="cb27-4"><a href="以-ggplot2-進行資料視覺化.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>想要使用其他的 statistical transformation 的時候。例如使用 <code>stat_summary()</code>，其會對每個 <code>x</code> 都 summarizes 其 <code>y</code>。</li>
+</ol>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="以-ggplot2-進行資料視覺化.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="以-ggplot2-進行資料視覺化.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(</span>
+<span id="cb28-3"><a href="以-ggplot2-進行資料視覺化.html#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> depth),</span>
+<span id="cb28-4"><a href="以-ggplot2-進行資料視覺化.html#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun.min =</span> min,</span>
+<span id="cb28-5"><a href="以-ggplot2-進行資料視覺化.html#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun.max =</span> max,</span>
+<span id="cb28-6"><a href="以-ggplot2-進行資料視覺化.html#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> median</span>
+<span id="cb28-7"><a href="以-ggplot2-進行資料視覺化.html#cb28-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="position-adjustment" class="section level2" number="5.7">
+<h2><span class="header-section-number">5.7</span> Position Adjustment</h2>
+<p>想要為長條圖著色，除了使用 <code>color</code>，還可以使用 <code>fill</code>，兩者的效果也不同：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="以-ggplot2-進行資料視覺化.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="以-ggplot2-進行資料視覺化.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">color =</span> cut))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="以-ggplot2-進行資料視覺化.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="以-ggplot2-進行資料視覺化.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">fill =</span> cut))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-20-2.png" width="480" style="display: block; margin: auto;" /></p>
+<p>如果 <code>fill</code> 指定為另一個變數的話，就會自動變成「堆疊」的形式，如：</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="以-ggplot2-進行資料視覺化.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">fill =</span> clarity)) <span class="sc">+</span> </span>
+<span id="cb31-2"><a href="以-ggplot2-進行資料視覺化.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>這種堆疊是透過位置調整（position adjustment）進行的。<code>position</code> 預設為 <code>position="stack"</code>，而我們還能把 <code>position</code> 指定成其他三種選項：<code>identity</code>、<code>dodge</code> 與 <code>fill</code>：</p>
+<ol style="list-style-type: decimal">
+<li><code>position = "identity"</code>：用在 bar chart 上效果有點像 <code>stack</code>，但差別在調整透明度後可以看出來（即 <code>alpha = 1/5</code>）；雖然還是不明顯，但差別在 <code>identity</code> 的各個物件是會相互堆疊的。例如在下圖中，調整透明度明明應該所有物件的透明度都相同，但越靠下的部分透明度顯然越低，這就是因為越靠下的部分有越多個物件重疊在一起，使得圖形顯得較不透明。</li>
+</ol>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="以-ggplot2-進行資料視覺化.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">fill =</span> clarity)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="以-ggplot2-進行資料視覺化.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>, <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li><code>position = "fill"</code>：依據指定的變數（此數為 <code>clarity</code>）堆疊，差別在高度相同，所以便於我們比較組間的比例差別。</li>
+</ol>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="以-ggplot2-進行資料視覺化.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">fill =</span> clarity)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="以-ggplot2-進行資料視覺化.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;fill&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li><code>position = "dodge"</code>：以此例而言，即是對於每個不同的 <code>cut</code>，都分別把其各個 <code>clarity</code> 展現在逐一呈現，而非用堆疊的方式。</li>
+</ol>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="以-ggplot2-進行資料視覺化.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diamonds, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">fill =</span> clarity)) <span class="sc">+</span></span>
+<span id="cb34-2"><a href="以-ggplot2-進行資料視覺化.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>此外，當然還有其他 <code>position</code> 的引數可用，例如 <code>position = "jitter"</code>，其在 bar chart 中沒什麼用，但在散佈圖中有大用。回憶節 <a href="以-ggplot2-進行資料視覺化.html#create">5.1</a> 的散佈圖：</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="以-ggplot2-進行資料視覺化.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy))</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-25-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>事實上，<code>mpg</code> 明明有 234 個觀察值，如：</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="以-ggplot2-進行資料視覺化.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mpg)</span>
+<span id="cb36-2"><a href="以-ggplot2-進行資料視覺化.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tibble [234 × 11] (S3: tbl_df/tbl/data.frame)</span></span>
+<span id="cb36-3"><a href="以-ggplot2-進行資料視覺化.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div>
+<p>但上面的散佈圖卻只有顯示 126 個點，為什麼？因為 <strong>overplotting</strong>！有些點的座標相同，所以相互覆蓋了。設置 <code>position = "jitter"</code> 可以解決這個問題，這會在每個點加入一點點 random noise，排除 overplotting 的問題。</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="以-ggplot2-進行資料視覺化.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy)) <span class="sc">+</span> </span>
+<span id="cb37-2"><a href="以-ggplot2-進行資料視覺化.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-27-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="coordinatedsystem" class="section level2" number="5.8">
+<h2><span class="header-section-number">5.8</span> 座標系統</h2>
+<p>除了前面使用的笛卡兒座標系統，還有其他有用的座標系統：</p>
+<ol style="list-style-type: decimal">
+<li><code>coord_flip()</code>：繪製旋轉 90 度的直角坐標，如：</li>
+</ol>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="以-ggplot2-進行資料視覺化.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> class, <span class="at">y =</span> hwy)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="以-ggplot2-進行資料視覺化.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> class, <span class="at">y =</span> hwy)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-28-2.png" width="480" style="display: block; margin: auto;" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li><code>coord_quickmap()</code>：繪製有正確方位比例的地圖<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>，如：</li>
+</ol>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="以-ggplot2-進行資料視覺化.html#cb40-1" aria-hidden="true" tabindex="-1"></a>nz <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;nz&quot;</span>)</span>
+<span id="cb40-2"><a href="以-ggplot2-進行資料視覺化.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="以-ggplot2-進行資料視覺化.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nz, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span> </span>
+<span id="cb40-4"><a href="以-ggplot2-進行資料視覺化.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="以-ggplot2-進行資料視覺化.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nz, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span> </span>
+<span id="cb41-2"><a href="以-ggplot2-進行資料視覺化.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span> <span class="fu">coord_quickmap</span>()</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-29-2.png" width="480" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li><code>coord_polar()</code>：繪製極座標圖（polar coordinates），結合 bar char 與 Coxcomb chart，如：</li>
+</ol>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="以-ggplot2-進行資料視覺化.html#cb42-1" aria-hidden="true" tabindex="-1"></a>bar <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> diamonds) <span class="sc">+</span></span>
+<span id="cb42-2"><a href="以-ggplot2-進行資料視覺化.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">fill =</span> cut), <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb42-3"><a href="以-ggplot2-進行資料視覺化.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb42-4"><a href="以-ggplot2-進行資料視覺化.html#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="以-ggplot2-進行資料視覺化.html#cb42-5" aria-hidden="true" tabindex="-1"></a>bar <span class="sc">+</span> <span class="fu">coord_polar</span>()</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li><code>coord_fixed</code>：因為人對與 45 度線的差異感受最明顯，而 <code>coord_fixed()</code> 可以讓 <code>geom_abline()</code>（用以產生 reference lines 的 geom）產生的線為 45 度，如：</li>
+</ol>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="以-ggplot2-進行資料視覺化.html#cb43-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> mpg, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> cty, <span class="at">y =</span> hwy)) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="以-ggplot2-進行資料視覺化.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_abline</span>()</span>
+<span id="cb43-3"><a href="以-ggplot2-進行資料視覺化.html#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="以-ggplot2-進行資料視覺化.html#cb43-4" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">coord_fixed</span>()  <span class="co"># 如果不加 coord_fixed()，比例將會跑掉。</span></span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-31-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="標籤-1" class="section level2" number="5.9">
+<h2><span class="header-section-number">5.9</span> 標籤</h2>
+<p><code>labs()</code> 能使我們為圖加上標題、註解或更改 <code>x</code> 軸、<code>y</code> 軸的名稱，如：</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="以-ggplot2-進行資料視覺化.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> mpg, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> class, <span class="at">y =</span> hwy)) <span class="sc">+</span> </span>
+<span id="cb44-2"><a href="以-ggplot2-進行資料視覺化.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb44-3"><a href="以-ggplot2-進行資料視覺化.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb44-4"><a href="以-ggplot2-進行資料視覺化.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Highway MPG&quot;</span>,</span>
+<span id="cb44-5"><a href="以-ggplot2-進行資料視覺化.html#cb44-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Class&quot;</span>,</span>
+<span id="cb44-6"><a href="以-ggplot2-進行資料視覺化.html#cb44-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Highway MPG by car class&quot;</span>,</span>
+<span id="cb44-7"><a href="以-ggplot2-進行資料視覺化.html#cb44-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;1999-2008&quot;</span>,</span>
+<span id="cb44-8"><a href="以-ggplot2-進行資料視覺化.html#cb44-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Source: http://fueleconomy.gov&quot;</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-32-1.png" width="480" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+<h3>參考文獻</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-wickhamDataScience2016" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. 2016. <em>R for <span>Data Science</span></em>. First Edition. <span>O’Reilly Media, Inc.</span>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>另有 <code>coord_map()</code>，功能與 <code>coord_quickmap()</code> 類似。<code>coord_map()</code> 預設使用<a href="https://zh.wikipedia.org/wiki/%E9%BA%A5%E5%8D%A1%E6%89%98%E6%8A%95%E5%BD%B1%E6%B3%95">麥卡托投影法（Mercator projection）</a>。而兩者的差別在 <code>coord_quickmap</code> 為 <code>coord_map()</code> 的近似，忽略了地球在不同經緯度比例的曲度差異，因此運行速率較快，但也稍微不準確。<a href="以-ggplot2-進行資料視覺化.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="preprocessing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dplyr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["R_learning_notes.pdf", "R_learning_notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

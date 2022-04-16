@@ -1,0 +1,599 @@
+# 以 `dplyr` 轉換資料 {#dplyr}
+
+:::{.note}
+本章為 @wickhamDataScience2016 第 3 章內容。
+:::
+
+## 前言
+
+一拿到資料，除了以視覺化的方式快速洞察資料的樣貌，我們可能還需要：
+
+1.  新增新的變數。
+
+2.  統整。
+
+3.  重新命名變數。
+
+4.  重新排列觀察值的順序。
+
+`dplyr` 的某些功能也能以 `data.table` 完成，並且兩者各有所長（`data.table` 的介紹可見節 \@ref(datatable)），而本章將要介紹 `dplyr`，為 `tidyverse` 中一個重要的成員，用以資料轉換。本章的任務是以 `nycflights13` 資料為例，簡介 `dplyr` 的使用。
+
+### 前置作業
+
+先載入 `nycflights13` 與 `tidyverse`：
+
+```{r}
+library(nycflights13)
+library(tidyverse)
+```
+
+要注意的是，`dplyr` 與 base R 一套件 `stats` 的某些函數名稱相同，如 `filter` 與 `lag`。如果是先載入 `stats`，後載入 `dplyr` 的話，則使用 `filter()` 將會是 `dplyr` 的 `filter`，這時候如果還想使用 `stats` 的 `filter()`，則需使用其全名，即 `stats::filter()`。反之，如果是先載入 `dplyr`，後載入 `stats`，則使用 `filter()` 將會使用到 `stats` 的 `filter()`，這時候如果還想使用 `dplyr` 的 `filter()`，亦須使用全名，即 `dplyr::filter()`。
+
+### `nycflights13`
+
+我們將使用 `nycflights13` 中的 `flights` 這個 dataset，此 data frame 包含 336,776 個觀察值，並有 19 個變數。
+
+```{r cache=TRUE}
+flights
+```
+
+我們也可以看到，變數名稱下方有諸如 `<int>`、`<dbl>` 等代號，即變數的型態：
+
+-  `int` 代表整數。
+
+-  `dbl` 代表 doubles 或實數。
+
+-  `chr` 代表字元向量或字串。
+
+-  `dttm` 代表日期時間（date-times）。
+
+-  `lgl` 代表 logical，即 `TRUE` 或 `FALSE` 的向量。
+
+-  `fctr` 代表 factors，即類別變數。
+
+-  `date` 代表時間。
+
+### 基礎 `dplyr`
+
+本章將會簡介 6 個 `dplyr` 函數，即：
+
+-  在節 \@ref(filter) 以 `filter()` 選取某些觀察值。
+
+-  在節 \@ref(arrange) 以 `arrange()` 重新排列 rows。
+
+-  在節 \@ref(select) 以 `select()` 選取變數。
+
+-  在節 \@ref(mutate) 以 `mutate()` 與現存變數的函數創造新的變數。
+
+-  在節 \@ref(summarize) 以 `summarize()` 摘要資料。
+
+-  以 `group_by()` 比較群組之間的關係。
+
+我們的工作就是在第一個引數丟入一個 data frame，並在第二個引數描述要對其做什麼，然後得到一個新的 data frame。
+
+## Filter Rows with `filter()` {#filter}
+
+我們可以用 `filter` 來選取某些觀察值，例如：
+
+```{r, cache=TRUE}
+filter(flights, month == 1, day == 1)
+```
+因為 `filter()` 會創造一個新的 data frame，而不會更動原先輸入的那個 data frame，所以
+
+### 比較
+
+我們可以用比較運算子，如 `>=`、`<`、`<=`、`!=` 或 `==` 等來選取觀察值。
+
+### 邏輯運算子
+
+我們也可以運用邏輯運算子，如 `&` 即 "and"，`|` 即 "or" 而 `!` 即 "not"（切記不要用成 `&&` 或 `||`！）。例如我們可以透過以下的程式碼找出 `month` 恰等於 11 或 12 的觀察值：
+
+```{r cache=TRUE}
+filter(flights, month == 11 | month == 12)
+```
+
+上述的程式碼也有一種簡寫，即 `x %in% y`，將會選出所有 `x` 等於其中一個 `y` 的觀察值。上述的程式碼因此可以寫成：
+
+```{r, eval=FALSE}
+filter(flights, month %in% c(11, 12))
+```
+
+我們如果想要找到 `arr_delay` 不超過 120 且 `dep_delay` 也不超過 120 的觀察值，下面兩行等價的程式碼都能達成：
+
+```{r, eval=FALSE}
+filter(flights, !(arr_delay > 120 | dep_delay > 120))
+filter(flights, arr_delay <= 120, dep_delay <= 120)
+```
+
+### 缺漏值
+
+`filter()` 只會選取邏輯判斷為 `TRUE` 的觀察值，而排除 `FALSE` 或 `NA`。如果也想選取 `NA`，則要明白地寫出來：
+
+```{r, cache=TRUE}
+df <- tibble(x = c(1, NA, 3))
+filter(df, x > 1)
+filter(df, is.na(x) | x > 1)
+```
+
+
+## Arrange Rows with `arrange()` {#arrange}
+
+使用 `arrange()` 可以改變觀察值的排列順序。
+
+```{r, cache=TRUE}
+arrange(flights, year, month, day)  # 先排前面的引數，由小至大排列
+```
+
+使用 `desc()` 可以製造由大至小的排列，如：
+
+```{r, cache=TRUE}
+arrange(flights, desc(dep_time), day)
+```
+
+缺漏值永遠排在最後，無論採用由小至大或由大至小的排列方式：
+
+```{r, cache=TRUE}
+df <- tibble(x = c(5, 2, NA))
+arrange(df, x)
+arrange(df, desc(x))
+```
+
+## Select Columns with `select()` {#select}
+
+`filter()` 與 `arrange()` 處理的對象是 rows，而 `select()` 處理的則是 columns。我們可以透過 `select()`，快速地選取指定的變數，如：
+
+```{r, cache=TRUE}
+select(flights, year, month, day)
+```
+
+或者：
+
+```{r eval=FALSE}
+select(flights, year:day)  # 選擇 year 至 day 之間所有的 columns
+select(flights, -(year:day))  # 選擇 year 至 day 以外的所有 columns
+```
+
+### 常用的 5 個函數
+
+`select()` 之中還有幾個常用的函數可用，如：
+
+-  `start_with("abc")`：選取名稱以 "abc" 開頭的變數。
+
+-  `ends_with("abc")`：選取名稱以 "abc" 結尾的變數。
+
+-  `contains("abc")`：選取名稱中包含 "abc" 的變數。
+
+-  `matches("abc$")`：選取名稱符合正規表示式的變數，此例中為名稱以 "abc" 結尾的變數。正規表示式將會在第 \@ref(stringr) 章介紹。
+
+-  `num_range("x", 1:3)`：選取名為 `x1`、`x2`、`x3` 的變數。
+
+
+以下為範例：
+
+```{r, cache=TRUE}
+select(flights, starts_with("d"))  # 選取名稱以 "d" 開頭的變數
+select(flights, ends_with("t"))  # 選取名稱以 "t" 結尾的變數
+select(flights, contains("ep"))  # 選取名稱中包含 "ep" 的變數
+select(flights, matches("time$"))  # 選取名稱以 "time" 結尾的變數
+```
+
+### 重新命名：`rename()`
+
+有兩種重新命名變數的方法：
+
+1.  使用 `select(資料, 新變數名稱 = 舊變數名稱, everything())`。之所以要加 `everything` 是因為如果不加，`select()` 將會丟棄其他所有變數，而 `everything()` 的用途即在補上其他 columns。
+
+2.  使用 `rename(資料, 新變數名稱 = 舊變數名稱)`。
+
+此外，因為 `everything()` 可以補上其他沒有選到的 columns，所以也可以用來移動變數的順序，如我們想要把 `dep_time` 與 `arr_time` 移到前面的話，即：
+
+```{r, cache=TRUE}
+select(flights, dep_time, arr_time, everything())
+```
+
+## Add New Variables with `mutate()` {#mutate}
+
+我們還會想新增 columns 為既有 columns 的函數，那就要使用 `mutate()`。我們先新建一個小一點的表格，方便查看結果，然後新增兩個 columns，其一為 `gain`，為 `arr_delay` 減去 `ep_delay`；其一為 `speed`，為 `distance` 除以 `air_time` 再乘以 60：
+
+```{r, cache=TRUE}
+flights_sml <- select(flights, year:day, ends_with("delay"), distance, air_time)
+
+mutate(flights_sml,
+       gain = arr_delay - dep_delay,
+       speed = distance / air_time * 60)
+```
+
+也可以在後面的引數中，使用前面的引數剛新增出來的 columns，如：
+
+```{r eval=FALSE}
+mutate(flights_sml,
+       gain = arr_delay - dep_delay,
+       hours = air_time / 60,
+       gain_per_hour = gain / hours)
+```
+
+只想要保存新變數的話，可以用 `transmute()`，如：
+
+```{r, cache=TRUE}
+transmute(flights_sml,
+       gain = arr_delay - dep_delay,
+       hours = air_time / 60,
+       gain_per_hour = gain / hours)
+```
+
+而如果新建的變數名稱與既有的變數名稱相同，則會覆蓋之，即既有的變數值被替換成 `mutate()` 中所指定的運算方法所得的變數值。
+
+### Useful Creation Functions
+
+創建新 columns 有一些常用的、有用的運算子或函數：
+
+-  **Arithmetic operators.** `+`, `-`, `*`, `/`, `^`.
+
+-  **Modular arithmetic.** `%/%` and `%%`.
+
+    -  `%/%` 為整數除法，而 `%%` 為餘數。
+    
+    -  如：`30 %/% 4` 等於 4；`3 %% 2` 等於 1。
+
+-  **Logs.** `log()`, `log2()`, `log10()`
+
+-  **Logical comparisons.** `<`, `<=`, `>`, `>=`, `!=`.
+
+-  **Offsets.** `lead()` and `lag()`.
+
+    -  `lead()` 可以用來指涉 leading values，而 `lag()` 可以用來指涉 lagging values。與 `group_by()` 一起使用有很大的用處。
+    
+    -  例如 `x <- 1 : 10`。`lead(x)` 會是 `2 3 4 5 6 7 8 9 10 NA`，而 `lag(x)` 會是 `NA 1 2 3 4 5 6 7 8 9`。
+    
+-  **Logical comparisons.** `<`, `<=`, `>`, `>=`, `!=`.
+
+-  **Ranking.** `min_rank()`, `row_number()`, `dense_rank()`, `percent_rank()`, `cume_dist()`, `ntile()`.
+
+    -  `min_rank()`：依序輸入的向量中的元素依序報出向量各元素的大小排名（由小而大），**重複的順序將會跳號**。如 `y <- c(3, 4, 5, 2, 1)`，第一個元素是第 3 小，第二個元素是第 4 小，第三個元素是第 5 小，第四個元素是第 2 小，第五個元素最小，因此回傳 `3 4 5 2 1`。而我們也可以搭配使用 `desc()`，則第一個元素是第 3 大，第二個元素是第 2 大，以此類推，將會回傳 `3 2 1 4 5`。
+    
+    -  `row_number`：類似 `min_rank()`，但如果有重複的元素，將會把較前面的排的比較小。例如 `z <- c(1, 1, 0, 2, 3)`，輸入 `min_rank()` 將會回傳 `2 2 1 4 5`；而輸入 `row_number()` 將會回傳 `2 3 1 4 5`。
+
+    -  `dense_rank()`：類似 `min_rank()`，但重複的順序不會跳號，如 `z <- c(1, 1, 0, 2, 3)`，輸入 `dense_rank()` 將會回傳 `2 2 1 3 4`。
+    
+    -  `percent_rank(y)`：`min_rank()` 的百分比版本。
+    
+    -  `cume_dist(y)`：`min_rank()` 的累積版本。
+    
+```{r, eval=FALSE}
+y<-c(1, 2, 2, NA, 3, 4)
+min_rank(y)
+# [1]  1  2  2 NA  4  5
+row_number(y)
+# [1]  1  2  3 NA  4  5
+row_number(y)
+# [1]  1  2  3 NA  4  5
+dense_rank(y)
+# [1]  1  2  2 NA  3  4
+percent_rank(y)
+# [1] 0.00 0.25 0.25   NA 0.75 1.00
+cume_dist(y)
+# [1] 0.2 0.6 0.6  NA 0.8 1.0
+```
+-  **Cumulative and rolling aggregates.** `cumsum()`, `cumprod()`, `cummin()`, `cummax()`, `cummean()`.
+
+    -  前四者為 R 本身提供，`cummean()` 為 `dplyr` 所提供。
+    
+    -  分別可以計算 running sums、products、mins、maxes 與 cumulative means，例如：
+    
+```{r, eval=FALSE}
+x <- 1 : 10
+cumsum(x)
+#  [1]  1  3  6 10 15 21 28 36 45 55
+cumprod(x)
+#  [1]       1       2       6      24     120     720    5040   40320  362880
+# [10] 3628800
+cummin(x)
+#  [1] 1 1 1 1 1 1 1 1 1 1
+cummax(x)
+#  [1]  1  2  3  4  5  6  7  8  9 10
+cummean(x)
+#  [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5
+```
+
+
+
+## Grouped Summaries with `summarize()` {#summarize}
+
+
+`summarize()` 會把整個表格整理成單一個 row。我們可以使用 `summarize()` 來計算全部航班的 `dep_delay` 的平均值：
+
+```{r, cache=TRUE}
+summarize(flights, delay = mean(dep_delay, na.rm = TRUE))
+```
+
+其中，使用 `na.rm = TRUE` 的原因在避免計算出一大堆 `NA`，見節 \@ref(missingvaluesdplyr)。
+
+
+但 `summarize()` 要搭配上 `group_by()` 才顯得更強大。如果我們想要知道每天的 `dep_delay` 的平均到底是多少與每天有多少個航班，我們可以使用 `group_by()`，將 `flights` 這個 dataset 依照 `year`、`month`、`day` 分組，然後指派給變數 `by_day`。接著，我們就可以使用 `summarize()`，並定義兩個新變數欄位為 `delay` 與 `count`，如：
+
+```{r, cache=TRUE}
+by_day <- group_by(flights, year, month, day)
+summarize(by_day, delay = mean(dep_delay, na.rm = TRUE), count = n())
+```
+
+
+### 以 Pipe 結合多重運算
+
+如果我們想知道距離與每個地點的平均延誤的關係，我們可以：
+
+1.  使用 `group_by`，依據 `dest`（終點）來分類 `flights`。
+
+2.  使用 `summarize()` 製造一個新的 tibble，列出各個 `dest` 的**次數**（`count`）、**平均距離**（`dist`）與**平均抵達延誤**（`delay`）。
+
+3.  使用 `filter()`，第一個引數放入剛剛新建的表格，然後移除 noise（出現次數小於 20 次者），並移除 "HNL" 這個終點站。
+
+上面的步驟正如：
+
+```{r, cache=TRUE, fig.align='center'}
+by_dest <- group_by(flights, dest)
+delay <- summarize(by_dest, count = n(), dist = mean(distance, na.rm = TRUE),
+                   delay = mean(arr_delay, na.rm = TRUE))  # 整理資料
+
+delay <- filter(delay, count > 20, dest != "HNL")  # 移除噪點
+
+ggplot(data = delay, mapping = aes(x = dist, y = delay)) +
+  geom_point(aes(size = count), alpha = 1/3) +
+  geom_smooth(method = 'loess', formula = "y ~ x", se = FALSE)  # 繪圖
+```
+
+但這種撰寫程式碼的方式稍嫌惱人，因為我們還要幫中間的 data frame 取名字。使用 pipe `%>%` 可以解決此問題：
+
+```{r, cache=TRUE}
+delays <- flights %>%
+  group_by(dest) %>%
+  summarize(count = n(),
+            dist = mean(distance, na.rm = TRUE),
+            delay = mean(arr_delay, na.rm = TRUE)) %>%
+  filter(count > 20, dest != "HNL")
+```
+
+`%>%` 可以讀成 "then"，即我們先使用 `group_by` 分組，然後使用 `summarize()` 計算次數與平均數，然後使用 `filter()` 過濾掉噪點與不想要的觀察值。這背後的邏輯就是 `x %>% f(y)` 即 `f(x, y)`，而 `x %>% f(y) %>% g(z)` 即 `g(f(x, y), z)`。
+
+### 缺漏值 {#missingvaluesdplyr}
+
+前開使用的 `na.rm` 引數的功能即決定要不要在計算前移除掉 `NA`。如果我們沒有設定 `na.rm = TRUE`，則我們將會製造出一大堆 `NA`，因為 `NA` 無論做什麼運算都會得到 `NA`，所以只要有其中一個觀察值的 `dep_delay` 為 `NA`，那一整天的平均就會是 `NA`，如：
+
+```{r, cache=TRUE}
+flights %>%
+  group_by(year, month, day) %>%
+  summarize(mean = mean(dep_delay)) %>%
+  group_by(mean) %>%
+  summarize(count = n())
+```
+
+我們可以發現製造了 358 個 NA！以下就不會產生上面的問題了：
+
+```{r, eval=FALSE}
+flights %>%
+  group_by(year, month, day) %>%
+  summarize(mean = mean(dep_delay, na.rm = TRUE))
+```
+
+在此，`NA` 代表航班取消；我們也可以先把 `NA` 的地方去除掉，如：
+
+```{r, cache=TRUE}
+not_cancelled <- flights %>%
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarize(mean = mean(dep_delay))
+```
+
+### 計數
+
+我們可以加入計數（`n()`）或非缺漏值的計數（`sum(!is.na(x))`），避免我們從很小的樣本得出結論。
+
+```{r, cache=TRUE, fig.align='center'}
+delays <- not_cancelled %>%
+  group_by(tailnum) %>%
+  summarize(delay = mean(arr_delay))
+
+ggplot(data = delays, mapping = aes(x = delay)) +
+  geom_freqpoly(binwidth = 10)
+```
+
+我們可以發現，有些航班甚至可以延遲超過 300 秒！但我們如果畫出散佈圖就會發現，如果只有少數幾個航班的日子，取平均以後其變異就會非常大，即樣本越大，變異越小（類似大數法則中，當樣本越來越大，估計參數會機率收斂到母體參數的概念），如：
+
+```{r, cache=TRUE, fig.align='center'}
+delays <- not_cancelled %>%
+  group_by(tailnum) %>%
+  summarize(delay = mean(arr_delay, na.rm = TRUE),n=n())
+
+ggplot(data = delays, mapping = aes(x = n, y = delay)) +
+  geom_point(alpha = 1/10)
+```
+
+所以我們其實可以移除掉樣本過小的日期，如：
+
+```{r, cache=TRUE}
+delays %>%
+  filter(n > 25) %>%
+  ggplot(mapping = aes(x = n, y = delay)) + geom_point(alpha = 1/10)
+```
+
+我們接下來使用 `Lahman` 這個套件中的 `Batting` 這個 data frame 來討論棒球比賽中打擊者的表現與擊球次數的關係。
+
+
+```{r, cache=TRUE, fig.align='center'}
+library(Lahman)  # 載入 Lahman
+batting <- as_tibble(Lahman::Batting)  # 將 Batting 轉換成 tibble 型態
+
+batters <- batting %>%
+  group_by(playerID) %>%
+  summarize(ba = sum(H, na.rm = TRUE) / sum(AB, na.rm = TRUE),
+            ab = sum(AB, na.rm = TRUE) )
+
+# ba 為 batting average，即打擊率，衡量打擊的能力
+# ab 為 at bat，即上場打擊的機會
+
+batters %>%
+  filter(ab > 100) %>%
+  ggplot(mapping = aes(x = ab, y = ba)) + geom_point() +
+    geom_smooth(se = FALSE)
+```
+
+我們可以發現，打擊次數越多的球員，打擊率也就越高，兩者有正向的關係；這可能是因為球隊會讓能打球的球員上場。
+
+### 有用的歸納函數
+
+-  **Measures of location:** `mean(x)`, `median(x)`.
+
+```{r, cache=TRUE}
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarize(
+    # average delay:
+    avg_delay1 = mean(arr_delay),
+    # average positive delay:
+    avg_delay2 = mean(arr_delay[arr_delay > 0])
+)
+```
+
+-  **Measures of spread:** `sd(x)`, `IQR(x)`, `mad(x)`.
+
+    -  標準差、四分位距（interquartile range）與絕對中位差（median absolute deviation，即原數據減去中位數所得的新數據的絕對值的中位數）。
+    -  $\mbox{MAD} = \mbox{median}(|X_i - \mbox{median}|)$.
+    
+```{r, cache=TRUE}
+# 算出不同目的地的距離標準差，並降冪排列
+not_cancelled %>%
+  group_by(dest) %>%
+  summarize(distance_sd = sd(distance)) %>%
+  arrange(desc(distance_sd))
+```
+
+-  **Measures of rank:** `min(x)`, `quantile(x, 0.25)`, `max(x)`.
+
+    -  `quantile(x, 0.25)` 即大於 25 % 的樣本但小於剩餘的 75 % 者。
+
+```{r, cache=TRUE}
+# 算出每天第一班與最後一班班機
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarize(
+    first = min(dep_time),
+    last = max(dep_time)
+  )
+```
+
+-  **Measures of position:** `first(x)`, `nth(x, 2)`, `last(x)`.
+
+```{r, cache=TRUE}
+# 找出每天第一班與最後一班班機
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarize(
+    first = min(dep_time),
+    last = max(dep_time)
+  )
+```
+
+```{r, cache=TRUE}
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  mutate(r = min_rank(desc(dep_time))) %>%
+  filter(r %in% range(r))
+```
+
+-  **Counts:** `n()`, `sum(!is.na(x))`, `n_distinct(x):`.
+
+    -  `sum(!is.na(x))`: non-missing values.
+    -  `n_distinct(x)`: the number of distinct (unique) values.
+    
+```{r, cache=TRUE}
+not_cancelled %>%
+  group_by(dest) %>%
+  summarize(carriers = n_distinct(carrier)) %>%
+  arrange(desc(carriers))
+```
+
+```{r, eval=FALSE}
+# 因為 count() 太常用了
+# 所以甚至不用 summerize() 就可以直接使用
+not_cancelled %>%
+  count(dest)
+```
+
+```{r, cache=TRUE}
+# 甚至可以在引數 wt 加上權重
+# 如下算出各飛機的總里程
+not_cancelled %>%
+  count(tailnum, wt = distance)
+```
+
+
+-  **Counts and proportions of logical values:** `sum(x > 10)`, `mean(y == 0)`.
+
+    -  如果這些邏輯判斷式為真，那就會回傳 `TRUE`，反之則回傳 `FALSE`。
+    -  據此，我們可以使用 `sum()` 來得知符合這些條件的有多少，而使用 `mean()` 來得知符合條件的比例。
+    
+```{r, cache=TRUE}
+# 如果我們想得知每天離開時間小於 500 的班次數目，可以如下
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarize(n_early = sum(dep_time < 500))
+```
+
+```{r, cache=TRUE}
+# 如果我們想得知每天延誤超過一小時的航班的比例，可以如下
+not_cancelled %>%
+  group_by(year, month, day) %>%
+  summarize(hour_perc = mean(arr_delay > 60))
+```
+
+### 依據多變數分組
+
+像撥洋蔥一樣，但不太可能適用於有牽涉到排序的統計量，如中位數。
+
+```{r, cache=TRUE}
+daily <- group_by(flights, year, month, day)
+(per_day <-summarize(daily,flights=n()))
+(per_month <- summarize(per_day, flights = sum(flights)))
+(per_year <- summarize(per_month, flights = sum(flights)))
+```
+
+### 取消分組
+
+使用 `ungroup()` 可以取消分組，如下：
+
+```{r, cache=TRUE}
+daily %>%
+  ungroup() %>% # no longer grouped by date
+  summarize(flights = n())
+```
+
+## Grouped Mutates (and Filters)
+
+除了與 `summarize()` 共同使用，`group_by` 與 `mutate()` 及 `filter()` 共同使用也很方便，例如：
+
+-  找每組最差的成員：
+
+```{r, cache=TRUE}
+flights_sml %>%
+  group_by(year, month, day) %>%
+  filter(rank(desc(arr_delay)) < 10)
+```
+
+-  找到所有大於某個閾值的組別：
+
+```{r, cache=TRUE}
+popular_dests <- flights %>%
+  group_by(dest) %>%
+  filter(n() > 365)
+popular_dests
+```
+
+-  標準化：
+
+```{r, cache=TRUE}
+popular_dests %>%
+  filter(arr_delay > 0) %>%
+  mutate(prop_delay = arr_delay / sum(arr_delay)) %>%
+  select(year:day, dest, arr_delay, prop_delay)
+```

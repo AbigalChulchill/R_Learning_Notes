@@ -1,0 +1,496 @@
+# 資料前處理 {#preprocessing}
+
+:::{.note}
+本章為 @zamorasaizIntroductionDataAnalysis2020 節 3.3 內容。
+:::
+
+
+在資料分析前，我們須先進行資料前處理（data preprocessing）。準備資料有以下幾個步驟（雖然並非都是永遠需要）：
+
+1.  **Cleaning:** 改變 dataset 的變數的格式。例如清除節 \@ref(goodreads) 中的 `rating` 變數中無用的字元。
+
+2.  **Integration:** 從不同處來的資訊，在清潔以後，要整合成一張 data frame。
+
+3.  **Transformation:** 創造一些需要的變數，重構 dataset 成為更便於分析的格式。
+
+4.  **Reduction:** 如果 dataset 很龐大，而要從事的分析只是一小部分的資料，就要刪除一些變數，以釋出記憶體。
+
+此章將專於使用 `base` 與 `data.table`；當然，也可以使用 `tidyr`、`dplyr`、`stringr` 或 `stringi`；^[Fast data lookups in R: dplyr vs data.table. https://www.r-bloggers.com/2017/03/fast-data-lookups-in-r-dplyr-vs-data-table/]本書第 \@ref(dplyr)、\@ref(tidyr)、\@ref(stringr) 章將會分別介紹 `dplyr`、`tidyr` 與 `stringr`。
+
+## Data Tables {#datatable}
+
+Data Tables 即 data frames 的改良版，效能更高、功能更多、速度更好。並且，一個 `data.table` 物件也同時是一個 `data.frame` 物件，所以前者也可以使用後者的語法。要將向量或矩陣轉換為 data table 可以使用 `as.data.table()`，即：
+
+```{r eval=FALSE}
+our.matrix.DT <- as.data.table(our.matrix)
+```
+
+而既存的 data frame 或 list 可以使用 `setDT()` 將其轉換成 data table（雖然也可以使用 `as.data.table()`，但前者使用較少記憶體，速度更快）。不過，data table 的 row 沒有名字，所以如果要把有名字的 data frame 轉換成 data table，要使用 `keep.rownames=T` 引數，新增一個名為 `rn` 的 column，例如：
+
+```{r results='hide'}
+library(data.table)
+example <- data.frame(info1 = c(1, 2), info2 = c("a", "b"))
+row.names(example) <- c("line1", "line2")
+setDT(example, keep.rownames=T)
+```
+
+```{r}
+class(example)
+```
+
+而 `data.table` 物件有如 `example.data[i, j, by]` 的格式，此三個引數分別代表 row、column 與「分類依據」。
+
+### 排序 Ordering
+
+要重新排序 data table 的 row 除了可以用節 \@ref(dataframeordering) 的 data frame 的方法以外，還有更簡單、快速的語法。以內置的套件 `datasets` 中的 `swiss` 為例。為了避免與原本的 dataset 混淆，我們可以創建一個複本。然後將其轉換成 data table，並以城鎮名稱字母序排列（現在城鎮名為新創的 `rn` column）：
+
+```{r results='hide'}
+DT.swiss <- copy(swiss)
+setDT(DT.swiss, keep.rownames=T)
+DT.swiss[order(rn)]
+```
+
+我們也可以依據多個變數來排列。`order()` 中的第一個引數會優先排列，如果值相等，再依據第二個引數排列，依此類推。而 `-` 為降冪排列之義。
+
+```{r eval=FALSE}
+DT.swiss[order(Education, -Agriculture)]
+```
+
+
+### 子集 Subsetting
+
+如節 \@ref(dataframesubsetting) 一樣存取 data frame 中的元素，我們依樣畫葫蘆來存取 data table 內的元素。例如我們如果想要存取前三個 rows 與前三個 columns 的元素，可以：
+
+```{r eval=FALSE}
+DT.swiss[1 : 3, 1 : 3]
+```
+
+也可以使用名字來選取，如：
+
+```{r eval=FALSE}
+DT.swiss[1 : 3, "rn"]
+# 顯示第一至三個 rows 與名為 rn 的 column
+```
+
+或者使用 `!` 來不選取某個名字的 column，如：
+
+```{r eval=FALSE}
+DT.swiss[1 : 3, !"Agriculture"]
+# 顯示第一至三個 rows，不顯示名為 Agriculture 的 column
+```
+
+如果使用 `-` 在數字前，則可以選取那個 row 或 column，如：
+
+```{r eval=FALSE}
+DT.swiss[-(2 : 47),]  # 只會選取第一個 row
+DT.swiss[, -1]  # 不選取第一個 column
+```
+
+
+或者以 `c()` 包裹的任何組合：
+
+```{r eval=FALSE}
+DT.swiss[1 : 3, c("rn", "Education", "Catholic")]
+#  顯示第一至三個 rows，與名為 rn、Education、Catholic 的 columns
+```
+
+
+我們也可以使用 `our.data[condition on certain variables]` 來選取滿足條件的 rows（類似節 \@ref(dataframesubsetting) 提及的 `subset()`，但以 data table 速度更快）。如要找到 `Education` 恰等於 9 的城鎮，可以：
+
+```{r eval=FALSE}
+DT.swiss[Education == 9]
+```
+
+其結果為：
+
+```
+           rn Fertility Agriculture Examination Education Catholic Infant.Mortality
+1:   Delemont      83.1        45.1           6         9    84.84             22.2
+2:     Lavaux      65.1        73.0          19         9     2.84             20.0
+3: St Maurice      65.0        75.9           9         9    99.06             17.8
+```
+或者要找到 `Education` 小於等於 2 的城鎮，可以：
+
+```{r eval=FALSE}
+DT.swiss[Education <= 2]
+```
+
+其結果為：
+
+```
+          rn Fertility Agriculture Examination Education Catholic Infant.Mortality
+1: Echallens      68.3        72.6          18         2    24.20             21.2
+2:      Oron      72.5        71.2          12         1     2.40             21.0
+3:   Conthey      75.5        85.9           3         2    99.71             15.1
+4:    Herens      77.3        89.7           5         2   100.00             18.3
+```
+
+以邏輯條件選取 data table 中的元素時，也可以超過一個條件，如：
+
+```{r, results='hide'}
+mean.values <- sapply(DT.swiss[, -1], mean)
+DT.swiss[Agriculture > mean.values[2] & Education > mean.values[4]]
+```
+
+回憶節 \@ref(defaultargument) 所提及的，`sapply(list, function)` 可以套用函數在多個元素上，並輸出為向量或矩陣。`sapply(DT.swiss[, -1], mean)` 之義為套用 `mean()` 這個函數在 `DT.swiss` 中除了第一個 column 以外的其他 columns，即算出其平均值，並輸出成有標籤的向量。而我們將輸出的資料存入 `mean.values` 變數中。如此，我們就能找出同時滿足「`Agriculure` 與 `Education` 皆大於平均值」的 rows，即：
+
+```
+         rn Fertility Agriculture Examination Education Catholic Infant.Mortality
+1:    Aigle      64.1        62.0          21        12     8.52             16.5
+2: Avenches      68.9        60.7          19        12     4.43             22.7
+3:    Nyone      56.6        50.9          22        12    15.14             16.7
+4:     Sion      79.3        63.1          13        13    96.83             18.1
+```
+
+另一個 data table 的優勢是第二個引數 `j` 其實可以傳入非索引值的物件，例如我們想知道 `Catholic > 50` 的城鎮其 `Education` 的平均可以透過：
+
+```{r}
+DT.swiss[Catholic > 50, mean(Education)]
+```
+
+也可以知道 `Catholic > 50` 的城鎮其 `Education` 的平均是否大於整體的 `Education` 平均：
+```{r}
+DT.swiss[Catholic > 50, mean(Education) > mean.values[4]]
+```
+
+或者 `Education` 小於 10 的城鎮究竟有多少：
+
+```{r}
+DT.swiss[Education < 10, length(Education)]
+```
+
+
+
+### 加總 Aggregation
+
+前面曾經提及，`example.data[i, j, by]` 中的引數 `by` 為分組依據。其使用要配合引數 `j`。例如我們想得知每一個 `Education` 的值所對應到的 `Fertility` 的平均值，並且依據 `Education` 降冪排列，可以：
+
+```{r eval=FALSE}
+DT.swiss[order(-Education), mean(Fertility), by=Education]
+```
+
+```
+    Education       V1
+ 1:        53 35.00000
+ 2:        32 64.40000
+ 3:        29 43.75000
+ 4:        28 55.70000
+ 5:        20 54.30000
+ ...
+```
+
+當使用 `by` 來分類時，在引數 `j` 就無法使用 `length()` 來計算出現次數了。這時候可以改用 `.N` 來計算各組的數字，如：
+
+```{r eval=FALSE}
+DT.swiss[order(-Education), .N, by=Education]
+```
+
+```
+    Education N
+ 1:        53 1
+ 2:        32 1
+ 3:        29 2
+ 4:        28 1
+ 5:        20 1
+ ...
+```
+
+也可以與 `maen()` 結合起來，以下列出各 `Education` 程度的數量，並分別算出各 `Education` 程度的 `Fertility` 與 `Catholic` 的平均，而以 `Education` 降冪排列：
+
+```{r eval=FALSE}
+DT.swiss[order(-Education), .(.N, mean(Fertility), mean(Catholic)), by=Education]
+```
+
+```
+   Education N       V2       V3
+ 1:        53 1 35.00000 42.34000
+ 2:        32 1 64.40000 16.92000
+ 3:        29 2 43.75000 54.38000
+ 4:        28 1 55.70000 12.11000
+ 5:        20 1 54.30000  2.15000
+...
+```
+
+除此之外，`by` 也可以丟入邏輯式，如：
+
+```{r eval=FALSE}
+DT.swiss[, .N, .(Education < 15, Fertility > 60)]
+```
+
+```
+   Education Fertility  N
+1:      TRUE      TRUE 37
+2:     FALSE      TRUE  2
+3:     FALSE     FALSE  6
+4:      TRUE     FALSE  2
+```
+
+我們可以得知，有 37 個城鎮的 `Education` 小於 15，且 `Fertility` 大於 60；2 個城鎮的 `Education` 不小於 15，且 `Fertility` 大於 60；有 6 個城鎮的 `Education` 不小於 15，且 `Fertility` 不大於 60；2 個城鎮的 `Education` 小於 15，且 `Fertility` 不大於 60。
+
+### Keying
+
+Keys 是另一個選取子集（subsetting）更快的方法。只要在 data table 的某個變數中設定了 key，表格在物理上就會重新排列記憶體與儲存的 rows 所分派的順序。設定 key 的指令為 `setkey(data.table, key)`，如：
+
+```{r}
+setkey(DT.swiss, Education)
+```
+
+之後，表格就會依據 `Education` 重新排列：
+
+```
+              rn Fertility Agriculture Examination Education Catholic Infant.Mortality
+ 1:         Oron      72.5        71.2          12         1     2.40             21.0
+ 2:    Echallens      68.3        72.6          18         2    24.20             21.2
+ 3:      Conthey      75.5        85.9           3         2    99.71             15.1
+ 4:       Herens      77.3        89.7           5         2   100.00             18.3
+ 5:       Moudon      65.0        55.1          14         3     4.52             22.4
+ 6: Paysd'enhaut      72.0        63.5           6         3     2.56             18.0
+ 7:      Monthey      79.4        64.9           7         3    98.22             20.2
+...
+```
+
+想要 subsetting keyed variable，可以使用 `.()`，如下列出 `Education` 等於 3 的 rows：
+
+```{r}
+DT.swiss[.(3)]
+```
+
+也可以輸入向量，如下列出 `Education` 等於 3 或 5 的 rows：
+
+```{r}
+DT.swiss[.(c(3, 5))]
+```
+
+也可以與引數`j` 和 `by` 搭配使用，如：
+
+```{r}
+DT.swiss[.(1 : 2), !c("Agriculture", "Infant.Mortality")]
+```
+
+與：
+
+```{r}
+DT.swiss[.(3 : 6), mean(Fertility), by=Education]
+```
+
+
+### 編輯表格 Updating by Reference
+
+那如何編輯表格呢？使用 `:=`，之前放 column 的名字，而之後放要指派的值。如果要新增兩個 column，可以：
+
+```{r eval=FALSE}
+DT.swiss[, c("new.col.1", "new.col.2"):=list(1 : 47, 51 : 97)]
+```
+
+其結果為：
+
+```
+              rn Fertility Agriculture Examination Education Catholic Infant.Mortality new.col.1 new.col.2
+ 1:         Oron      72.5        71.2          12         1     2.40             21.0         1        51
+ 2:    Echallens      68.3        72.6          18         2    24.20             21.2         2        52
+ 3:      Conthey      75.5        85.9           3         2    99.71             15.1         3        53
+ 4:       Herens      77.3        89.7           5         2   100.00             18.3         4        54
+ 5:       Moudon      65.0        55.1          14         3     4.52             22.4         5        55
+...
+46:    Neuchatel      64.4        17.6          35        32    16.92             23.0        46        96
+47: V. De Geneve      35.0         1.2          37        53    42.34             18.0        47        97
+```
+
+修改其值也如同剛才的做法：
+
+```{r eval=FALSE}
+DT.swiss[, c("new.col.1", "new.col.2"):=list(101 : 147, 151 : 197)]
+```
+
+結果為：
+
+```
+              rn Fertility Agriculture Examination Education Catholic Infant.Mortality new.col.1 new.col.2
+ 1:         Oron      72.5        71.2          12         1     2.40             21.0       101       151
+ 2:    Echallens      68.3        72.6          18         2    24.20             21.2       102       152
+ 3:      Conthey      75.5        85.9           3         2    99.71             15.1       103       153
+ 4:       Herens      77.3        89.7           5         2   100.00             18.3       104       154
+ 5:       Moudon      65.0        55.1          14         3     4.52             22.4       105       155
+...
+46:    Neuchatel      64.4        17.6          35        32    16.92             23.0       146       196
+47: V. De Geneve      35.0         1.2          37        53    42.34             18.0       147       197
+```
+
+如果要刪除既存的 column，則可以：
+
+```{r eval=FALSE}
+DT.swiss[, c("new.col.1", "new.col.2"):=list(NULL, NULL)]
+```
+
+## Merging
+
+如果兩個 data table 有一樣的變數，那要合併可以使用 `rbind()`（row binding），如：
+
+```{r}
+dataset.1 <- data.table(city=c("Large", "Medium"), population=c(1000000, 250000), km2=c(20, 7))
+dataset.2 <- data.table(city=c("Small"), population=c(50000), km2=c(1))
+dataset.final <- rbind(dataset.1, dataset.2)
+dataset.final
+```
+
+如果有相同多的觀察值，則使用 `cbind()`（column binding），例如：
+
+```{r}
+dataset.1 <- data.table(city=c("Large", "Medium", "Small"), population=c(1000000, 250000, 50000))
+dataset.2 <- data.table(km2=c(20, 7, 1))
+dataset.final <- cbind(dataset.1, dataset.2)
+dataset.final
+```
+
+如果兩個表格共享某些 rows 與 columns，則可以使用 `merge()`，如：
+
+```{r}
+dataset.1 <- data.table(city=c("city.1", "city.2", "city.3", "city.4", "city.5", "city.6"), 
+                        population=c(10000, 20000, 100000, 5000, 30000, 65000),
+                        km2=c(1, 0.5, 0.9, 2, 1.2, 3))
+dataset.2 <- data.table(city=c("city.1", "city.2", "city.3", "city.7"),
+                        airport=c(FALSE, FALSE, TRUE, TRUE))
+dataset.1
+dataset.2
+# inner join：包含所有 columns，但有缺漏值的 rows 會被跳過
+merge(dataset.1, dataset.2)
+# full join：包含所有 columns 與 rows
+merge(dataset.1, dataset.2, all = TRUE)
+# left join：包含所有 columns，但跳過第一個表格沒有的 rows
+merge(dataset.1, dataset.2, all.x = TRUE)
+# right join：包含所有 columns，但跳過第二個表格沒有的 rows
+merge(dataset.1, dataset.2, all.y = TRUE)
+```
+## 實例
+
+除了前章所介紹的指令，本節還會介紹用以：
+
+-  資料清理的 `na.omit()`、`duplicated()`；
+-  文字轉換的 `substr()`、`tstrplit()`、`grepl()`。
+
+`na.omit()` 可以剔除表格中有 `NA` 的觀察值（rows）；`duplicated()` 則可以幫助我們刪除重複的觀察值。例如我們新建一個 data table：
+
+```{r}
+dupli.table <- data.table(ID=c("E123456789", "N123456789", "N213456897", "N123456789", "A123456789", "N213456897", "E213456897"), sex=c("M", "M", "F", "M", "M", "F", "F"), major=c("Econ", NA, "Math", "OR", "EE", "CS", "Eng"))
+```
+
+使用 `na.omit()` 即會刪除有 `NA` 的觀察值：
+
+```{r}
+dupli.table <- na.omit(dupli.table)
+dupli.table
+```
+
+使用 `duplicated()` 可以協助我們找到特定的 columns 重複的觀察值，例如：
+
+```{r}
+duplicated.rows1 <- duplicated(dupli.table[, c(1, 3)])  # 設定第一個與第三個 cols
+# 得到 "FALSE FALSE FALSE FALSE FALSE FALSE"
+# 表示完全沒有在第一個與第三個 cols 都重複的觀察值
+
+duplicated.rows2 <- duplicated(dupli.table[, c(1, 2)])  # 設定第一個與第二個 cols
+# 得到 "FALSE FALSE FALSE FALSE  TRUE FALSE"
+# 表示第五個觀察值重複了
+
+duplicated.rows3 <- duplicated(dupli.table[, 1])  # 設定第一個 cols
+# 等價於 duplicated.rows3 <- duplicated(dupli.table$ID)
+# 得到 "FALSE FALSE FALSE FALSE  TRUE FALSE"
+# 表示第五個觀察值重複了
+```
+
+那要怎樣刪除重複的觀察值呢？我們可以：
+
+```{r}
+dupli.table <- dupli.table[!duplicated.rows2]
+dupli.table
+```
+
+
+
+### TheSportsDB NBA Dataset Preprocessing
+
+上一章使用：
+
+```{r eval=FALSE}
+library(rvest)
+nbagames <- read_html("https://www.thesportsdb.com/season.php?l=4387&s=2020-2021")
+games <- html_text(html_nodes(nbagames,"td"))
+```
+
+得到的 `games` 儲存了許多無用的字元：
+
+```
+  [1] ""                         "12 Dec 2020"              ""                         "\n\t\t\t\t\n\t\t\t\tr00 "
+  [5] "Atlanta Hawks"            "112 - 116"                " Orlando Magic"           "12 Dec 2020"             
+  [9] ""                         "\n\t\t\t\t\n\t\t\t\tr00 " "Detroit Pistons"          "84 - 90"       
+...
+```
+
+首先我們要先把空的項目刪除：
+
+```{r eval=FALSE}
+games <- games[!games==""]
+```
+
+接著，我們想把包含 `\n` 的項目刪除。但是，他們都長得不太一樣，於是我們要以 `grepl(text-to-find, where-to-find-it)` 來刪除：
+
+```{r eval=FALSE}
+games <- games[!grepl("\n",games)]
+```
+
+現在這樣就正常很多了。而現在儲存的方式是向量，我們可以將其轉成有 4 個 column 的矩陣，然後將其轉換成 data table，並冠上 column names：
+
+```{r eval=FALSE}
+games.2021 <- as.data.table(matrix(games, ncol=4, byrow=T))
+colnames(games.2021) <- c("Date","TeamA","Result","TeamB")
+```
+
+不過，比分還是無法計算，因為現在是兩個數字。`data.table` 中的函數 `tstrsplit(variable, separator, keep)` 可以用以切開資訊，如：
+
+```{r eval=FALSE}
+games.2021[, tstrsplit(Result, "-")]
+# 相當於 games.2021[, tstrsplit(Result, " ", keep = c(1, 3))]
+```
+
+```
+        V1   V2
+   1: 112   116
+   2:  84    90
+   3: 104   125
+   4:  87    81
+   5: 127   102
+  ---          
+1217: 118   108
+1218: 120   100
+1219: 109   103
+1220: 119   123
+1221: 105    98
+```
+
+因此，我們如果要新增兩個 columns，分別是 A 隊與 B 隊的分數，可以：
+
+```{r eval=FALSE}
+games.2021[, c("PointsA", "PointsB"):=tstrsplit(Result, "-")]
+games.2021$Result <- NULL
+```
+
+得：
+
+```
+             Date                  TeamA                 TeamB PointsA PointsB
+   1: 12 Dec 2020          Atlanta Hawks         Orlando Magic    112      116
+   2: 12 Dec 2020        Detroit Pistons       New York Knicks     84       90
+   3: 12 Dec 2020          Chicago Bulls       Houston Rockets    104      125
+   4: 12 Dec 2020     Los Angeles Lakers  Los Angeles Clippers     87       81
+   5: 12 Dec 2020 Portland Trail Blazers      Sacramento Kings    127      102
+  ---                                                                         
+1217: 09 Jul 2021           Phoenix Suns       Milwaukee Bucks    118      108
+1218: 12 Jul 2021        Milwaukee Bucks          Phoenix Suns    120      100
+1219: 15 Jul 2021        Milwaukee Bucks          Phoenix Suns    109      103
+1220: 18 Jul 2021           Phoenix Suns       Milwaukee Bucks    119      123
+1221: 21 Jul 2021        Milwaukee Bucks          Phoenix Suns    105       98
+```
+
+
+
+

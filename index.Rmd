@@ -1,0 +1,16 @@
+--- 
+title: "R 學習筆記"
+author: "Ting-Chih Hung"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [我的文獻庫.bib]
+biblio-style: apalike
+link-citations: yes
+description: ""
+---
+
+# 序言 {-}
+
+    
+本筆記為多本 R 語言書籍內容之抄錄、摘要與重新編排（也可謂之拙劣的再現），僅作為學習筆記之用，版權仍歸作者所有，並以 R 套件 `knitr` [@xie2017dynamic] 與 `bookdown` [@xie2016bookdown] 編譯而成。

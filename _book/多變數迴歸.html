@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>17 多變數迴歸 | R 學習筆記</title>
+<meta name="author" content="Ting-Chih Hung">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.9002/transition.js"></script><script src="libs/bs3compat-0.2.5.9002/tabs.js"></script><script src="libs/bs3compat-0.2.5.9002/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fontawesome.min.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">R 學習筆記</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">序言</a></li>
+<li class="book-part">基本語法</li>
+<li><a class="" href="rlang.html"><span class="header-section-number">1</span> R 資料結構</a></li>
+<li><a class="" href="control.html"><span class="header-section-number">2</span> 控制結構與函數</a></li>
+<li class="book-part">資料庫與基本的資料前處理</li>
+<li><a class="" href="rdata.html"><span class="header-section-number">3</span> R 的資料庫</a></li>
+<li><a class="" href="preprocessing.html"><span class="header-section-number">4</span> 資料前處理</a></li>
+<li class="book-part">以 tidyverse 進行資料探索</li>
+<li><a class="" href="ggplot2.html"><span class="header-section-number">5</span> 以 ggplot2 進行資料視覺化</a></li>
+<li><a class="" href="dplyr.html"><span class="header-section-number">6</span> 以 dplyr 轉換資料</a></li>
+<li><a class="" href="EDA.html"><span class="header-section-number">7</span> 探索性資料分析</a></li>
+<li class="book-part">以 tidyverse 進行資料整理</li>
+<li><a class="" href="tibble.html"><span class="header-section-number">8</span> 以 tibble 處理 Tibbles</a></li>
+<li><a class="" href="readr.html"><span class="header-section-number">9</span> 以 readr 匯入資料</a></li>
+<li><a class="" href="tidyr.html"><span class="header-section-number">10</span> 以 tidyr 整理資料</a></li>
+<li><a class="" href="dplyr2.html"><span class="header-section-number">11</span> 以 dplyr 處理關聯性資料</a></li>
+<li><a class="" href="stringr.html"><span class="header-section-number">12</span> 以 stringr 處理字串</a></li>
+<li><a class="" href="forcats.html"><span class="header-section-number">13</span> 以 forcats 處理 Factors</a></li>
+<li><a class="" href="lubridate.html"><span class="header-section-number">14</span> 以 lubridate 處理日期時間</a></li>
+<li class="book-part">編寫程式與 tidyverse</li>
+<li><a class="" href="%E4%BB%A5-magrittr-%E4%BD%BF%E7%94%A8-pipes.html"><span class="header-section-number">15</span> 以 magrittr 使用 Pipes</a></li>
+<li class="book-part">R 與社會科學計量</li>
+<li><a class="" href="%E5%96%AE%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8.html"><span class="header-section-number">16</span> 單變數迴歸</a></li>
+<li><a class="active" href="%E5%A4%9A%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8.html"><span class="header-section-number">17</span> 多變數迴歸</a></li>
+<li><a class="" href="IV.html"><span class="header-section-number">18</span> 工具變數</a></li>
+<li><a class="" href="%E9%82%8A%E7%95%8C%E4%BC%B0%E8%A8%88.html"><span class="header-section-number">19</span> 邊界估計</a></li>
+<li><a class="" href="%E7%B8%B1%E8%B2%AB%E8%B3%87%E6%96%99.html"><span class="header-section-number">20</span> 縱貫資料</a></li>
+<li><a class="" href="%E5%90%88%E6%88%90%E6%8E%A7%E5%88%B6.html"><span class="header-section-number">21</span> 合成控制</a></li>
+<li><a class="" href="%E6%8E%A2%E7%B4%A2%E6%80%A7%E5%9B%A0%E7%B4%A0%E5%88%86%E6%9E%90.html"><span class="header-section-number">22</span> 探索性因素分析</a></li>
+<li><a class="" href="%E9%A9%97%E8%AD%89%E6%80%A7%E5%9B%A0%E7%B4%A0%E5%88%86%E6%9E%90.html"><span class="header-section-number">23</span> 驗證性因素分析</a></li>
+<li class="book-part">網路與資料技術入門</li>
+<li><a class="" href="html.html"><span class="header-section-number">24</span> HTML</a></li>
+<li><a class="" href="xml-%E8%88%87-json.html"><span class="header-section-number">25</span> XML 與 JSON</a></li>
+<li><a class="" href="xpath.html"><span class="header-section-number">26</span> XPath</a></li>
+<li><a class="" href="http.html"><span class="header-section-number">27</span> HTTP</a></li>
+<li><a class="" href="ajax.html"><span class="header-section-number">28</span> AJAX</a></li>
+<li><a class="" href="sql-%E8%88%87%E9%97%9C%E8%81%AF%E6%80%A7%E8%B3%87%E6%96%99%E5%BA%AB.html"><span class="header-section-number">29</span> SQL 與關聯性資料庫</a></li>
+<li><a class="" href="%E6%AD%A3%E8%A6%8F%E8%A1%A8%E9%81%94%E5%BC%8F.html"><span class="header-section-number">30</span> 正規表達式</a></li>
+<li class="book-part">網路爬蟲</li>
+<li><a class="" href="%E7%B6%B2%E8%B7%AF%E7%88%AC%E8%9F%B2.html"><span class="header-section-number">31</span> 網路爬蟲</a></li>
+<li class="book-part">自然語言的特色</li>
+<li><a class="" href="%E8%AA%9E%E8%A8%80%E8%88%87%E5%BB%BA%E6%A8%A1.html"><span class="header-section-number">32</span> 語言與建模</a></li>
+<li><a class="" href="%E6%96%B7%E8%A9%9E.html"><span class="header-section-number">33</span> 斷詞</a></li>
+<li><a class="" href="ref.html">參考文獻</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="多變數迴歸" class="section level1" number="17">
+<h1>
+<span class="header-section-number">17</span> 多變數迴歸<a class="anchor" aria-label="anchor" href="#%E5%A4%9A%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8"><i class="fas fa-link"></i></a>
+</h1>
+<div class="note">
+<p>本章為 <span class="citation"><a href="ref.html#ref-ismay2019statistical" role="doc-biblioref">Ismay and Kim</a> (<a href="ref.html#ref-ismay2019statistical" role="doc-biblioref">2019</a>)</span> 第 6 章內容。</p>
+</div>
+
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="%E5%96%AE%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8.html"><span class="header-section-number">16</span> 單變數迴歸</a></div>
+<div class="next"><a href="IV.html"><span class="header-section-number">18</span> 工具變數</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#%E5%A4%9A%E8%AE%8A%E6%95%B8%E8%BF%B4%E6%AD%B8"><span class="header-section-number">17</span> 多變數迴歸</a></li></ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>R 學習筆記</strong>" was written by Ting-Chih Hung. It was last built on 2021-08-24.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+</html>

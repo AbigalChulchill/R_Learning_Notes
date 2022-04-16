@@ -1,0 +1,7 @@
+# (PART) `tidyverse` 與簡單的模型 {-}
+
+# `modelr` 與基礎的模型 {#modelr}
+
+> We must be careful not to confuse data with the abstractions we use to analyze them.
+>
+> --- William James

@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 以 dplyr 轉換資料 | R 學習筆記</title>
+  <meta name="description" content="9 以 dplyr 轉換資料 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 以 dplyr 轉換資料 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 以 dplyr 轉換資料 | R 學習筆記" />
+  
+  
+  
+
+<meta name="author" content="Ting-Chih Hung" />
+
+
+<meta name="date" content="2021-09-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ggplot22.html"/>
+<link rel="next" href="EDA.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="rlang.html"><a href="rlang.html#變數與基本的運算"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="rlang.html"><a href="rlang.html#向量"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="rlang.html"><a href="rlang.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="rlang.html"><a href="rlang.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="rlang.html"><a href="rlang.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="rlang.html"><a href="rlang.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="rlang.html"><a href="rlang.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="rlang.html"><a href="rlang.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="rlang.html"><a href="rlang.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="rlang.html"><a href="rlang.html#矩陣"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="rlang.html"><a href="rlang.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="rlang.html"><a href="rlang.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="rlang.html"><a href="rlang.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="rlang.html"><a href="rlang.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="rlang.html"><a href="rlang.html#factors"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="rlang.html"><a href="rlang.html#data-frames"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="rlang.html"><a href="rlang.html#dataframesubsetting"><i class="fa fa-check"></i><b>1.5.1</b> 存取 data frames 中的元素與 subset</a></li>
+<li class="chapter" data-level="1.5.2" data-path="rlang.html"><a href="rlang.html#dataframeordering"><i class="fa fa-check"></i><b>1.5.2</b> 排序</a></li>
+<li class="chapter" data-level="1.5.3" data-path="rlang.html"><a href="rlang.html#其他操作-1"><i class="fa fa-check"></i><b>1.5.3</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="rlang.html"><a href="rlang.html#lists"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="control.html"><a href="control.html#conditionals"><i class="fa fa-check"></i><b>2.1</b> Conditionals</a></li>
+<li class="chapter" data-level="2.2" data-path="control.html"><a href="control.html#loops"><i class="fa fa-check"></i><b>2.2</b> Loops</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="control.html"><a href="control.html#for-迴圈"><i class="fa fa-check"></i><b>2.2.1</b> <code>for</code> 迴圈</a></li>
+<li class="chapter" data-level="2.2.2" data-path="control.html"><a href="control.html#while-迴圈"><i class="fa fa-check"></i><b>2.2.2</b> <code>while</code> 迴圈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="control.html"><a href="control.html#functions-and-operators"><i class="fa fa-check"></i><b>2.3</b> Functions and Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="control.html"><a href="control.html#創建新函數"><i class="fa fa-check"></i><b>2.3.1</b> 創建新函數</a></li>
+<li class="chapter" data-level="2.3.2" data-path="control.html"><a href="control.html#defaultargument"><i class="fa fa-check"></i><b>2.3.2</b> 引數的預設值</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II 資料庫與基本的資料前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rdata.html"><a href="rdata.html#資料來源匯入與匯出"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="rdata.html"><a href="rdata.html#tabulated-file-types"><i class="fa fa-check"></i><b>3.1.1</b> Tabulated File Types</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rdata.html"><a href="rdata.html#匯入與匯出"><i class="fa fa-check"></i><b>3.1.2</b> 匯入與匯出</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rdata.html"><a href="rdata.html#資料收集"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="rdata.html"><a href="rdata.html#data-repositories"><i class="fa fa-check"></i><b>3.2.1</b> Data Repositories</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rdata.html"><a href="rdata.html#apis"><i class="fa fa-check"></i><b>3.2.2</b> APIs</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rdata.html"><a href="rdata.html#rvestweb"><i class="fa fa-check"></i><b>3.2.3</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rdata.html"><a href="rdata.html#小結"><i class="fa fa-check"></i><b>3.3</b> 小結</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> 資料前處理</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#datatable"><i class="fa fa-check"></i><b>4.1</b> Data Tables</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="preprocessing.html"><a href="preprocessing.html#排序-ordering"><i class="fa fa-check"></i><b>4.1.1</b> 排序 Ordering</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preprocessing.html"><a href="preprocessing.html#子集-subsetting"><i class="fa fa-check"></i><b>4.1.2</b> 子集 Subsetting</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preprocessing.html"><a href="preprocessing.html#加總-aggregation"><i class="fa fa-check"></i><b>4.1.3</b> 加總 Aggregation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preprocessing.html"><a href="preprocessing.html#keying"><i class="fa fa-check"></i><b>4.1.4</b> Keying</a></li>
+<li class="chapter" data-level="4.1.5" data-path="preprocessing.html"><a href="preprocessing.html#編輯表格-updating-by-reference"><i class="fa fa-check"></i><b>4.1.5</b> 編輯表格 Updating by Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#merging"><i class="fa fa-check"></i><b>4.2</b> Merging</a></li>
+<li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#實例"><i class="fa fa-check"></i><b>4.3</b> 實例</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="preprocessing.html"><a href="preprocessing.html#thesportsdb-nba-dataset-preprocessing"><i class="fa fa-check"></i><b>4.3.1</b> TheSportsDB NBA Dataset Preprocessing</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III 基礎矩陣代數</b></span></li>
+<li class="chapter" data-level="5" data-path="vector-matrix.html"><a href="vector-matrix.html"><i class="fa fa-check"></i><b>5</b> 向量與矩陣</a></li>
+<li class="chapter" data-level="6" data-path="rank-det-inv.html"><a href="rank-det-inv.html"><i class="fa fa-check"></i><b>6</b> Rank, Determinants and Inverses</a></li>
+<li class="part"><span><b>IV 以 <code>tidyverse</code> 進行資料探索</b></span></li>
+<li class="chapter" data-level="7" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>7</b> 以 <code>ggplot2</code> 進行資料視覺化</a>
+<ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#前置作業"><i class="fa fa-check"></i>前置作業</a></li>
+<li class="chapter" data-level="7.1" data-path="ggplot2.html"><a href="ggplot2.html#create"><i class="fa fa-check"></i><b>7.1</b> 創建一個 <code>ggplot</code></a></li>
+<li class="chapter" data-level="7.2" data-path="ggplot2.html"><a href="ggplot2.html#the-layered-grammar-of-graphics"><i class="fa fa-check"></i><b>7.2</b> The Layered Grammar of Graphics</a></li>
+<li class="chapter" data-level="7.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetic-mappings"><i class="fa fa-check"></i><b>7.3</b> Aesthetic Mappings</a></li>
+<li class="chapter" data-level="7.4" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>7.4</b> Facets</a></li>
+<li class="chapter" data-level="7.5" data-path="ggplot2.html"><a href="ggplot2.html#幾何物件"><i class="fa fa-check"></i><b>7.5</b> 幾何物件</a></li>
+<li class="chapter" data-level="7.6" data-path="ggplot2.html"><a href="ggplot2.html#統計轉換"><i class="fa fa-check"></i><b>7.6</b> 統計轉換</a></li>
+<li class="chapter" data-level="7.7" data-path="ggplot2.html"><a href="ggplot2.html#position-adjustment"><i class="fa fa-check"></i><b>7.7</b> Position Adjustment</a></li>
+<li class="chapter" data-level="7.8" data-path="ggplot2.html"><a href="ggplot2.html#coordinatedsystem"><i class="fa fa-check"></i><b>7.8</b> 座標系統</a></li>
+<li class="chapter" data-level="7.9" data-path="ggplot2.html"><a href="ggplot2.html#標籤-1"><i class="fa fa-check"></i><b>7.9</b> 標籤</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ggplot22.html"><a href="ggplot22.html"><i class="fa fa-check"></i><b>8</b> 更多 <code>ggplot2</code></a></li>
+<li class="chapter" data-level="9" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>9</b> 以 <code>dplyr</code> 轉換資料</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="dplyr.html"><a href="dplyr.html#前言"><i class="fa fa-check"></i><b>9.1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="dplyr.html"><a href="dplyr.html#前置作業-1"><i class="fa fa-check"></i><b>9.1.1</b> 前置作業</a></li>
+<li class="chapter" data-level="9.1.2" data-path="dplyr.html"><a href="dplyr.html#nycflights13"><i class="fa fa-check"></i><b>9.1.2</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="9.1.3" data-path="dplyr.html"><a href="dplyr.html#基礎-dplyr"><i class="fa fa-check"></i><b>9.1.3</b> 基礎 <code>dplyr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="dplyr.html"><a href="dplyr.html#filter"><i class="fa fa-check"></i><b>9.2</b> Filter Rows with <code>filter()</code></a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="dplyr.html"><a href="dplyr.html#比較"><i class="fa fa-check"></i><b>9.2.1</b> 比較</a></li>
+<li class="chapter" data-level="9.2.2" data-path="dplyr.html"><a href="dplyr.html#邏輯運算子"><i class="fa fa-check"></i><b>9.2.2</b> 邏輯運算子</a></li>
+<li class="chapter" data-level="9.2.3" data-path="dplyr.html"><a href="dplyr.html#缺漏值"><i class="fa fa-check"></i><b>9.2.3</b> 缺漏值</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="dplyr.html"><a href="dplyr.html#arrange"><i class="fa fa-check"></i><b>9.3</b> Arrange Rows with <code>arrange()</code></a></li>
+<li class="chapter" data-level="9.4" data-path="dplyr.html"><a href="dplyr.html#select"><i class="fa fa-check"></i><b>9.4</b> Select Columns with <code>select()</code></a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="dplyr.html"><a href="dplyr.html#常用的-5-個函數"><i class="fa fa-check"></i><b>9.4.1</b> 常用的 5 個函數</a></li>
+<li class="chapter" data-level="9.4.2" data-path="dplyr.html"><a href="dplyr.html#重新命名rename"><i class="fa fa-check"></i><b>9.4.2</b> 重新命名：<code>rename()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="dplyr.html"><a href="dplyr.html#mutate"><i class="fa fa-check"></i><b>9.5</b> Add New Variables with <code>mutate()</code></a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="dplyr.html"><a href="dplyr.html#useful-creation-functions"><i class="fa fa-check"></i><b>9.5.1</b> Useful Creation Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="dplyr.html"><a href="dplyr.html#summarize"><i class="fa fa-check"></i><b>9.6</b> Grouped Summaries with <code>summarize()</code></a>
+<ul>
+<li class="chapter" data-level="9.6.1" data-path="dplyr.html"><a href="dplyr.html#以-pipe-結合多重運算"><i class="fa fa-check"></i><b>9.6.1</b> 以 Pipe 結合多重運算</a></li>
+<li class="chapter" data-level="9.6.2" data-path="dplyr.html"><a href="dplyr.html#missingvaluesdplyr"><i class="fa fa-check"></i><b>9.6.2</b> 缺漏值</a></li>
+<li class="chapter" data-level="9.6.3" data-path="dplyr.html"><a href="dplyr.html#計數"><i class="fa fa-check"></i><b>9.6.3</b> 計數</a></li>
+<li class="chapter" data-level="9.6.4" data-path="dplyr.html"><a href="dplyr.html#有用的歸納函數"><i class="fa fa-check"></i><b>9.6.4</b> 有用的歸納函數</a></li>
+<li class="chapter" data-level="9.6.5" data-path="dplyr.html"><a href="dplyr.html#依據多變數分組"><i class="fa fa-check"></i><b>9.6.5</b> 依據多變數分組</a></li>
+<li class="chapter" data-level="9.6.6" data-path="dplyr.html"><a href="dplyr.html#取消分組"><i class="fa fa-check"></i><b>9.6.6</b> 取消分組</a></li>
+</ul></li>
+<li class="chapter" data-level="9.7" data-path="dplyr.html"><a href="dplyr.html#grouped-mutates-and-filters"><i class="fa fa-check"></i><b>9.7</b> Grouped Mutates (and Filters)</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="EDA.html"><a href="EDA.html"><i class="fa fa-check"></i><b>10</b> 探索性資料分析</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="EDA.html"><a href="EDA.html#事前準備"><i class="fa fa-check"></i><b>10.1</b> 事前準備</a></li>
+<li class="chapter" data-level="10.2" data-path="EDA.html"><a href="EDA.html#問題"><i class="fa fa-check"></i><b>10.2</b> 問題</a></li>
+<li class="chapter" data-level="10.3" data-path="EDA.html"><a href="EDA.html#variation"><i class="fa fa-check"></i><b>10.3</b> Variation</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="EDA.html"><a href="EDA.html#視覺化分配"><i class="fa fa-check"></i><b>10.3.1</b> 視覺化分配</a></li>
+<li class="chapter" data-level="10.3.2" data-path="EDA.html"><a href="EDA.html#代表性的變數值"><i class="fa fa-check"></i><b>10.3.2</b> 代表性的變數值</a></li>
+<li class="chapter" data-level="10.3.3" data-path="EDA.html"><a href="EDA.html#不尋常的變數值"><i class="fa fa-check"></i><b>10.3.3</b> 不尋常的變數值</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="EDA.html"><a href="EDA.html#missing-value"><i class="fa fa-check"></i><b>10.4</b> Missing Value</a>
+<ul>
+<li class="chapter" data-level="10.4.1" data-path="EDA.html"><a href="EDA.html#替換掉-outliers"><i class="fa fa-check"></i><b>10.4.1</b> 替換掉 Outliers</a></li>
+<li class="chapter" data-level="10.4.2" data-path="EDA.html"><a href="EDA.html#比較-na-與否"><i class="fa fa-check"></i><b>10.4.2</b> 比較 <code>NA</code> 與否</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="EDA.html"><a href="EDA.html#covariation"><i class="fa fa-check"></i><b>10.5</b> Covariation</a>
+<ul>
+<li class="chapter" data-level="10.5.1" data-path="EDA.html"><a href="EDA.html#類別與連續變數"><i class="fa fa-check"></i><b>10.5.1</b> 類別與連續變數</a></li>
+<li class="chapter" data-level="10.5.2" data-path="EDA.html"><a href="EDA.html#兩個類別變數"><i class="fa fa-check"></i><b>10.5.2</b> 兩個類別變數</a></li>
+<li class="chapter" data-level="10.5.3" data-path="EDA.html"><a href="EDA.html#兩個連續變數"><i class="fa fa-check"></i><b>10.5.3</b> 兩個連續變數</a></li>
+</ul></li>
+<li class="chapter" data-level="10.6" data-path="EDA.html"><a href="EDA.html#模式與模型"><i class="fa fa-check"></i><b>10.6</b> 模式與模型</a></li>
+</ul></li>
+<li class="part"><span><b>V 以 <code>tidyverse</code> 進行資料整理</b></span></li>
+<li class="chapter" data-level="11" data-path="tibble.html"><a href="tibble.html"><i class="fa fa-check"></i><b>11</b> 以 <code>tibble</code> 處理 Tibbles</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="tibble.html"><a href="tibble.html#創建-tibbles"><i class="fa fa-check"></i><b>11.1</b> 創建 Tibbles</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="tibble.html"><a href="tibble.html#把-data-frames-轉換-tibbles"><i class="fa fa-check"></i><b>11.1.1</b> 把 Data Frames 轉換 Tibbles</a></li>
+<li class="chapter" data-level="11.1.2" data-path="tibble.html"><a href="tibble.html#透過向量創建-tibbles"><i class="fa fa-check"></i><b>11.1.2</b> 透過向量創建 Tibbles</a></li>
+<li class="chapter" data-level="11.1.3" data-path="tibble.html"><a href="tibble.html#以-transposed-tibble-tribble-創建-tibbles"><i class="fa fa-check"></i><b>11.1.3</b> 以 Transposed Tibble <code>tribble()</code> 創建 Tibbles</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="tibble.html"><a href="tibble.html#tibbles-與-data-frames-的比較"><i class="fa fa-check"></i><b>11.2</b> Tibbles 與 Data Frames 的比較</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="tibble.html"><a href="tibble.html#printing"><i class="fa fa-check"></i><b>11.2.1</b> Printing</a></li>
+<li class="chapter" data-level="11.2.2" data-path="tibble.html"><a href="tibble.html#subsetting"><i class="fa fa-check"></i><b>11.2.2</b> Subsetting</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="tibble.html"><a href="tibble.html#古老的程式碼"><i class="fa fa-check"></i><b>11.3</b> 古老的程式碼</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="readr.html"><a href="readr.html"><i class="fa fa-check"></i><b>12</b> 以 <code>readr</code> 匯入資料</a>
+<ul>
+<li class="chapter" data-level="" data-path="readr.html"><a href="readr.html#需要的套件"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="12.1" data-path="readr.html"><a href="readr.html#簡介"><i class="fa fa-check"></i><b>12.1</b> 簡介</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="readr.html"><a href="readr.html#與-base-r-比較"><i class="fa fa-check"></i><b>12.1.1</b> 與 base R 比較</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="readr.html"><a href="readr.html#parsing-a-vector"><i class="fa fa-check"></i><b>12.2</b> Parsing a Vector</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="readr.html"><a href="readr.html#parsenumber"><i class="fa fa-check"></i><b>12.2.1</b> Numbers</a></li>
+<li class="chapter" data-level="12.2.2" data-path="readr.html"><a href="readr.html#parsestring"><i class="fa fa-check"></i><b>12.2.2</b> Strings</a></li>
+<li class="chapter" data-level="12.2.3" data-path="readr.html"><a href="readr.html#parsefactor"><i class="fa fa-check"></i><b>12.2.3</b> Factors</a></li>
+<li class="chapter" data-level="12.2.4" data-path="readr.html"><a href="readr.html#parsedatetime"><i class="fa fa-check"></i><b>12.2.4</b> Dates, Date-Times, and Times</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="readr.html"><a href="readr.html#parsing-a-file"><i class="fa fa-check"></i><b>12.3</b> Parsing a File</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="readr.html"><a href="readr.html#策略"><i class="fa fa-check"></i><b>12.3.1</b> 策略</a></li>
+<li class="chapter" data-level="12.3.2" data-path="readr.html"><a href="readr.html#問題-1"><i class="fa fa-check"></i><b>12.3.2</b> 問題</a></li>
+<li class="chapter" data-level="12.3.3" data-path="readr.html"><a href="readr.html#其他策略"><i class="fa fa-check"></i><b>12.3.3</b> 其他策略</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="readr.html"><a href="readr.html#寫入檔案"><i class="fa fa-check"></i><b>12.4</b> 寫入檔案</a></li>
+<li class="chapter" data-level="12.5" data-path="readr.html"><a href="readr.html#其他類型的資料"><i class="fa fa-check"></i><b>12.5</b> 其他類型的資料</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tidyr.html"><a href="tidyr.html"><i class="fa fa-check"></i><b>13</b> 以 <code>tidyr</code> 整理資料</a>
+<ul>
+<li class="chapter" data-level="" data-path="tidyr.html"><a href="tidyr.html#需要的套件-1"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="13.1" data-path="tidyr.html"><a href="tidyr.html#tidy-data"><i class="fa fa-check"></i><b>13.1</b> Tidy Data</a></li>
+<li class="chapter" data-level="13.2" data-path="tidyr.html"><a href="tidyr.html#spreading-and-gathering"><i class="fa fa-check"></i><b>13.2</b> Spreading and Gathering</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="tidyr.html"><a href="tidyr.html#gathering"><i class="fa fa-check"></i><b>13.2.1</b> Gathering</a></li>
+<li class="chapter" data-level="13.2.2" data-path="tidyr.html"><a href="tidyr.html#spreading"><i class="fa fa-check"></i><b>13.2.2</b> Spreading</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="tidyr.html"><a href="tidyr.html#separating-and-pull"><i class="fa fa-check"></i><b>13.3</b> Separating and Pull</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="tidyr.html"><a href="tidyr.html#seperate"><i class="fa fa-check"></i><b>13.3.1</b> Seperate</a></li>
+<li class="chapter" data-level="13.3.2" data-path="tidyr.html"><a href="tidyr.html#unite"><i class="fa fa-check"></i><b>13.3.2</b> Unite</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="tidyr.html"><a href="tidyr.html#missing-values"><i class="fa fa-check"></i><b>13.4</b> Missing Values</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tidyr.html"><a href="tidyr.html#讓潛藏的缺漏值顯露出來"><i class="fa fa-check"></i><b>13.4.1</b> 讓潛藏的缺漏值顯露出來</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tidyr.html"><a href="tidyr.html#自動填入"><i class="fa fa-check"></i><b>13.4.2</b> 自動填入</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="dplyr2.html"><a href="dplyr2.html"><i class="fa fa-check"></i><b>14</b> 以 <code>dplyr</code> 處理關聯性資料</a>
+<ul>
+<li class="chapter" data-level="" data-path="dplyr2.html"><a href="dplyr2.html#需要的套件-2"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="14.1" data-path="dplyr2.html"><a href="dplyr2.html#nycflights13-1"><i class="fa fa-check"></i><b>14.1</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="14.2" data-path="dplyr2.html"><a href="dplyr2.html#keys"><i class="fa fa-check"></i><b>14.2</b> Keys</a></li>
+<li class="chapter" data-level="14.3" data-path="dplyr2.html"><a href="dplyr2.html#mutating-joins"><i class="fa fa-check"></i><b>14.3</b> Mutating Joins</a></li>
+<li class="chapter" data-level="14.4" data-path="dplyr2.html"><a href="dplyr2.html#filtering-joins"><i class="fa fa-check"></i><b>14.4</b> Filtering joins</a></li>
+<li class="chapter" data-level="14.5" data-path="dplyr2.html"><a href="dplyr2.html#join-problems"><i class="fa fa-check"></i><b>14.5</b> Join Problems</a></li>
+<li class="chapter" data-level="14.6" data-path="dplyr2.html"><a href="dplyr2.html#set-operations"><i class="fa fa-check"></i><b>14.6</b> Set operations</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="stringr.html"><a href="stringr.html"><i class="fa fa-check"></i><b>15</b> 以 <code>stringr</code> 處理字串</a></li>
+<li class="chapter" data-level="16" data-path="forcats.html"><a href="forcats.html"><i class="fa fa-check"></i><b>16</b> 以 <code>forcats</code> 處理 Factors</a></li>
+<li class="chapter" data-level="17" data-path="lubridate.html"><a href="lubridate.html"><i class="fa fa-check"></i><b>17</b> 以 <code>lubridate</code> 處理日期時間</a></li>
+<li class="part"><span><b>VI 編寫程式與 <code>tidyverse</code></b></span></li>
+<li class="chapter" data-level="18" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html"><i class="fa fa-check"></i><b>18</b> 以 <code>magrittr</code> 使用 Pipes</a></li>
+<li class="chapter" data-level="19" data-path="tidyfunction.html"><a href="tidyfunction.html"><i class="fa fa-check"></i><b>19</b> 函數</a></li>
+<li class="chapter" data-level="20" data-path="tidyvector.html"><a href="tidyvector.html"><i class="fa fa-check"></i><b>20</b> 向量</a></li>
+<li class="chapter" data-level="21" data-path="purrr.html"><a href="purrr.html"><i class="fa fa-check"></i><b>21</b> 遞迴與 <code>purrr</code></a></li>
+<li class="part"><span><b>VII <code>tidyverse</code> 與簡單的模型</b></span></li>
+<li class="chapter" data-level="22" data-path="modelr.html"><a href="modelr.html"><i class="fa fa-check"></i><b>22</b> <code>modelr</code> 與基礎的模型</a></li>
+<li class="chapter" data-level="23" data-path="modelbuilding.html"><a href="modelbuilding.html"><i class="fa fa-check"></i><b>23</b> 建立模型</a></li>
+<li class="chapter" data-level="24" data-path="purrrbroom.html"><a href="purrrbroom.html"><i class="fa fa-check"></i><b>24</b> <code>purrr</code> 與 <code>broom</code></a></li>
+<li class="part"><span><b>VIII R 與社會科學計量</b></span></li>
+<li class="chapter" data-level="25" data-path="singlereg.html"><a href="singlereg.html"><i class="fa fa-check"></i><b>25</b> 單變數迴歸</a>
+<ul>
+<li class="chapter" data-level="" data-path="singlereg.html"><a href="singlereg.html#需要的套件-3"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="25.1" data-path="singlereg.html"><a href="singlereg.html#解釋變數為連續變數"><i class="fa fa-check"></i><b>25.1</b> 解釋變數為連續變數</a>
+<ul>
+<li class="chapter" data-level="25.1.1" data-path="singlereg.html"><a href="singlereg.html#探索性資料分析"><i class="fa fa-check"></i><b>25.1.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="25.1.2" data-path="singlereg.html"><a href="singlereg.html#簡單線性迴歸"><i class="fa fa-check"></i><b>25.1.2</b> 簡單線性迴歸</a></li>
+<li class="chapter" data-level="25.1.3" data-path="singlereg.html"><a href="singlereg.html#observedfitted-values-and-residuals"><i class="fa fa-check"></i><b>25.1.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+<li class="chapter" data-level="25.2" data-path="singlereg.html"><a href="singlereg.html#解釋變數為類別變數"><i class="fa fa-check"></i><b>25.2</b> 解釋變數為類別變數</a>
+<ul>
+<li class="chapter" data-level="25.2.1" data-path="singlereg.html"><a href="singlereg.html#探索性資料分析-1"><i class="fa fa-check"></i><b>25.2.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="25.2.2" data-path="singlereg.html"><a href="singlereg.html#線性迴歸"><i class="fa fa-check"></i><b>25.2.2</b> 線性迴歸</a></li>
+<li class="chapter" data-level="25.2.3" data-path="singlereg.html"><a href="singlereg.html#observedfitted-values-and-residuals-1"><i class="fa fa-check"></i><b>25.2.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="multireg.html"><a href="multireg.html"><i class="fa fa-check"></i><b>26</b> 多變數迴歸</a></li>
+<li class="chapter" data-level="27" data-path="binomial.html"><a href="binomial.html"><i class="fa fa-check"></i><b>27</b> 二元迴歸</a></li>
+<li class="chapter" data-level="28" data-path="logit.html"><a href="logit.html"><i class="fa fa-check"></i><b>28</b> Logit Regression</a></li>
+<li class="chapter" data-level="29" data-path="ologit.html"><a href="ologit.html"><i class="fa fa-check"></i><b>29</b> Ordered Logit Regression</a></li>
+<li class="chapter" data-level="30" data-path="IV.html"><a href="IV.html"><i class="fa fa-check"></i><b>30</b> 工具變數</a></li>
+<li class="chapter" data-level="31" data-path="邊界估計.html"><a href="邊界估計.html"><i class="fa fa-check"></i><b>31</b> 邊界估計</a></li>
+<li class="chapter" data-level="32" data-path="縱貫資料.html"><a href="縱貫資料.html"><i class="fa fa-check"></i><b>32</b> 縱貫資料</a></li>
+<li class="chapter" data-level="33" data-path="合成控制.html"><a href="合成控制.html"><i class="fa fa-check"></i><b>33</b> 合成控制</a></li>
+<li class="chapter" data-level="34" data-path="探索性因素分析.html"><a href="探索性因素分析.html"><i class="fa fa-check"></i><b>34</b> 探索性因素分析</a></li>
+<li class="chapter" data-level="35" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html"><i class="fa fa-check"></i><b>35</b> 驗證性因素分析</a></li>
+<li class="part"><span><b>IX 網路與資料技術入門</b></span></li>
+<li class="chapter" data-level="36" data-path="html.html"><a href="html.html"><i class="fa fa-check"></i><b>36</b> HTML</a>
+<ul>
+<li class="chapter" data-level="36.1" data-path="html.html"><a href="html.html#sourcecode"><i class="fa fa-check"></i><b>36.1</b> 瀏覽器呈現與原始碼</a></li>
+<li class="chapter" data-level="36.2" data-path="html.html"><a href="html.html#htmlsyntax"><i class="fa fa-check"></i><b>36.2</b> 語法規則</a>
+<ul>
+<li class="chapter" data-level="36.2.1" data-path="html.html"><a href="html.html#標籤元素與屬性"><i class="fa fa-check"></i><b>36.2.1</b> 標籤、元素與屬性</a></li>
+<li class="chapter" data-level="36.2.2" data-path="html.html"><a href="html.html#樹結構"><i class="fa fa-check"></i><b>36.2.2</b> 樹結構</a></li>
+<li class="chapter" data-level="36.2.3" data-path="html.html"><a href="html.html#註釋"><i class="fa fa-check"></i><b>36.2.3</b> 註釋</a></li>
+<li class="chapter" data-level="36.2.4" data-path="html.html"><a href="html.html#保留與特殊字元"><i class="fa fa-check"></i><b>36.2.4</b> 保留與特殊字元</a></li>
+<li class="chapter" data-level="36.2.5" data-path="html.html"><a href="html.html#文件類型定義"><i class="fa fa-check"></i><b>36.2.5</b> 文件類型定義</a></li>
+<li class="chapter" data-level="36.2.6" data-path="html.html"><a href="html.html#空白與換行"><i class="fa fa-check"></i><b>36.2.6</b> 空白與換行</a></li>
+</ul></li>
+<li class="chapter" data-level="36.3" data-path="html.html"><a href="html.html#tagsattri"><i class="fa fa-check"></i><b>36.3</b> 標籤與屬性</a>
+<ul>
+<li class="chapter" data-level="36.3.1" data-path="html.html"><a href="html.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>36.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
+<li class="chapter" data-level="36.3.2" data-path="html.html"><a href="html.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>36.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
+<li class="chapter" data-level="36.3.3" data-path="html.html"><a href="html.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>36.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
+<li class="chapter" data-level="36.3.4" data-path="html.html"><a href="html.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>36.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
+<li class="chapter" data-level="36.3.5" data-path="html.html"><a href="html.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>36.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
+<li class="chapter" data-level="36.3.6" data-path="html.html"><a href="html.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>36.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
+<li class="chapter" data-level="36.3.7" data-path="html.html"><a href="html.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>36.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
+<li class="chapter" data-level="36.3.8" data-path="html.html"><a href="html.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>36.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
+<li class="chapter" data-level="36.3.9" data-path="html.html"><a href="html.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>36.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
+<li class="chapter" data-level="36.3.10" data-path="html.html"><a href="html.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>36.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
+<li class="chapter" data-level="36.3.11" data-path="html.html"><a href="html.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>36.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
+</ul></li>
+<li class="chapter" data-level="36.4" data-path="html.html"><a href="html.html#parsing"><i class="fa fa-check"></i><b>36.4</b> 解析</a>
+<ul>
+<li class="chapter" data-level="36.4.1" data-path="html.html"><a href="html.html#discarding-nodes"><i class="fa fa-check"></i><b>36.4.1</b> Discarding nodes</a></li>
+<li class="chapter" data-level="36.4.2" data-path="html.html"><a href="html.html#提取資訊"><i class="fa fa-check"></i><b>36.4.2</b> 提取資訊</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="37" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>37</b> XML 與 JSON</a></li>
+<li class="chapter" data-level="38" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>38</b> XPath</a></li>
+<li class="chapter" data-level="39" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>39</b> HTTP</a></li>
+<li class="chapter" data-level="40" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>40</b> AJAX</a></li>
+<li class="chapter" data-level="41" data-path="sql-與關聯性資料庫.html"><a href="sql-與關聯性資料庫.html"><i class="fa fa-check"></i><b>41</b> SQL 與關聯性資料庫</a></li>
+<li class="chapter" data-level="42" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>42</b> 正規表達式</a></li>
+<li class="part"><span><b>X 網路爬蟲</b></span></li>
+<li class="chapter" data-level="43" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>43</b> 網路爬蟲</a></li>
+<li class="part"><span><b>XI 自然語言的特色</b></span></li>
+<li class="chapter" data-level="44" data-path="langmodeling.html"><a href="langmodeling.html"><i class="fa fa-check"></i><b>44</b> 語言與建模</a></li>
+<li class="chapter" data-level="45" data-path="斷詞.html"><a href="斷詞.html"><i class="fa fa-check"></i><b>45</b> 斷詞</a></li>
+<li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="dplyr" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> 以 <code>dplyr</code> 轉換資料</h1>
+<div class="note">
+<p>本章為 <span class="citation"><a href="#ref-wickhamDataScience2016" role="doc-biblioref">Wickham and Grolemund</a> (<a href="#ref-wickhamDataScience2016" role="doc-biblioref">2016</a>)</span> 第 3 章內容。</p>
+</div>
+<div id="前言" class="section level2" number="9.1">
+<h2><span class="header-section-number">9.1</span> 前言</h2>
+<p>一拿到資料，除了以視覺化的方式快速洞察資料的樣貌，我們可能還需要：</p>
+<ol style="list-style-type: decimal">
+<li><p>新增新的變數。</p></li>
+<li><p>統整。</p></li>
+<li><p>重新命名變數。</p></li>
+<li><p>重新排列觀察值的順序。</p></li>
+</ol>
+<p><code>dplyr</code> 的某些功能也能以 <code>data.table</code> 完成，並且兩者各有所長（<code>data.table</code> 的介紹可見節 <a href="preprocessing.html#datatable">4.1</a>），而本章將要介紹 <code>dplyr</code>，為 <code>tidyverse</code> 中一個重要的成員，用以資料轉換。本章的任務是以 <code>nycflights13</code> 資料為例，簡介 <code>dplyr</code> 的使用。</p>
+<div id="前置作業-1" class="section level3" number="9.1.1">
+<h3><span class="header-section-number">9.1.1</span> 前置作業</h3>
+<p>先載入 <code>nycflights13</code> 與 <code>tidyverse</code>：</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="dplyr.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
+<span id="cb328-2"><a href="dplyr.html#cb328-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<p>要注意的是，<code>dplyr</code> 與 base R 一套件 <code>stats</code> 的某些函數名稱相同，如 <code>filter</code> 與 <code>lag</code>。如果是先載入 <code>stats</code>，後載入 <code>dplyr</code> 的話，則使用 <code>filter()</code> 將會是 <code>dplyr</code> 的 <code>filter</code>，這時候如果還想使用 <code>stats</code> 的 <code>filter()</code>，則需使用其全名，即 <code>stats::filter()</code>。反之，如果是先載入 <code>dplyr</code>，後載入 <code>stats</code>，則使用 <code>filter()</code> 將會使用到 <code>stats</code> 的 <code>filter()</code>，這時候如果還想使用 <code>dplyr</code> 的 <code>filter()</code>，亦須使用全名，即 <code>dplyr::filter()</code>。</p>
+</div>
+<div id="nycflights13" class="section level3" number="9.1.2">
+<h3><span class="header-section-number">9.1.2</span> <code>nycflights13</code></h3>
+<p>我們將使用 <code>nycflights13</code> 中的 <code>flights</code> 這個 dataset，此 data frame 包含 336,776 個觀察值，並有 19 個變數。</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="dplyr.html#cb329-1" aria-hidden="true" tabindex="-1"></a>flights</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>我們也可以看到，變數名稱下方有諸如 <code>&lt;int&gt;</code>、<code>&lt;dbl&gt;</code> 等代號，即變數的型態：</p>
+<ul>
+<li><p><code>int</code> 代表整數。</p></li>
+<li><p><code>dbl</code> 代表 doubles 或實數。</p></li>
+<li><p><code>chr</code> 代表字元向量或字串。</p></li>
+<li><p><code>dttm</code> 代表日期時間（date-times）。</p></li>
+<li><p><code>lgl</code> 代表 logical，即 <code>TRUE</code> 或 <code>FALSE</code> 的向量。</p></li>
+<li><p><code>fctr</code> 代表 factors，即類別變數。</p></li>
+<li><p><code>date</code> 代表時間。</p></li>
+</ul>
+</div>
+<div id="基礎-dplyr" class="section level3" number="9.1.3">
+<h3><span class="header-section-number">9.1.3</span> 基礎 <code>dplyr</code></h3>
+<p>本章將會簡介 6 個 <code>dplyr</code> 函數，即：</p>
+<ul>
+<li><p>在節 <a href="dplyr.html#filter">9.2</a> 以 <code>filter()</code> 選取某些觀察值。</p></li>
+<li><p>在節 <a href="dplyr.html#arrange">9.3</a> 以 <code>arrange()</code> 重新排列 rows。</p></li>
+<li><p>在節 <a href="dplyr.html#select">9.4</a> 以 <code>select()</code> 選取變數。</p></li>
+<li><p>在節 <a href="dplyr.html#mutate">9.5</a> 以 <code>mutate()</code> 與現存變數的函數創造新的變數。</p></li>
+<li><p>在節 <a href="dplyr.html#summarize">9.6</a> 以 <code>summarize()</code> 摘要資料。</p></li>
+<li><p>以 <code>group_by()</code> 比較群組之間的關係。</p></li>
+</ul>
+<p>我們的工作就是在第一個引數丟入一個 data frame，並在第二個引數描述要對其做什麼，然後得到一個新的 data frame。</p>
+</div>
+</div>
+<div id="filter" class="section level2" number="9.2">
+<h2><span class="header-section-number">9.2</span> Filter Rows with <code>filter()</code></h2>
+<p>我們可以用 <code>filter</code> 來選取某些觀察值，例如：</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="dplyr.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">1</span>, day <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 842 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # … with 832 more rows, and 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;,
+## #   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,
+## #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>因為 <code>filter()</code> 會創造一個新的 data frame，而不會更動原先輸入的那個 data frame，所以</p>
+<div id="比較" class="section level3" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> 比較</h3>
+<p>我們可以用比較運算子，如 <code>&gt;=</code>、<code>&lt;</code>、<code>&lt;=</code>、<code>!=</code> 或 <code>==</code> 等來選取觀察值。</p>
+</div>
+<div id="邏輯運算子" class="section level3" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> 邏輯運算子</h3>
+<p>我們也可以運用邏輯運算子，如 <code>&amp;</code> 即 “and”，<code>|</code> 即 “or” 而 <code>!</code> 即 “not”（切記不要用成 <code>&amp;&amp;</code> 或 <code>||</code>！）。例如我們可以透過以下的程式碼找出 <code>month</code> 恰等於 11 或 12 的觀察值：</p>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="dplyr.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">==</span> <span class="dv">11</span> <span class="sc">|</span> month <span class="sc">==</span> <span class="dv">12</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 55,403 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013    11     1        5           2359         6      352            345
+##  2  2013    11     1       35           2250       105      123           2356
+##  3  2013    11     1      455            500        -5      641            651
+##  4  2013    11     1      539            545        -6      856            827
+##  5  2013    11     1      542            545        -3      831            855
+##  6  2013    11     1      549            600       -11      912            923
+##  7  2013    11     1      550            600       -10      705            659
+##  8  2013    11     1      554            600        -6      659            701
+##  9  2013    11     1      554            600        -6      826            827
+## 10  2013    11     1      554            600        -6      749            751
+## # … with 55,393 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>上述的程式碼也有一種簡寫，即 <code>x %in% y</code>，將會選出所有 <code>x</code> 等於其中一個 <code>y</code> 的觀察值。上述的程式碼因此可以寫成：</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="dplyr.html#cb335-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">12</span>))</span></code></pre></div>
+<p>我們如果想要找到 <code>arr_delay</code> 不超過 120 且 <code>dep_delay</code> 也不超過 120 的觀察值，下面兩行等價的程式碼都能達成：</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="dplyr.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, <span class="sc">!</span>(arr_delay <span class="sc">&gt;</span> <span class="dv">120</span> <span class="sc">|</span> dep_delay <span class="sc">&gt;</span> <span class="dv">120</span>))</span>
+<span id="cb336-2"><a href="dplyr.html#cb336-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, arr_delay <span class="sc">&lt;=</span> <span class="dv">120</span>, dep_delay <span class="sc">&lt;=</span> <span class="dv">120</span>)</span></code></pre></div>
+</div>
+<div id="缺漏值" class="section level3" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> 缺漏值</h3>
+<p><code>filter()</code> 只會選取邏輯判斷為 <code>TRUE</code> 的觀察值，而排除 <code>FALSE</code> 或 <code>NA</code>。如果也想選取 <code>NA</code>，則要明白地寫出來：</p>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="dplyr.html#cb337-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NA</span>, <span class="dv">3</span>))</span>
+<span id="cb337-2"><a href="dplyr.html#cb337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(df, x <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##       x
+##   &lt;dbl&gt;
+## 1     3</code></pre>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="dplyr.html#cb339-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(df, <span class="fu">is.na</span>(x) <span class="sc">|</span> x <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 1
+##       x
+##   &lt;dbl&gt;
+## 1    NA
+## 2     3</code></pre>
+</div>
+</div>
+<div id="arrange" class="section level2" number="9.3">
+<h2><span class="header-section-number">9.3</span> Arrange Rows with <code>arrange()</code></h2>
+<p>使用 <code>arrange()</code> 可以改變觀察值的排列順序。</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="dplyr.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, year, month, day)  <span class="co"># 先排前面的引數，由小至大排列</span></span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>使用 <code>desc()</code> 可以製造由大至小的排列，如：</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="dplyr.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(flights, <span class="fu">desc</span>(dep_time), day)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     4     2     2400           2359         1      339            343
+##  2  2013     9     2     2400           2359         1      411            340
+##  3  2013     4     4     2400           2355         5      347            345
+##  4  2013    12     5     2400           2359         1      427            440
+##  5  2013     2     7     2400           2359         1      432            436
+##  6  2013     2     7     2400           2359         1      443            444
+##  7  2013     7     7     2400           1950       250      107           2130
+##  8  2013    12     9     2400           2359         1      432            440
+##  9  2013    12     9     2400           2250        70       59           2356
+## 10  2013     8    10     2400           2245        75      110              1
+## # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>缺漏值永遠排在最後，無論採用由小至大或由大至小的排列方式：</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="dplyr.html#cb345-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="cn">NA</span>))</span>
+<span id="cb345-2"><a href="dplyr.html#cb345-2" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(df, x)</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 1
+##       x
+##   &lt;dbl&gt;
+## 1     2
+## 2     5
+## 3    NA</code></pre>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="dplyr.html#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(df, <span class="fu">desc</span>(x))</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 1
+##       x
+##   &lt;dbl&gt;
+## 1     5
+## 2     2
+## 3    NA</code></pre>
+</div>
+<div id="select" class="section level2" number="9.4">
+<h2><span class="header-section-number">9.4</span> Select Columns with <code>select()</code></h2>
+<p><code>filter()</code> 與 <code>arrange()</code> 處理的對象是 rows，而 <code>select()</code> 處理的則是 columns。我們可以透過 <code>select()</code>，快速地選取指定的變數，如：</p>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="dplyr.html#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 3
+##     year month   day
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1  2013     1     1
+##  2  2013     1     1
+##  3  2013     1     1
+##  4  2013     1     1
+##  5  2013     1     1
+##  6  2013     1     1
+##  7  2013     1     1
+##  8  2013     1     1
+##  9  2013     1     1
+## 10  2013     1     1
+## # … with 336,766 more rows</code></pre>
+<p>或者：</p>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="dplyr.html#cb351-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year<span class="sc">:</span>day)  <span class="co"># 選擇 year 至 day 之間所有的 columns</span></span>
+<span id="cb351-2"><a href="dplyr.html#cb351-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="sc">-</span>(year<span class="sc">:</span>day))  <span class="co"># 選擇 year 至 day 以外的所有 columns</span></span></code></pre></div>
+<div id="常用的-5-個函數" class="section level3" number="9.4.1">
+<h3><span class="header-section-number">9.4.1</span> 常用的 5 個函數</h3>
+<p><code>select()</code> 之中還有幾個常用的函數可用，如：</p>
+<ul>
+<li><p><code>start_with("abc")</code>：選取名稱以 “abc” 開頭的變數。</p></li>
+<li><p><code>ends_with("abc")</code>：選取名稱以 “abc” 結尾的變數。</p></li>
+<li><p><code>contains("abc")</code>：選取名稱中包含 “abc” 的變數。</p></li>
+<li><p><code>matches("abc$")</code>：選取名稱符合正規表示式的變數，此例中為名稱以 “abc” 結尾的變數。正規表示式將會在第 <a href="stringr.html#stringr">15</a> 章介紹。</p></li>
+<li><p><code>num_range("x", 1:3)</code>：選取名為 <code>x1</code>、<code>x2</code>、<code>x3</code> 的變數。</p></li>
+</ul>
+<p>以下為範例：</p>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="dplyr.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">starts_with</span>(<span class="st">&quot;d&quot;</span>))  <span class="co"># 選取名稱以 &quot;d&quot; 開頭的變數</span></span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 5
+##      day dep_time dep_delay dest  distance
+##    &lt;int&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1     1      517         2 IAH       1400
+##  2     1      533         4 IAH       1416
+##  3     1      542         2 MIA       1089
+##  4     1      544        -1 BQN       1576
+##  5     1      554        -6 ATL        762
+##  6     1      554        -4 ORD        719
+##  7     1      555        -5 FLL       1065
+##  8     1      557        -3 IAD        229
+##  9     1      557        -3 MCO        944
+## 10     1      558        -2 ORD        733
+## # … with 336,766 more rows</code></pre>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="dplyr.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">ends_with</span>(<span class="st">&quot;t&quot;</span>))  <span class="co"># 選取名稱以 &quot;t&quot; 結尾的變數</span></span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 2
+##    flight dest 
+##     &lt;int&gt; &lt;chr&gt;
+##  1   1545 IAH  
+##  2   1714 IAH  
+##  3   1141 MIA  
+##  4    725 BQN  
+##  5    461 ATL  
+##  6   1696 ORD  
+##  7    507 FLL  
+##  8   5708 IAD  
+##  9     79 MCO  
+## 10    301 ORD  
+## # … with 336,766 more rows</code></pre>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="dplyr.html#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">contains</span>(<span class="st">&quot;ep&quot;</span>))  <span class="co"># 選取名稱中包含 &quot;ep&quot; 的變數</span></span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 3
+##    dep_time sched_dep_time dep_delay
+##       &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;
+##  1      517            515         2
+##  2      533            529         4
+##  3      542            540         2
+##  4      544            545        -1
+##  5      554            600        -6
+##  6      554            558        -4
+##  7      555            600        -5
+##  8      557            600        -3
+##  9      557            600        -3
+## 10      558            600        -2
+## # … with 336,766 more rows</code></pre>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="dplyr.html#cb358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, <span class="fu">matches</span>(<span class="st">&quot;time$&quot;</span>))  <span class="co"># 選取名稱以 &quot;time&quot; 結尾的變數</span></span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 5
+##    dep_time sched_dep_time arr_time sched_arr_time air_time
+##       &lt;int&gt;          &lt;int&gt;    &lt;int&gt;          &lt;int&gt;    &lt;dbl&gt;
+##  1      517            515      830            819      227
+##  2      533            529      850            830      227
+##  3      542            540      923            850      160
+##  4      544            545     1004           1022      183
+##  5      554            600      812            837      116
+##  6      554            558      740            728      150
+##  7      555            600      913            854      158
+##  8      557            600      709            723       53
+##  9      557            600      838            846      140
+## 10      558            600      753            745      138
+## # … with 336,766 more rows</code></pre>
+</div>
+<div id="重新命名rename" class="section level3" number="9.4.2">
+<h3><span class="header-section-number">9.4.2</span> 重新命名：<code>rename()</code></h3>
+<p>有兩種重新命名變數的方法：</p>
+<ol style="list-style-type: decimal">
+<li><p>使用 <code>select(資料, 新變數名稱 = 舊變數名稱, everything())</code>。之所以要加 <code>everything</code> 是因為如果不加，<code>select()</code> 將會丟棄其他所有變數，而 <code>everything()</code> 的用途即在補上其他 columns。</p></li>
+<li><p>使用 <code>rename(資料, 新變數名稱 = 舊變數名稱)</code>。</p></li>
+</ol>
+<p>此外，因為 <code>everything()</code> 可以補上其他沒有選到的 columns，所以也可以用來移動變數的順序，如我們想要把 <code>dep_time</code> 與 <code>arr_time</code> 移到前面的話，即：</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="dplyr.html#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, dep_time, arr_time, <span class="fu">everything</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 19
+##    dep_time arr_time  year month   day sched_dep_time dep_delay sched_arr_time
+##       &lt;int&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;          &lt;int&gt;
+##  1      517      830  2013     1     1            515         2            819
+##  2      533      850  2013     1     1            529         4            830
+##  3      542      923  2013     1     1            540         2            850
+##  4      544     1004  2013     1     1            545        -1           1022
+##  5      554      812  2013     1     1            600        -6            837
+##  6      554      740  2013     1     1            558        -4            728
+##  7      555      913  2013     1     1            600        -5            854
+##  8      557      709  2013     1     1            600        -3            723
+##  9      557      838  2013     1     1            600        -3            846
+## 10      558      753  2013     1     1            600        -2            745
+## # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+</div>
+</div>
+<div id="mutate" class="section level2" number="9.5">
+<h2><span class="header-section-number">9.5</span> Add New Variables with <code>mutate()</code></h2>
+<p>我們還會想新增 columns 為既有 columns 的函數，那就要使用 <code>mutate()</code>。我們先新建一個小一點的表格，方便查看結果，然後新增兩個 columns，其一為 <code>gain</code>，為 <code>arr_delay</code> 減去 <code>ep_delay</code>；其一為 <code>speed</code>，為 <code>distance</code> 除以 <code>air_time</code> 再乘以 60：</p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="dplyr.html#cb362-1" aria-hidden="true" tabindex="-1"></a>flights_sml <span class="ot">&lt;-</span> <span class="fu">select</span>(flights, year<span class="sc">:</span>day, <span class="fu">ends_with</span>(<span class="st">&quot;delay&quot;</span>), distance, air_time)</span>
+<span id="cb362-2"><a href="dplyr.html#cb362-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb362-3"><a href="dplyr.html#cb362-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml,</span>
+<span id="cb362-4"><a href="dplyr.html#cb362-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">gain =</span> arr_delay <span class="sc">-</span> dep_delay,</span>
+<span id="cb362-5"><a href="dplyr.html#cb362-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">speed =</span> distance <span class="sc">/</span> air_time <span class="sc">*</span> <span class="dv">60</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 9
+##     year month   day dep_delay arr_delay distance air_time  gain speed
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  2013     1     1         2        11     1400      227     9  370.
+##  2  2013     1     1         4        20     1416      227    16  374.
+##  3  2013     1     1         2        33     1089      160    31  408.
+##  4  2013     1     1        -1       -18     1576      183   -17  517.
+##  5  2013     1     1        -6       -25      762      116   -19  394.
+##  6  2013     1     1        -4        12      719      150    16  288.
+##  7  2013     1     1        -5        19     1065      158    24  404.
+##  8  2013     1     1        -3       -14      229       53   -11  259.
+##  9  2013     1     1        -3        -8      944      140    -5  405.
+## 10  2013     1     1        -2         8      733      138    10  319.
+## # … with 336,766 more rows</code></pre>
+<p>也可以在後面的引數中，使用前面的引數剛新增出來的 columns，如：</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="dplyr.html#cb364-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(flights_sml,</span>
+<span id="cb364-2"><a href="dplyr.html#cb364-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">gain =</span> arr_delay <span class="sc">-</span> dep_delay,</span>
+<span id="cb364-3"><a href="dplyr.html#cb364-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>,</span>
+<span id="cb364-4"><a href="dplyr.html#cb364-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours)</span></code></pre></div>
+<p>只想要保存新變數的話，可以用 <code>transmute()</code>，如：</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="dplyr.html#cb365-1" aria-hidden="true" tabindex="-1"></a><span class="fu">transmute</span>(flights_sml,</span>
+<span id="cb365-2"><a href="dplyr.html#cb365-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">gain =</span> arr_delay <span class="sc">-</span> dep_delay,</span>
+<span id="cb365-3"><a href="dplyr.html#cb365-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">hours =</span> air_time <span class="sc">/</span> <span class="dv">60</span>,</span>
+<span id="cb365-4"><a href="dplyr.html#cb365-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">gain_per_hour =</span> gain <span class="sc">/</span> hours)</span></code></pre></div>
+<pre><code>## # A tibble: 336,776 × 3
+##     gain hours gain_per_hour
+##    &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;
+##  1     9 3.78           2.38
+##  2    16 3.78           4.23
+##  3    31 2.67          11.6 
+##  4   -17 3.05          -5.57
+##  5   -19 1.93          -9.83
+##  6    16 2.5            6.4 
+##  7    24 2.63           9.11
+##  8   -11 0.883        -12.5 
+##  9    -5 2.33          -2.14
+## 10    10 2.3            4.35
+## # … with 336,766 more rows</code></pre>
+<p>而如果新建的變數名稱與既有的變數名稱相同，則會覆蓋之，即既有的變數值被替換成 <code>mutate()</code> 中所指定的運算方法所得的變數值。</p>
+<div id="useful-creation-functions" class="section level3" number="9.5.1">
+<h3><span class="header-section-number">9.5.1</span> Useful Creation Functions</h3>
+<p>創建新 columns 有一些常用的、有用的運算子或函數：</p>
+<ul>
+<li><p><strong>Arithmetic operators.</strong> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>^</code>.</p></li>
+<li><p><strong>Modular arithmetic.</strong> <code>%/%</code> and <code>%%</code>.</p>
+<ul>
+<li><p><code>%/%</code> 為整數除法，而 <code>%%</code> 為餘數。</p></li>
+<li><p>如：<code>30 %/% 4</code> 等於 4；<code>3 %% 2</code> 等於 1。</p></li>
+</ul></li>
+<li><p><strong>Logs.</strong> <code>log()</code>, <code>log2()</code>, <code>log10()</code></p></li>
+<li><p><strong>Logical comparisons.</strong> <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>!=</code>.</p></li>
+<li><p><strong>Offsets.</strong> <code>lead()</code> and <code>lag()</code>.</p>
+<ul>
+<li><p><code>lead()</code> 可以用來指涉 leading values，而 <code>lag()</code> 可以用來指涉 lagging values。與 <code>group_by()</code> 一起使用有很大的用處。</p></li>
+<li><p>例如 <code>x &lt;- 1 : 10</code>。<code>lead(x)</code> 會是 <code>2 3 4 5 6 7 8 9 10 NA</code>，而 <code>lag(x)</code> 會是 <code>NA 1 2 3 4 5 6 7 8 9</code>。</p></li>
+</ul></li>
+<li><p><strong>Logical comparisons.</strong> <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>!=</code>.</p></li>
+<li><p><strong>Ranking.</strong> <code>min_rank()</code>, <code>row_number()</code>, <code>dense_rank()</code>, <code>percent_rank()</code>, <code>cume_dist()</code>, <code>ntile()</code>.</p>
+<ul>
+<li><p><code>min_rank()</code>：依序輸入的向量中的元素依序報出向量各元素的大小排名（由小而大），<strong>重複的順序將會跳號</strong>。如 <code>y &lt;- c(3, 4, 5, 2, 1)</code>，第一個元素是第 3 小，第二個元素是第 4 小，第三個元素是第 5 小，第四個元素是第 2 小，第五個元素最小，因此回傳 <code>3 4 5 2 1</code>。而我們也可以搭配使用 <code>desc()</code>，則第一個元素是第 3 大，第二個元素是第 2 大，以此類推，將會回傳 <code>3 2 1 4 5</code>。</p></li>
+<li><p><code>row_number</code>：類似 <code>min_rank()</code>，但如果有重複的元素，將會把較前面的排的比較小。例如 <code>z &lt;- c(1, 1, 0, 2, 3)</code>，輸入 <code>min_rank()</code> 將會回傳 <code>2 2 1 4 5</code>；而輸入 <code>row_number()</code> 將會回傳 <code>2 3 1 4 5</code>。</p></li>
+<li><p><code>dense_rank()</code>：類似 <code>min_rank()</code>，但重複的順序不會跳號，如 <code>z &lt;- c(1, 1, 0, 2, 3)</code>，輸入 <code>dense_rank()</code> 將會回傳 <code>2 2 1 3 4</code>。</p></li>
+<li><p><code>percent_rank(y)</code>：<code>min_rank()</code> 的百分比版本。</p></li>
+<li><p><code>cume_dist(y)</code>：<code>min_rank()</code> 的累積版本。</p></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="dplyr.html#cb367-1" aria-hidden="true" tabindex="-1"></a>y<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb367-2"><a href="dplyr.html#cb367-2" aria-hidden="true" tabindex="-1"></a><span class="fu">min_rank</span>(y)</span>
+<span id="cb367-3"><a href="dplyr.html#cb367-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1]  1  2  2 NA  4  5</span></span>
+<span id="cb367-4"><a href="dplyr.html#cb367-4" aria-hidden="true" tabindex="-1"></a><span class="fu">row_number</span>(y)</span>
+<span id="cb367-5"><a href="dplyr.html#cb367-5" aria-hidden="true" tabindex="-1"></a><span class="co"># [1]  1  2  3 NA  4  5</span></span>
+<span id="cb367-6"><a href="dplyr.html#cb367-6" aria-hidden="true" tabindex="-1"></a><span class="fu">row_number</span>(y)</span>
+<span id="cb367-7"><a href="dplyr.html#cb367-7" aria-hidden="true" tabindex="-1"></a><span class="co"># [1]  1  2  3 NA  4  5</span></span>
+<span id="cb367-8"><a href="dplyr.html#cb367-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dense_rank</span>(y)</span>
+<span id="cb367-9"><a href="dplyr.html#cb367-9" aria-hidden="true" tabindex="-1"></a><span class="co"># [1]  1  2  2 NA  3  4</span></span>
+<span id="cb367-10"><a href="dplyr.html#cb367-10" aria-hidden="true" tabindex="-1"></a><span class="fu">percent_rank</span>(y)</span>
+<span id="cb367-11"><a href="dplyr.html#cb367-11" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 0.00 0.25 0.25   NA 0.75 1.00</span></span>
+<span id="cb367-12"><a href="dplyr.html#cb367-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cume_dist</span>(y)</span>
+<span id="cb367-13"><a href="dplyr.html#cb367-13" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 0.2 0.6 0.6  NA 0.8 1.0</span></span></code></pre></div>
+<ul>
+<li><p><strong>Cumulative and rolling aggregates.</strong> <code>cumsum()</code>, <code>cumprod()</code>, <code>cummin()</code>, <code>cummax()</code>, <code>cummean()</code>.</p>
+<ul>
+<li><p>前四者為 R 本身提供，<code>cummean()</code> 為 <code>dplyr</code> 所提供。</p></li>
+<li><p>分別可以計算 running sums、products、mins、maxes 與 cumulative means，例如：</p></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="dplyr.html#cb368-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">:</span> <span class="dv">10</span></span>
+<span id="cb368-2"><a href="dplyr.html#cb368-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cumsum</span>(x)</span>
+<span id="cb368-3"><a href="dplyr.html#cb368-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1]  1  3  6 10 15 21 28 36 45 55</span></span>
+<span id="cb368-4"><a href="dplyr.html#cb368-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cumprod</span>(x)</span>
+<span id="cb368-5"><a href="dplyr.html#cb368-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1]       1       2       6      24     120     720    5040   40320  362880</span></span>
+<span id="cb368-6"><a href="dplyr.html#cb368-6" aria-hidden="true" tabindex="-1"></a><span class="co"># [10] 3628800</span></span>
+<span id="cb368-7"><a href="dplyr.html#cb368-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cummin</span>(x)</span>
+<span id="cb368-8"><a href="dplyr.html#cb368-8" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1] 1 1 1 1 1 1 1 1 1 1</span></span>
+<span id="cb368-9"><a href="dplyr.html#cb368-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cummax</span>(x)</span>
+<span id="cb368-10"><a href="dplyr.html#cb368-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1]  1  2  3  4  5  6  7  8  9 10</span></span>
+<span id="cb368-11"><a href="dplyr.html#cb368-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cummean</span>(x)</span>
+<span id="cb368-12"><a href="dplyr.html#cb368-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5</span></span></code></pre></div>
+</div>
+</div>
+<div id="summarize" class="section level2" number="9.6">
+<h2><span class="header-section-number">9.6</span> Grouped Summaries with <code>summarize()</code></h2>
+<p><code>summarize()</code> 會把整個表格整理成單一個 row。我們可以使用 <code>summarize()</code> 來計算全部航班的 <code>dep_delay</code> 的平均值：</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="dplyr.html#cb369-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(flights, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   delay
+##   &lt;dbl&gt;
+## 1  12.6</code></pre>
+<p>其中，使用 <code>na.rm = TRUE</code> 的原因在避免計算出一大堆 <code>NA</code>，見節 <a href="dplyr.html#missingvaluesdplyr">9.6.2</a>。</p>
+<p>但 <code>summarize()</code> 要搭配上 <code>group_by()</code> 才顯得更強大。如果我們想要知道每天的 <code>dep_delay</code> 的平均到底是多少與每天有多少個航班，我們可以使用 <code>group_by()</code>，將 <code>flights</code> 這個 dataset 依照 <code>year</code>、<code>month</code>、<code>day</code> 分組，然後指派給變數 <code>by_day</code>。接著，我們就可以使用 <code>summarize()</code>，並定義兩個新變數欄位為 <code>delay</code> 與 <code>count</code>，如：</p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="dplyr.html#cb371-1" aria-hidden="true" tabindex="-1"></a>by_day <span class="ot">&lt;-</span> <span class="fu">group_by</span>(flights, year, month, day)</span>
+<span id="cb371-2"><a href="dplyr.html#cb371-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(by_day, <span class="at">delay =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 5
+## # Groups:   year, month [12]
+##     year month   day delay count
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt;
+##  1  2013     1     1 11.5    842
+##  2  2013     1     2 13.9    943
+##  3  2013     1     3 11.0    914
+##  4  2013     1     4  8.95   915
+##  5  2013     1     5  5.73   720
+##  6  2013     1     6  7.15   832
+##  7  2013     1     7  5.42   933
+##  8  2013     1     8  2.55   899
+##  9  2013     1     9  2.28   902
+## 10  2013     1    10  2.84   932
+## # … with 355 more rows</code></pre>
+<div id="以-pipe-結合多重運算" class="section level3" number="9.6.1">
+<h3><span class="header-section-number">9.6.1</span> 以 Pipe 結合多重運算</h3>
+<p>如果我們想知道距離與每個地點的平均延誤的關係，我們可以：</p>
+<ol style="list-style-type: decimal">
+<li><p>使用 <code>group_by</code>，依據 <code>dest</code>（終點）來分類 <code>flights</code>。</p></li>
+<li><p>使用 <code>summarize()</code> 製造一個新的 tibble，列出各個 <code>dest</code> 的<strong>次數</strong>（<code>count</code>）、<strong>平均距離</strong>（<code>dist</code>）與<strong>平均抵達延誤</strong>（<code>delay</code>）。</p></li>
+<li><p>使用 <code>filter()</code>，第一個引數放入剛剛新建的表格，然後移除 noise（出現次數小於 20 次者），並移除 “HNL” 這個終點站。</p></li>
+</ol>
+<p>上面的步驟正如：</p>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="dplyr.html#cb374-1" aria-hidden="true" tabindex="-1"></a>by_dest <span class="ot">&lt;-</span> <span class="fu">group_by</span>(flights, dest)</span>
+<span id="cb374-2"><a href="dplyr.html#cb374-2" aria-hidden="true" tabindex="-1"></a>delay <span class="ot">&lt;-</span> <span class="fu">summarize</span>(by_dest, <span class="at">count =</span> <span class="fu">n</span>(), <span class="at">dist =</span> <span class="fu">mean</span>(distance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb374-3"><a href="dplyr.html#cb374-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="co"># 整理資料</span></span>
+<span id="cb374-4"><a href="dplyr.html#cb374-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb374-5"><a href="dplyr.html#cb374-5" aria-hidden="true" tabindex="-1"></a>delay <span class="ot">&lt;-</span> <span class="fu">filter</span>(delay, count <span class="sc">&gt;</span> <span class="dv">20</span>, dest <span class="sc">!=</span> <span class="st">&quot;HNL&quot;</span>)  <span class="co"># 移除噪點</span></span>
+<span id="cb374-6"><a href="dplyr.html#cb374-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb374-7"><a href="dplyr.html#cb374-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> delay, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> dist, <span class="at">y =</span> delay)) <span class="sc">+</span></span>
+<span id="cb374-8"><a href="dplyr.html#cb374-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> count), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb374-9"><a href="dplyr.html#cb374-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;loess&#39;</span>, <span class="at">formula =</span> <span class="st">&quot;y ~ x&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)  <span class="co"># 繪圖</span></span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-206-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>但這種撰寫程式碼的方式稍嫌惱人，因為我們還要幫中間的 data frame 取名字。使用 pipe <code>%&gt;%</code> 可以解決此問題：</p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="dplyr.html#cb375-1" aria-hidden="true" tabindex="-1"></a>delays <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb375-2"><a href="dplyr.html#cb375-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dest) <span class="sc">%&gt;%</span></span>
+<span id="cb375-3"><a href="dplyr.html#cb375-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb375-4"><a href="dplyr.html#cb375-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">dist =</span> <span class="fu">mean</span>(distance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb375-5"><a href="dplyr.html#cb375-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">delay =</span> <span class="fu">mean</span>(arr_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb375-6"><a href="dplyr.html#cb375-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count <span class="sc">&gt;</span> <span class="dv">20</span>, dest <span class="sc">!=</span> <span class="st">&quot;HNL&quot;</span>)</span></code></pre></div>
+<p><code>%&gt;%</code> 可以讀成 “then”，即我們先使用 <code>group_by</code> 分組，然後使用 <code>summarize()</code> 計算次數與平均數，然後使用 <code>filter()</code> 過濾掉噪點與不想要的觀察值。這背後的邏輯就是 <code>x %&gt;% f(y)</code> 即 <code>f(x, y)</code>，而 <code>x %&gt;% f(y) %&gt;% g(z)</code> 即 <code>g(f(x, y), z)</code>。</p>
+</div>
+<div id="missingvaluesdplyr" class="section level3" number="9.6.2">
+<h3><span class="header-section-number">9.6.2</span> 缺漏值</h3>
+<p>前開使用的 <code>na.rm</code> 引數的功能即決定要不要在計算前移除掉 <code>NA</code>。如果我們沒有設定 <code>na.rm = TRUE</code>，則我們將會製造出一大堆 <code>NA</code>，因為 <code>NA</code> 無論做什麼運算都會得到 <code>NA</code>，所以只要有其中一個觀察值的 <code>dep_delay</code> 為 <code>NA</code>，那一整天的平均就會是 <code>NA</code>，如：</p>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="dplyr.html#cb376-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
+<span id="cb376-2"><a href="dplyr.html#cb376-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb376-3"><a href="dplyr.html#cb376-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(dep_delay)) <span class="sc">%&gt;%</span></span>
+<span id="cb376-4"><a href="dplyr.html#cb376-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(mean) <span class="sc">%&gt;%</span></span>
+<span id="cb376-5"><a href="dplyr.html#cb376-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 8 × 2
+##     mean count
+##    &lt;dbl&gt; &lt;int&gt;
+## 1  0.145     1
+## 2  0.241     1
+## 3  1.61      1
+## 4  3.53      1
+## 5  6.06      1
+## 6  7.78      1
+## 7  7.93      1
+## 8 NA       358</code></pre>
+<p>我們可以發現製造了 358 個 NA！以下就不會產生上面的問題了：</p>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="dplyr.html#cb379-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
+<span id="cb379-2"><a href="dplyr.html#cb379-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb379-3"><a href="dplyr.html#cb379-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(dep_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p>在此，<code>NA</code> 代表航班取消；我們也可以先把 <code>NA</code> 的地方去除掉，如：</p>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="dplyr.html#cb380-1" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb380-2"><a href="dplyr.html#cb380-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(dep_delay), <span class="sc">!</span><span class="fu">is.na</span>(arr_delay))</span>
+<span id="cb380-3"><a href="dplyr.html#cb380-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb380-4"><a href="dplyr.html#cb380-4" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb380-5"><a href="dplyr.html#cb380-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb380-6"><a href="dplyr.html#cb380-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(dep_delay))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 4
+## # Groups:   year, month [12]
+##     year month   day  mean
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+##  1  2013     1     1 11.4 
+##  2  2013     1     2 13.7 
+##  3  2013     1     3 10.9 
+##  4  2013     1     4  8.97
+##  5  2013     1     5  5.73
+##  6  2013     1     6  7.15
+##  7  2013     1     7  5.42
+##  8  2013     1     8  2.56
+##  9  2013     1     9  2.30
+## 10  2013     1    10  2.84
+## # … with 355 more rows</code></pre>
+</div>
+<div id="計數" class="section level3" number="9.6.3">
+<h3><span class="header-section-number">9.6.3</span> 計數</h3>
+<p>我們可以加入計數（<code>n()</code>）或非缺漏值的計數（<code>sum(!is.na(x))</code>），避免我們從很小的樣本得出結論。</p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="dplyr.html#cb383-1" aria-hidden="true" tabindex="-1"></a>delays <span class="ot">&lt;-</span> not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb383-2"><a href="dplyr.html#cb383-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tailnum) <span class="sc">%&gt;%</span></span>
+<span id="cb383-3"><a href="dplyr.html#cb383-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">delay =</span> <span class="fu">mean</span>(arr_delay))</span>
+<span id="cb383-4"><a href="dplyr.html#cb383-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb383-5"><a href="dplyr.html#cb383-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> delays, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> delay)) <span class="sc">+</span></span>
+<span id="cb383-6"><a href="dplyr.html#cb383-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_freqpoly</span>(<span class="at">binwidth =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-211-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>我們可以發現，有些航班甚至可以延遲超過 300 秒！但我們如果畫出散佈圖就會發現，如果只有少數幾個航班的日子，取平均以後其變異就會非常大，即樣本越大，變異越小（類似大數法則中，當樣本越來越大，估計參數會機率收斂到母體參數的概念），如：</p>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="dplyr.html#cb384-1" aria-hidden="true" tabindex="-1"></a>delays <span class="ot">&lt;-</span> not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb384-2"><a href="dplyr.html#cb384-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tailnum) <span class="sc">%&gt;%</span></span>
+<span id="cb384-3"><a href="dplyr.html#cb384-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">delay =</span> <span class="fu">mean</span>(arr_delay, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="at">n=</span><span class="fu">n</span>())</span>
+<span id="cb384-4"><a href="dplyr.html#cb384-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb384-5"><a href="dplyr.html#cb384-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> delays, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> delay)) <span class="sc">+</span></span>
+<span id="cb384-6"><a href="dplyr.html#cb384-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-212-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>所以我們其實可以移除掉樣本過小的日期，如：</p>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="dplyr.html#cb385-1" aria-hidden="true" tabindex="-1"></a>delays <span class="sc">%&gt;%</span></span>
+<span id="cb385-2"><a href="dplyr.html#cb385-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb385-3"><a href="dplyr.html#cb385-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> delay)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-213-1.png" width="480" /></p>
+<p>我們接下來使用 <code>Lahman</code> 這個套件中的 <code>Batting</code> 這個 data frame 來討論棒球比賽中打擊者的表現與擊球次數的關係。</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="dplyr.html#cb386-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Lahman)  <span class="co"># 載入 Lahman</span></span>
+<span id="cb386-2"><a href="dplyr.html#cb386-2" aria-hidden="true" tabindex="-1"></a>batting <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(Lahman<span class="sc">::</span>Batting)  <span class="co"># 將 Batting 轉換成 tibble 型態</span></span>
+<span id="cb386-3"><a href="dplyr.html#cb386-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb386-4"><a href="dplyr.html#cb386-4" aria-hidden="true" tabindex="-1"></a>batters <span class="ot">&lt;-</span> batting <span class="sc">%&gt;%</span></span>
+<span id="cb386-5"><a href="dplyr.html#cb386-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(playerID) <span class="sc">%&gt;%</span></span>
+<span id="cb386-6"><a href="dplyr.html#cb386-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">ba =</span> <span class="fu">sum</span>(H, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sum</span>(AB, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb386-7"><a href="dplyr.html#cb386-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">ab =</span> <span class="fu">sum</span>(AB, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) )</span>
+<span id="cb386-8"><a href="dplyr.html#cb386-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb386-9"><a href="dplyr.html#cb386-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ba 為 batting average，即打擊率，衡量打擊的能力</span></span>
+<span id="cb386-10"><a href="dplyr.html#cb386-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ab 為 at bat，即上場打擊的機會</span></span>
+<span id="cb386-11"><a href="dplyr.html#cb386-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb386-12"><a href="dplyr.html#cb386-12" aria-hidden="true" tabindex="-1"></a>batters <span class="sc">%&gt;%</span></span>
+<span id="cb386-13"><a href="dplyr.html#cb386-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ab <span class="sc">&gt;</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb386-14"><a href="dplyr.html#cb386-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> ab, <span class="at">y =</span> ba)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb386-15"><a href="dplyr.html#cb386-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="R_learning_notes_files/figure-html/unnamed-chunk-214-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>我們可以發現，打擊次數越多的球員，打擊率也就越高，兩者有正向的關係；這可能是因為球隊會讓能打球的球員上場。</p>
+</div>
+<div id="有用的歸納函數" class="section level3" number="9.6.4">
+<h3><span class="header-section-number">9.6.4</span> 有用的歸納函數</h3>
+<ul>
+<li><strong>Measures of location:</strong> <code>mean(x)</code>, <code>median(x)</code>.</li>
+</ul>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="dplyr.html#cb388-1" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb388-2"><a href="dplyr.html#cb388-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb388-3"><a href="dplyr.html#cb388-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb388-4"><a href="dplyr.html#cb388-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># average delay:</span></span>
+<span id="cb388-5"><a href="dplyr.html#cb388-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_delay1 =</span> <span class="fu">mean</span>(arr_delay),</span>
+<span id="cb388-6"><a href="dplyr.html#cb388-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># average positive delay:</span></span>
+<span id="cb388-7"><a href="dplyr.html#cb388-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_delay2 =</span> <span class="fu">mean</span>(arr_delay[arr_delay <span class="sc">&gt;</span> <span class="dv">0</span>])</span>
+<span id="cb388-8"><a href="dplyr.html#cb388-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 5
+## # Groups:   year, month [12]
+##     year month   day avg_delay1 avg_delay2
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1  2013     1     1     12.7         32.5
+##  2  2013     1     2     12.7         32.0
+##  3  2013     1     3      5.73        27.7
+##  4  2013     1     4     -1.93        28.3
+##  5  2013     1     5     -1.53        22.6
+##  6  2013     1     6      4.24        24.4
+##  7  2013     1     7     -4.95        27.8
+##  8  2013     1     8     -3.23        20.8
+##  9  2013     1     9     -0.264       25.6
+## 10  2013     1    10     -5.90        27.3
+## # … with 355 more rows</code></pre>
+<ul>
+<li><p><strong>Measures of spread:</strong> <code>sd(x)</code>, <code>IQR(x)</code>, <code>mad(x)</code>.</p>
+<ul>
+<li>標準差、四分位距（interquartile range）與絕對中位差（median absolute deviation，即原數據減去中位數所得的新數據的絕對值的中位數）。</li>
+<li><span class="math inline">\(\mbox{MAD} = \mbox{median}(|X_i - \mbox{median}|)\)</span>.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="dplyr.html#cb391-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 算出不同目的地的距離標準差，並降冪排列</span></span>
+<span id="cb391-2"><a href="dplyr.html#cb391-2" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb391-3"><a href="dplyr.html#cb391-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dest) <span class="sc">%&gt;%</span></span>
+<span id="cb391-4"><a href="dplyr.html#cb391-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">distance_sd =</span> <span class="fu">sd</span>(distance)) <span class="sc">%&gt;%</span></span>
+<span id="cb391-5"><a href="dplyr.html#cb391-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(distance_sd))</span></code></pre></div>
+<pre><code>## # A tibble: 104 × 2
+##    dest  distance_sd
+##    &lt;chr&gt;       &lt;dbl&gt;
+##  1 EGE         10.5 
+##  2 SAN         10.4 
+##  3 SFO         10.2 
+##  4 HNL         10.0 
+##  5 SEA          9.98
+##  6 LAS          9.91
+##  7 PDX          9.87
+##  8 PHX          9.86
+##  9 LAX          9.66
+## 10 IND          9.46
+## # … with 94 more rows</code></pre>
+<ul>
+<li><p><strong>Measures of rank:</strong> <code>min(x)</code>, <code>quantile(x, 0.25)</code>, <code>max(x)</code>.</p>
+<ul>
+<li><code>quantile(x, 0.25)</code> 即大於 25 % 的樣本但小於剩餘的 75 % 者。</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="dplyr.html#cb393-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 算出每天第一班與最後一班班機</span></span>
+<span id="cb393-2"><a href="dplyr.html#cb393-2" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb393-3"><a href="dplyr.html#cb393-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb393-4"><a href="dplyr.html#cb393-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb393-5"><a href="dplyr.html#cb393-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">first =</span> <span class="fu">min</span>(dep_time),</span>
+<span id="cb393-6"><a href="dplyr.html#cb393-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">last =</span> <span class="fu">max</span>(dep_time)</span>
+<span id="cb393-7"><a href="dplyr.html#cb393-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 5
+## # Groups:   year, month [12]
+##     year month   day first  last
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1  2013     1     1   517  2356
+##  2  2013     1     2    42  2354
+##  3  2013     1     3    32  2349
+##  4  2013     1     4    25  2358
+##  5  2013     1     5    14  2357
+##  6  2013     1     6    16  2355
+##  7  2013     1     7    49  2359
+##  8  2013     1     8   454  2351
+##  9  2013     1     9     2  2252
+## 10  2013     1    10     3  2320
+## # … with 355 more rows</code></pre>
+<ul>
+<li><strong>Measures of position:</strong> <code>first(x)</code>, <code>nth(x, 2)</code>, <code>last(x)</code>.</li>
+</ul>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="dplyr.html#cb396-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 找出每天第一班與最後一班班機</span></span>
+<span id="cb396-2"><a href="dplyr.html#cb396-2" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb396-3"><a href="dplyr.html#cb396-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb396-4"><a href="dplyr.html#cb396-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb396-5"><a href="dplyr.html#cb396-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">first =</span> <span class="fu">min</span>(dep_time),</span>
+<span id="cb396-6"><a href="dplyr.html#cb396-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">last =</span> <span class="fu">max</span>(dep_time)</span>
+<span id="cb396-7"><a href="dplyr.html#cb396-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 5
+## # Groups:   year, month [12]
+##     year month   day first  last
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1  2013     1     1   517  2356
+##  2  2013     1     2    42  2354
+##  3  2013     1     3    32  2349
+##  4  2013     1     4    25  2358
+##  5  2013     1     5    14  2357
+##  6  2013     1     6    16  2355
+##  7  2013     1     7    49  2359
+##  8  2013     1     8   454  2351
+##  9  2013     1     9     2  2252
+## 10  2013     1    10     3  2320
+## # … with 355 more rows</code></pre>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="dplyr.html#cb399-1" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb399-2"><a href="dplyr.html#cb399-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb399-3"><a href="dplyr.html#cb399-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">min_rank</span>(<span class="fu">desc</span>(dep_time))) <span class="sc">%&gt;%</span></span>
+<span id="cb399-4"><a href="dplyr.html#cb399-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(r <span class="sc">%in%</span> <span class="fu">range</span>(r))</span></code></pre></div>
+<pre><code>## # A tibble: 770 × 20
+## # Groups:   year, month, day [365]
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1     2356           2359        -3      425            437
+##  3  2013     1     2       42           2359        43      518            442
+##  4  2013     1     2     2354           2359        -5      413            437
+##  5  2013     1     3       32           2359        33      504            442
+##  6  2013     1     3     2349           2359       -10      434            445
+##  7  2013     1     4       25           2359        26      505            442
+##  8  2013     1     4     2358           2359        -1      429            437
+##  9  2013     1     4     2358           2359        -1      436            445
+## 10  2013     1     5       14           2359        15      503            445
+## # … with 760 more rows, and 12 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;,
+## #   flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;,
+## #   distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, r &lt;int&gt;</code></pre>
+<ul>
+<li><p><strong>Counts:</strong> <code>n()</code>, <code>sum(!is.na(x))</code>, <code>n_distinct(x):</code>.</p>
+<ul>
+<li><code>sum(!is.na(x))</code>: non-missing values.</li>
+<li><code>n_distinct(x)</code>: the number of distinct (unique) values.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="dplyr.html#cb401-1" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb401-2"><a href="dplyr.html#cb401-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dest) <span class="sc">%&gt;%</span></span>
+<span id="cb401-3"><a href="dplyr.html#cb401-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">carriers =</span> <span class="fu">n_distinct</span>(carrier)) <span class="sc">%&gt;%</span></span>
+<span id="cb401-4"><a href="dplyr.html#cb401-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(carriers))</span></code></pre></div>
+<pre><code>## # A tibble: 104 × 2
+##    dest  carriers
+##    &lt;chr&gt;    &lt;int&gt;
+##  1 ATL          7
+##  2 BOS          7
+##  3 CLT          7
+##  4 ORD          7
+##  5 TPA          7
+##  6 AUS          6
+##  7 DCA          6
+##  8 DTW          6
+##  9 IAD          6
+## 10 MSP          6
+## # … with 94 more rows</code></pre>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="dplyr.html#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 因為 count() 太常用了</span></span>
+<span id="cb403-2"><a href="dplyr.html#cb403-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 所以甚至不用 summerize() 就可以直接使用</span></span>
+<span id="cb403-3"><a href="dplyr.html#cb403-3" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb403-4"><a href="dplyr.html#cb403-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(dest)</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="dplyr.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 甚至可以在引數 wt 加上權重</span></span>
+<span id="cb404-2"><a href="dplyr.html#cb404-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 如下算出各飛機的總里程</span></span>
+<span id="cb404-3"><a href="dplyr.html#cb404-3" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb404-4"><a href="dplyr.html#cb404-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(tailnum, <span class="at">wt =</span> distance)</span></code></pre></div>
+<pre><code>## # A tibble: 4,037 × 2
+##    tailnum      n
+##    &lt;chr&gt;    &lt;dbl&gt;
+##  1 D942DN    3418
+##  2 N0EGMQ  239143
+##  3 N10156  109664
+##  4 N102UW   25722
+##  5 N103US   24619
+##  6 N104UW   24616
+##  7 N10575  139903
+##  8 N105UW   23618
+##  9 N107US   21677
+## 10 N108UW   32070
+## # … with 4,027 more rows</code></pre>
+<ul>
+<li><p><strong>Counts and proportions of logical values:</strong> <code>sum(x &gt; 10)</code>, <code>mean(y == 0)</code>.</p>
+<ul>
+<li>如果這些邏輯判斷式為真，那就會回傳 <code>TRUE</code>，反之則回傳 <code>FALSE</code>。</li>
+<li>據此，我們可以使用 <code>sum()</code> 來得知符合這些條件的有多少，而使用 <code>mean()</code> 來得知符合條件的比例。</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="dplyr.html#cb406-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 如果我們想得知每天離開時間小於 500 的班次數目，可以如下</span></span>
+<span id="cb406-2"><a href="dplyr.html#cb406-2" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb406-3"><a href="dplyr.html#cb406-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb406-4"><a href="dplyr.html#cb406-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n_early =</span> <span class="fu">sum</span>(dep_time <span class="sc">&lt;</span> <span class="dv">500</span>))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 4
+## # Groups:   year, month [12]
+##     year month   day n_early
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;
+##  1  2013     1     1       0
+##  2  2013     1     2       3
+##  3  2013     1     3       4
+##  4  2013     1     4       3
+##  5  2013     1     5       3
+##  6  2013     1     6       2
+##  7  2013     1     7       2
+##  8  2013     1     8       1
+##  9  2013     1     9       3
+## 10  2013     1    10       3
+## # … with 355 more rows</code></pre>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="dplyr.html#cb409-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 如果我們想得知每天延誤超過一小時的航班的比例，可以如下</span></span>
+<span id="cb409-2"><a href="dplyr.html#cb409-2" aria-hidden="true" tabindex="-1"></a>not_cancelled <span class="sc">%&gt;%</span></span>
+<span id="cb409-3"><a href="dplyr.html#cb409-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb409-4"><a href="dplyr.html#cb409-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">hour_perc =</span> <span class="fu">mean</span>(arr_delay <span class="sc">&gt;</span> <span class="dv">60</span>))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 4
+## # Groups:   year, month [12]
+##     year month   day hour_perc
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;
+##  1  2013     1     1    0.0722
+##  2  2013     1     2    0.0851
+##  3  2013     1     3    0.0567
+##  4  2013     1     4    0.0396
+##  5  2013     1     5    0.0349
+##  6  2013     1     6    0.0470
+##  7  2013     1     7    0.0333
+##  8  2013     1     8    0.0213
+##  9  2013     1     9    0.0202
+## 10  2013     1    10    0.0183
+## # … with 355 more rows</code></pre>
+</div>
+<div id="依據多變數分組" class="section level3" number="9.6.5">
+<h3><span class="header-section-number">9.6.5</span> 依據多變數分組</h3>
+<p>像撥洋蔥一樣，但不太可能適用於有牽涉到排序的統計量，如中位數。</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="dplyr.html#cb412-1" aria-hidden="true" tabindex="-1"></a>daily <span class="ot">&lt;-</span> <span class="fu">group_by</span>(flights, year, month, day)</span>
+<span id="cb412-2"><a href="dplyr.html#cb412-2" aria-hidden="true" tabindex="-1"></a>(per_day <span class="ot">&lt;-</span><span class="fu">summarize</span>(daily,<span class="at">flights=</span><span class="fu">n</span>()))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;, &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 365 × 4
+## # Groups:   year, month [12]
+##     year month   day flights
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;
+##  1  2013     1     1     842
+##  2  2013     1     2     943
+##  3  2013     1     3     914
+##  4  2013     1     4     915
+##  5  2013     1     5     720
+##  6  2013     1     6     832
+##  7  2013     1     7     933
+##  8  2013     1     8     899
+##  9  2013     1     9     902
+## 10  2013     1    10     932
+## # … with 355 more rows</code></pre>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="dplyr.html#cb415-1" aria-hidden="true" tabindex="-1"></a>(per_month <span class="ot">&lt;-</span> <span class="fu">summarize</span>(per_day, <span class="at">flights =</span> <span class="fu">sum</span>(flights)))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## # A tibble: 12 × 3
+## # Groups:   year [1]
+##     year month flights
+##    &lt;int&gt; &lt;int&gt;   &lt;int&gt;
+##  1  2013     1   27004
+##  2  2013     2   24951
+##  3  2013     3   28834
+##  4  2013     4   28330
+##  5  2013     5   28796
+##  6  2013     6   28243
+##  7  2013     7   29425
+##  8  2013     8   29327
+##  9  2013     9   27574
+## 10  2013    10   28889
+## 11  2013    11   27268
+## 12  2013    12   28135</code></pre>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="dplyr.html#cb418-1" aria-hidden="true" tabindex="-1"></a>(per_year <span class="ot">&lt;-</span> <span class="fu">summarize</span>(per_month, <span class="at">flights =</span> <span class="fu">sum</span>(flights)))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##    year flights
+##   &lt;int&gt;   &lt;int&gt;
+## 1  2013  336776</code></pre>
+</div>
+<div id="取消分組" class="section level3" number="9.6.6">
+<h3><span class="header-section-number">9.6.6</span> 取消分組</h3>
+<p>使用 <code>ungroup()</code> 可以取消分組，如下：</p>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="dplyr.html#cb420-1" aria-hidden="true" tabindex="-1"></a>daily <span class="sc">%&gt;%</span></span>
+<span id="cb420-2"><a href="dplyr.html#cb420-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> <span class="co"># no longer grouped by date</span></span>
+<span id="cb420-3"><a href="dplyr.html#cb420-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">flights =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   flights
+##     &lt;int&gt;
+## 1  336776</code></pre>
+</div>
+</div>
+<div id="grouped-mutates-and-filters" class="section level2" number="9.7">
+<h2><span class="header-section-number">9.7</span> Grouped Mutates (and Filters)</h2>
+<p>除了與 <code>summarize()</code> 共同使用，<code>group_by</code> 與 <code>mutate()</code> 及 <code>filter()</code> 共同使用也很方便，例如：</p>
+<ul>
+<li>找每組最差的成員：</li>
+</ul>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="dplyr.html#cb422-1" aria-hidden="true" tabindex="-1"></a>flights_sml <span class="sc">%&gt;%</span></span>
+<span id="cb422-2"><a href="dplyr.html#cb422-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb422-3"><a href="dplyr.html#cb422-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">rank</span>(<span class="fu">desc</span>(arr_delay)) <span class="sc">&lt;</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 3,306 × 7
+## # Groups:   year, month, day [365]
+##     year month   day dep_delay arr_delay distance air_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+##  1  2013     1     1       853       851      184       41
+##  2  2013     1     1       290       338     1134      213
+##  3  2013     1     1       260       263      266       46
+##  4  2013     1     1       157       174      213       60
+##  5  2013     1     1       216       222      708      121
+##  6  2013     1     1       255       250      589      115
+##  7  2013     1     1       285       246     1085      146
+##  8  2013     1     1       192       191      199       44
+##  9  2013     1     1       379       456     1092      222
+## 10  2013     1     2       224       207      550       94
+## # … with 3,296 more rows</code></pre>
+<ul>
+<li>找到所有大於某個閾值的組別：</li>
+</ul>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="dplyr.html#cb424-1" aria-hidden="true" tabindex="-1"></a>popular_dests <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span></span>
+<span id="cb424-2"><a href="dplyr.html#cb424-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dest) <span class="sc">%&gt;%</span></span>
+<span id="cb424-3"><a href="dplyr.html#cb424-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">&gt;</span> <span class="dv">365</span>)</span>
+<span id="cb424-4"><a href="dplyr.html#cb424-4" aria-hidden="true" tabindex="-1"></a>popular_dests</span></code></pre></div>
+<pre><code>## # A tibble: 332,577 × 19
+## # Groups:   dest [77]
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # … with 332,567 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+## #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+## #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<ul>
+<li>標準化：</li>
+</ul>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="dplyr.html#cb426-1" aria-hidden="true" tabindex="-1"></a>popular_dests <span class="sc">%&gt;%</span></span>
+<span id="cb426-2"><a href="dplyr.html#cb426-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(arr_delay <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb426-3"><a href="dplyr.html#cb426-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop_delay =</span> arr_delay <span class="sc">/</span> <span class="fu">sum</span>(arr_delay)) <span class="sc">%&gt;%</span></span>
+<span id="cb426-4"><a href="dplyr.html#cb426-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year<span class="sc">:</span>day, dest, arr_delay, prop_delay)</span></code></pre></div>
+<pre><code>## # A tibble: 131,106 × 6
+## # Groups:   dest [77]
+##     year month   day dest  arr_delay prop_delay
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+##  1  2013     1     1 IAH          11  0.000111 
+##  2  2013     1     1 IAH          20  0.000201 
+##  3  2013     1     1 MIA          33  0.000235 
+##  4  2013     1     1 ORD          12  0.0000424
+##  5  2013     1     1 FLL          19  0.0000938
+##  6  2013     1     1 ORD           8  0.0000283
+##  7  2013     1     1 LAX           7  0.0000344
+##  8  2013     1     1 DFW          31  0.000282 
+##  9  2013     1     1 ATL          12  0.0000400
+## 10  2013     1     1 DTW          16  0.000116 
+## # … with 131,096 more rows</code></pre>
+
+</div>
+</div>
+<h3>參考文獻</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-wickhamDataScience2016" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. 2016. <em>R for <span>Data Science</span></em>. First Edition. <span>O’Reilly Media, Inc.</span>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ggplot22.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="EDA.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

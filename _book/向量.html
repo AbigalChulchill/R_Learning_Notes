@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1.2 向量 | R 學習筆記</title>
+  <meta name="description" content="1.2 向量 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1.2 向量 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1.2 向量 | R 學習筆記" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="變數與基本的運算.html"/>
+<link rel="next" href="矩陣.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="變數與基本的運算.html"><a href="變數與基本的運算.html"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="向量.html"><a href="向量.html"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="向量.html"><a href="向量.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="向量.html"><a href="向量.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="向量.html"><a href="向量.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="向量.html"><a href="向量.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="向量.html"><a href="向量.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="向量.html"><a href="向量.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="向量.html"><a href="向量.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="矩陣.html"><a href="矩陣.html"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="矩陣.html"><a href="矩陣.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="矩陣.html"><a href="矩陣.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="矩陣.html"><a href="矩陣.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="矩陣.html"><a href="矩陣.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="data-frames.html"><a href="data-frames.html"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="data-frames.html"><a href="data-frames.html#dataframesubsetting"><i class="fa fa-check"></i><b>1.5.1</b> 存取 data frames 中的元素與 subset</a></li>
+<li class="chapter" data-level="1.5.2" data-path="data-frames.html"><a href="data-frames.html#dataframeordering"><i class="fa fa-check"></i><b>1.5.2</b> 排序</a></li>
+<li class="chapter" data-level="1.5.3" data-path="data-frames.html"><a href="data-frames.html#其他操作-1"><i class="fa fa-check"></i><b>1.5.3</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="lists.html"><a href="lists.html"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="conditionals.html"><a href="conditionals.html"><i class="fa fa-check"></i><b>2.1</b> Conditionals</a></li>
+<li class="chapter" data-level="2.2" data-path="loops.html"><a href="loops.html"><i class="fa fa-check"></i><b>2.2</b> Loops</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="loops.html"><a href="loops.html#for-迴圈"><i class="fa fa-check"></i><b>2.2.1</b> <code>for</code> 迴圈</a></li>
+<li class="chapter" data-level="2.2.2" data-path="loops.html"><a href="loops.html#while-迴圈"><i class="fa fa-check"></i><b>2.2.2</b> <code>while</code> 迴圈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="functions-and-operators.html"><a href="functions-and-operators.html"><i class="fa fa-check"></i><b>2.3</b> Functions and Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="functions-and-operators.html"><a href="functions-and-operators.html#創建新函數"><i class="fa fa-check"></i><b>2.3.1</b> 創建新函數</a></li>
+<li class="chapter" data-level="2.3.2" data-path="functions-and-operators.html"><a href="functions-and-operators.html#defaultargument"><i class="fa fa-check"></i><b>2.3.2</b> 引數的預設值</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II 資料庫與基本的資料前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="資料來源匯入與匯出.html"><a href="資料來源匯入與匯出.html"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="資料來源匯入與匯出.html"><a href="資料來源匯入與匯出.html#tabulated-file-types"><i class="fa fa-check"></i><b>3.1.1</b> Tabulated File Types</a></li>
+<li class="chapter" data-level="3.1.2" data-path="資料來源匯入與匯出.html"><a href="資料來源匯入與匯出.html#匯入與匯出"><i class="fa fa-check"></i><b>3.1.2</b> 匯入與匯出</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="資料收集.html"><a href="資料收集.html"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="資料收集.html"><a href="資料收集.html#data-repositories"><i class="fa fa-check"></i><b>3.2.1</b> Data Repositories</a></li>
+<li class="chapter" data-level="3.2.2" data-path="資料收集.html"><a href="資料收集.html#apis"><i class="fa fa-check"></i><b>3.2.2</b> APIs</a></li>
+<li class="chapter" data-level="3.2.3" data-path="資料收集.html"><a href="資料收集.html#rvestweb"><i class="fa fa-check"></i><b>3.2.3</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="小結.html"><a href="小結.html"><i class="fa fa-check"></i><b>3.3</b> 小結</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> 資料前處理</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="datatable.html"><a href="datatable.html"><i class="fa fa-check"></i><b>4.1</b> Data Tables</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="datatable.html"><a href="datatable.html#排序-ordering"><i class="fa fa-check"></i><b>4.1.1</b> 排序 Ordering</a></li>
+<li class="chapter" data-level="4.1.2" data-path="datatable.html"><a href="datatable.html#子集-subsetting"><i class="fa fa-check"></i><b>4.1.2</b> 子集 Subsetting</a></li>
+<li class="chapter" data-level="4.1.3" data-path="datatable.html"><a href="datatable.html#加總-aggregation"><i class="fa fa-check"></i><b>4.1.3</b> 加總 Aggregation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="datatable.html"><a href="datatable.html#keying"><i class="fa fa-check"></i><b>4.1.4</b> Keying</a></li>
+<li class="chapter" data-level="4.1.5" data-path="datatable.html"><a href="datatable.html#編輯表格-updating-by-reference"><i class="fa fa-check"></i><b>4.1.5</b> 編輯表格 Updating by Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="merging.html"><a href="merging.html"><i class="fa fa-check"></i><b>4.2</b> Merging</a></li>
+<li class="chapter" data-level="4.3" data-path="實例.html"><a href="實例.html"><i class="fa fa-check"></i><b>4.3</b> 實例</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="實例.html"><a href="實例.html#thesportsdb-nba-dataset-preprocessing"><i class="fa fa-check"></i><b>4.3.1</b> TheSportsDB NBA Dataset Preprocessing</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III 以 <code>tidyverse</code> 進行資料探索</b></span></li>
+<li class="chapter" data-level="5" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>5</b> 以 <code>ggplot2</code> 進行資料視覺化</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="create.html"><a href="create.html"><i class="fa fa-check"></i><b>5.1</b> 創建一個 <code>ggplot</code></a></li>
+<li class="chapter" data-level="5.2" data-path="the-layered-grammar-of-graphics.html"><a href="the-layered-grammar-of-graphics.html"><i class="fa fa-check"></i><b>5.2</b> The Layered Grammar of Graphics</a></li>
+<li class="chapter" data-level="5.3" data-path="aesthetic-mappings.html"><a href="aesthetic-mappings.html"><i class="fa fa-check"></i><b>5.3</b> Aesthetic Mappings</a></li>
+<li class="chapter" data-level="5.4" data-path="facets.html"><a href="facets.html"><i class="fa fa-check"></i><b>5.4</b> Facets</a></li>
+<li class="chapter" data-level="5.5" data-path="幾何物件.html"><a href="幾何物件.html"><i class="fa fa-check"></i><b>5.5</b> 幾何物件</a></li>
+<li class="chapter" data-level="5.6" data-path="統計轉換.html"><a href="統計轉換.html"><i class="fa fa-check"></i><b>5.6</b> 統計轉換</a></li>
+<li class="chapter" data-level="5.7" data-path="position-adjustment.html"><a href="position-adjustment.html"><i class="fa fa-check"></i><b>5.7</b> Position Adjustment</a></li>
+<li class="chapter" data-level="5.8" data-path="coordinatedsystem.html"><a href="coordinatedsystem.html"><i class="fa fa-check"></i><b>5.8</b> 座標系統</a></li>
+<li class="chapter" data-level="5.9" data-path="標籤-1.html"><a href="標籤-1.html"><i class="fa fa-check"></i><b>5.9</b> 標籤</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>6</b> 以 <code>dplyr</code> 轉換資料</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="前言.html"><a href="前言.html"><i class="fa fa-check"></i><b>6.1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="前言.html"><a href="前言.html#前置作業-1"><i class="fa fa-check"></i><b>6.1.1</b> 前置作業</a></li>
+<li class="chapter" data-level="6.1.2" data-path="前言.html"><a href="前言.html#nycflights13"><i class="fa fa-check"></i><b>6.1.2</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="6.1.3" data-path="前言.html"><a href="前言.html#基礎-dplyr"><i class="fa fa-check"></i><b>6.1.3</b> 基礎 <code>dplyr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="filter.html"><a href="filter.html"><i class="fa fa-check"></i><b>6.2</b> Filter Rows with <code>filter()</code></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="filter.html"><a href="filter.html#比較"><i class="fa fa-check"></i><b>6.2.1</b> 比較</a></li>
+<li class="chapter" data-level="6.2.2" data-path="filter.html"><a href="filter.html#邏輯運算子"><i class="fa fa-check"></i><b>6.2.2</b> 邏輯運算子</a></li>
+<li class="chapter" data-level="6.2.3" data-path="filter.html"><a href="filter.html#缺漏值"><i class="fa fa-check"></i><b>6.2.3</b> 缺漏值</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="arrange.html"><a href="arrange.html"><i class="fa fa-check"></i><b>6.3</b> Arrange Rows with <code>arrange()</code></a></li>
+<li class="chapter" data-level="6.4" data-path="select.html"><a href="select.html"><i class="fa fa-check"></i><b>6.4</b> Select Columns with <code>select()</code></a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="select.html"><a href="select.html#常用的-5-個函數"><i class="fa fa-check"></i><b>6.4.1</b> 常用的 5 個函數</a></li>
+<li class="chapter" data-level="6.4.2" data-path="select.html"><a href="select.html#重新命名rename"><i class="fa fa-check"></i><b>6.4.2</b> 重新命名：<code>rename()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="mutate.html"><a href="mutate.html"><i class="fa fa-check"></i><b>6.5</b> Add New Variables with <code>mutate()</code></a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="mutate.html"><a href="mutate.html#useful-creation-functions"><i class="fa fa-check"></i><b>6.5.1</b> Useful Creation Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="summarize.html"><a href="summarize.html"><i class="fa fa-check"></i><b>6.6</b> Grouped Summaries with <code>summarize()</code></a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="summarize.html"><a href="summarize.html#以-pipe-結合多重運算"><i class="fa fa-check"></i><b>6.6.1</b> 以 Pipe 結合多重運算</a></li>
+<li class="chapter" data-level="6.6.2" data-path="summarize.html"><a href="summarize.html#missingvaluesdplyr"><i class="fa fa-check"></i><b>6.6.2</b> 缺漏值</a></li>
+<li class="chapter" data-level="6.6.3" data-path="summarize.html"><a href="summarize.html#計數"><i class="fa fa-check"></i><b>6.6.3</b> 計數</a></li>
+<li class="chapter" data-level="6.6.4" data-path="summarize.html"><a href="summarize.html#有用的歸納函數"><i class="fa fa-check"></i><b>6.6.4</b> 有用的歸納函數</a></li>
+<li class="chapter" data-level="6.6.5" data-path="summarize.html"><a href="summarize.html#依據多變數分組"><i class="fa fa-check"></i><b>6.6.5</b> 依據多變數分組</a></li>
+<li class="chapter" data-level="6.6.6" data-path="summarize.html"><a href="summarize.html#取消分組"><i class="fa fa-check"></i><b>6.6.6</b> 取消分組</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="grouped-mutates-and-filters.html"><a href="grouped-mutates-and-filters.html"><i class="fa fa-check"></i><b>6.7</b> Grouped Mutates (and Filters)</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="EDA.html"><a href="EDA.html"><i class="fa fa-check"></i><b>7</b> 探索性資料分析</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="事前準備.html"><a href="事前準備.html"><i class="fa fa-check"></i><b>7.1</b> 事前準備</a></li>
+<li class="chapter" data-level="7.2" data-path="問題.html"><a href="問題.html"><i class="fa fa-check"></i><b>7.2</b> 問題</a></li>
+<li class="chapter" data-level="7.3" data-path="variation.html"><a href="variation.html"><i class="fa fa-check"></i><b>7.3</b> Variation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="variation.html"><a href="variation.html#視覺化分配"><i class="fa fa-check"></i><b>7.3.1</b> 視覺化分配</a></li>
+<li class="chapter" data-level="7.3.2" data-path="variation.html"><a href="variation.html#代表性的變數值"><i class="fa fa-check"></i><b>7.3.2</b> 代表性的變數值</a></li>
+<li class="chapter" data-level="7.3.3" data-path="variation.html"><a href="variation.html#不尋常的變數值"><i class="fa fa-check"></i><b>7.3.3</b> 不尋常的變數值</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="missing-value.html"><a href="missing-value.html"><i class="fa fa-check"></i><b>7.4</b> Missing Value</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="missing-value.html"><a href="missing-value.html#替換掉-outliers"><i class="fa fa-check"></i><b>7.4.1</b> 替換掉 Outliers</a></li>
+<li class="chapter" data-level="7.4.2" data-path="missing-value.html"><a href="missing-value.html#比較-na-與否"><i class="fa fa-check"></i><b>7.4.2</b> 比較 <code>NA</code> 與否</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="covariation.html"><a href="covariation.html"><i class="fa fa-check"></i><b>7.5</b> Covariation</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="covariation.html"><a href="covariation.html#類別與連續變數"><i class="fa fa-check"></i><b>7.5.1</b> 類別與連續變數</a></li>
+<li class="chapter" data-level="7.5.2" data-path="covariation.html"><a href="covariation.html#兩個類別變數"><i class="fa fa-check"></i><b>7.5.2</b> 兩個類別變數</a></li>
+<li class="chapter" data-level="7.5.3" data-path="covariation.html"><a href="covariation.html#兩個連續變數"><i class="fa fa-check"></i><b>7.5.3</b> 兩個連續變數</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="模式與模型.html"><a href="模式與模型.html"><i class="fa fa-check"></i><b>7.6</b> 模式與模型</a></li>
+</ul></li>
+<li class="part"><span><b>IV 以 <code>tidyverse</code> 進行資料整理</b></span></li>
+<li class="chapter" data-level="8" data-path="tibble.html"><a href="tibble.html"><i class="fa fa-check"></i><b>8</b> 以 <code>tibble</code> 處理 Tibbles</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="創建-tibbles.html"><a href="創建-tibbles.html"><i class="fa fa-check"></i><b>8.1</b> 創建 Tibbles</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="創建-tibbles.html"><a href="創建-tibbles.html#把-data-frames-轉換-tibbles"><i class="fa fa-check"></i><b>8.1.1</b> 把 Data Frames 轉換 Tibbles</a></li>
+<li class="chapter" data-level="8.1.2" data-path="創建-tibbles.html"><a href="創建-tibbles.html#透過向量創建-tibbles"><i class="fa fa-check"></i><b>8.1.2</b> 透過向量創建 Tibbles</a></li>
+<li class="chapter" data-level="8.1.3" data-path="創建-tibbles.html"><a href="創建-tibbles.html#以-transposed-tibble-tribble-創建-tibbles"><i class="fa fa-check"></i><b>8.1.3</b> 以 Transposed Tibble <code>tribble()</code> 創建 Tibbles</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="tibbles-與-data-frames-的比較.html"><a href="tibbles-與-data-frames-的比較.html"><i class="fa fa-check"></i><b>8.2</b> Tibbles 與 Data Frames 的比較</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="tibbles-與-data-frames-的比較.html"><a href="tibbles-與-data-frames-的比較.html#printing"><i class="fa fa-check"></i><b>8.2.1</b> Printing</a></li>
+<li class="chapter" data-level="8.2.2" data-path="tibbles-與-data-frames-的比較.html"><a href="tibbles-與-data-frames-的比較.html#subsetting"><i class="fa fa-check"></i><b>8.2.2</b> Subsetting</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="古老的程式碼.html"><a href="古老的程式碼.html"><i class="fa fa-check"></i><b>8.3</b> 古老的程式碼</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="readr.html"><a href="readr.html"><i class="fa fa-check"></i><b>9</b> 以 <code>readr</code> 匯入資料</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="簡介.html"><a href="簡介.html"><i class="fa fa-check"></i><b>9.1</b> 簡介</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="簡介.html"><a href="簡介.html#與-base-r-比較"><i class="fa fa-check"></i><b>9.1.1</b> 與 base R 比較</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html"><i class="fa fa-check"></i><b>9.2</b> Parsing a Vector</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsenumber"><i class="fa fa-check"></i><b>9.2.1</b> Numbers</a></li>
+<li class="chapter" data-level="9.2.2" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsestring"><i class="fa fa-check"></i><b>9.2.2</b> Strings</a></li>
+<li class="chapter" data-level="9.2.3" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsefactor"><i class="fa fa-check"></i><b>9.2.3</b> Factors</a></li>
+<li class="chapter" data-level="9.2.4" data-path="parsing-a-vector.html"><a href="parsing-a-vector.html#parsedatetime"><i class="fa fa-check"></i><b>9.2.4</b> Dates, Date-Times, and Times</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="parsing-a-file.html"><a href="parsing-a-file.html"><i class="fa fa-check"></i><b>9.3</b> Parsing a File</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="parsing-a-file.html"><a href="parsing-a-file.html#策略"><i class="fa fa-check"></i><b>9.3.1</b> 策略</a></li>
+<li class="chapter" data-level="9.3.2" data-path="parsing-a-file.html"><a href="parsing-a-file.html#問題-1"><i class="fa fa-check"></i><b>9.3.2</b> 問題</a></li>
+<li class="chapter" data-level="9.3.3" data-path="parsing-a-file.html"><a href="parsing-a-file.html#其他策略"><i class="fa fa-check"></i><b>9.3.3</b> 其他策略</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="寫入檔案.html"><a href="寫入檔案.html"><i class="fa fa-check"></i><b>9.4</b> 寫入檔案</a></li>
+<li class="chapter" data-level="9.5" data-path="其他類型的資料.html"><a href="其他類型的資料.html"><i class="fa fa-check"></i><b>9.5</b> 其他類型的資料</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="tidyr.html"><a href="tidyr.html"><i class="fa fa-check"></i><b>10</b> 以 <code>tidyr</code> 整理資料</a></li>
+<li class="chapter" data-level="11" data-path="dplyr2.html"><a href="dplyr2.html"><i class="fa fa-check"></i><b>11</b> 以 <code>dplyr</code> 處理關聯性資料</a></li>
+<li class="chapter" data-level="12" data-path="stringr.html"><a href="stringr.html"><i class="fa fa-check"></i><b>12</b> 以 <code>stringr</code> 處理字串</a></li>
+<li class="chapter" data-level="13" data-path="forcats.html"><a href="forcats.html"><i class="fa fa-check"></i><b>13</b> 以 <code>forcats</code> 處理 Factors</a></li>
+<li class="chapter" data-level="14" data-path="lubridate.html"><a href="lubridate.html"><i class="fa fa-check"></i><b>14</b> 以 <code>lubridate</code> 處理日期時間</a></li>
+<li class="part"><span><b>V 編寫程式與 <code>tidyverse</code></b></span></li>
+<li class="chapter" data-level="15" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html"><i class="fa fa-check"></i><b>15</b> 以 <code>magrittr</code> 使用 Pipes</a></li>
+<li class="part"><span><b>VI R 與社會科學計量</b></span></li>
+<li class="chapter" data-level="16" data-path="單變數迴歸.html"><a href="單變數迴歸.html"><i class="fa fa-check"></i><b>16</b> 單變數迴歸</a>
+<ul>
+<li class="chapter" data-level="" data-path="單變數迴歸.html"><a href="單變數迴歸.html#需要的套件"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="16.1" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html"><i class="fa fa-check"></i><b>16.1</b> 解釋變數為連續變數</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html#探索性資料分析"><i class="fa fa-check"></i><b>16.1.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="16.1.2" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html#簡單線性迴歸"><i class="fa fa-check"></i><b>16.1.2</b> 簡單線性迴歸</a></li>
+<li class="chapter" data-level="16.1.3" data-path="解釋變數為連續變數.html"><a href="解釋變數為連續變數.html#observedfitted-values-and-residuals"><i class="fa fa-check"></i><b>16.1.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html"><i class="fa fa-check"></i><b>16.2</b> 解釋變數為類別變數</a>
+<ul>
+<li class="chapter" data-level="16.2.1" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html#探索性資料分析-1"><i class="fa fa-check"></i><b>16.2.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="16.2.2" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html#線性迴歸"><i class="fa fa-check"></i><b>16.2.2</b> 線性迴歸</a></li>
+<li class="chapter" data-level="16.2.3" data-path="解釋變數為類別變數.html"><a href="解釋變數為類別變數.html#observedfitted-values-and-residuals-1"><i class="fa fa-check"></i><b>16.2.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="多變數迴歸.html"><a href="多變數迴歸.html"><i class="fa fa-check"></i><b>17</b> 多變數迴歸</a></li>
+<li class="chapter" data-level="18" data-path="IV.html"><a href="IV.html"><i class="fa fa-check"></i><b>18</b> 工具變數</a></li>
+<li class="chapter" data-level="19" data-path="邊界估計.html"><a href="邊界估計.html"><i class="fa fa-check"></i><b>19</b> 邊界估計</a></li>
+<li class="chapter" data-level="20" data-path="縱貫資料.html"><a href="縱貫資料.html"><i class="fa fa-check"></i><b>20</b> 縱貫資料</a></li>
+<li class="chapter" data-level="21" data-path="合成控制.html"><a href="合成控制.html"><i class="fa fa-check"></i><b>21</b> 合成控制</a></li>
+<li class="chapter" data-level="22" data-path="探索性因素分析.html"><a href="探索性因素分析.html"><i class="fa fa-check"></i><b>22</b> 探索性因素分析</a></li>
+<li class="chapter" data-level="23" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html"><i class="fa fa-check"></i><b>23</b> 驗證性因素分析</a></li>
+<li class="part"><span><b>VII 網路與資料技術入門</b></span></li>
+<li class="chapter" data-level="24" data-path="html.html"><a href="html.html"><i class="fa fa-check"></i><b>24</b> HTML</a>
+<ul>
+<li class="chapter" data-level="24.1" data-path="sourcecode.html"><a href="sourcecode.html"><i class="fa fa-check"></i><b>24.1</b> 瀏覽器呈現與原始碼</a></li>
+<li class="chapter" data-level="24.2" data-path="htmlsyntax.html"><a href="htmlsyntax.html"><i class="fa fa-check"></i><b>24.2</b> 語法規則</a>
+<ul>
+<li class="chapter" data-level="24.2.1" data-path="htmlsyntax.html"><a href="htmlsyntax.html#標籤元素與屬性"><i class="fa fa-check"></i><b>24.2.1</b> 標籤、元素與屬性</a></li>
+<li class="chapter" data-level="24.2.2" data-path="htmlsyntax.html"><a href="htmlsyntax.html#樹結構"><i class="fa fa-check"></i><b>24.2.2</b> 樹結構</a></li>
+<li class="chapter" data-level="24.2.3" data-path="htmlsyntax.html"><a href="htmlsyntax.html#註釋"><i class="fa fa-check"></i><b>24.2.3</b> 註釋</a></li>
+<li class="chapter" data-level="24.2.4" data-path="htmlsyntax.html"><a href="htmlsyntax.html#保留與特殊字元"><i class="fa fa-check"></i><b>24.2.4</b> 保留與特殊字元</a></li>
+<li class="chapter" data-level="24.2.5" data-path="htmlsyntax.html"><a href="htmlsyntax.html#文件類型定義"><i class="fa fa-check"></i><b>24.2.5</b> 文件類型定義</a></li>
+<li class="chapter" data-level="24.2.6" data-path="htmlsyntax.html"><a href="htmlsyntax.html#空白與換行"><i class="fa fa-check"></i><b>24.2.6</b> 空白與換行</a></li>
+</ul></li>
+<li class="chapter" data-level="24.3" data-path="tagsattri.html"><a href="tagsattri.html"><i class="fa fa-check"></i><b>24.3</b> 標籤與屬性</a>
+<ul>
+<li class="chapter" data-level="24.3.1" data-path="tagsattri.html"><a href="tagsattri.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>24.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
+<li class="chapter" data-level="24.3.2" data-path="tagsattri.html"><a href="tagsattri.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>24.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
+<li class="chapter" data-level="24.3.3" data-path="tagsattri.html"><a href="tagsattri.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>24.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
+<li class="chapter" data-level="24.3.4" data-path="tagsattri.html"><a href="tagsattri.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>24.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
+<li class="chapter" data-level="24.3.5" data-path="tagsattri.html"><a href="tagsattri.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>24.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
+<li class="chapter" data-level="24.3.6" data-path="tagsattri.html"><a href="tagsattri.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>24.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
+<li class="chapter" data-level="24.3.7" data-path="tagsattri.html"><a href="tagsattri.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>24.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
+<li class="chapter" data-level="24.3.8" data-path="tagsattri.html"><a href="tagsattri.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>24.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
+<li class="chapter" data-level="24.3.9" data-path="tagsattri.html"><a href="tagsattri.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>24.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
+<li class="chapter" data-level="24.3.10" data-path="tagsattri.html"><a href="tagsattri.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>24.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
+<li class="chapter" data-level="24.3.11" data-path="tagsattri.html"><a href="tagsattri.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>24.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
+</ul></li>
+<li class="chapter" data-level="24.4" data-path="parsing.html"><a href="parsing.html"><i class="fa fa-check"></i><b>24.4</b> 解析</a>
+<ul>
+<li class="chapter" data-level="24.4.1" data-path="parsing.html"><a href="parsing.html#discarding-nodes"><i class="fa fa-check"></i><b>24.4.1</b> Discarding nodes</a></li>
+<li class="chapter" data-level="24.4.2" data-path="parsing.html"><a href="parsing.html#提取資訊"><i class="fa fa-check"></i><b>24.4.2</b> 提取資訊</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>25</b> XML 與 JSON</a></li>
+<li class="chapter" data-level="26" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>26</b> XPath</a></li>
+<li class="chapter" data-level="27" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>27</b> HTTP</a></li>
+<li class="chapter" data-level="28" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>28</b> AJAX</a></li>
+<li class="chapter" data-level="29" data-path="sql-與關聯性資料庫.html"><a href="sql-與關聯性資料庫.html"><i class="fa fa-check"></i><b>29</b> SQL 與關聯性資料庫</a></li>
+<li class="chapter" data-level="30" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>30</b> 正規表達式</a></li>
+<li class="part"><span><b>VIII 網路爬蟲</b></span></li>
+<li class="chapter" data-level="31" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>31</b> 網路爬蟲</a></li>
+<li class="part"><span><b>IX 自然語言的特色</b></span></li>
+<li class="chapter" data-level="32" data-path="語言與建模.html"><a href="語言與建模.html"><i class="fa fa-check"></i><b>32</b> 語言與建模</a></li>
+<li class="chapter" data-level="33" data-path="斷詞.html"><a href="斷詞.html"><i class="fa fa-check"></i><b>33</b> 斷詞</a></li>
+<li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="向量" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> 向量</h2>
+<p>向量（vector）是一列元素。我們以 <code>c()</code> 可以創造向量，裡頭的元素可以是 <code>numeric</code>、<code>character</code> 或 <code>logical</code> 其中一種，或者混合，而之間須以逗號分隔；我們可以用 <code>length()</code> 來得知向量的長度；如果裡頭的元素都是 <code>numeric</code>、<code>character</code> 或 <code>logical</code> 其中一種，則該向量的型態即其元素的型態，如：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="向量.html#cb9-1" aria-hidden="true" tabindex="-1"></a>vector.numbers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb9-2"><a href="向量.html#cb9-2" aria-hidden="true" tabindex="-1"></a>vector.numbers  <span class="co"># get &quot;1 2 3 4&quot;</span></span>
+<span id="cb9-3"><a href="向量.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(vector.numbers)  <span class="co"># &quot;4&quot;</span></span>
+<span id="cb9-4"><a href="向量.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(vector.numbers)  <span class="co"># get &quot;&#39;numeric&#39;&quot;</span></span>
+<span id="cb9-5"><a href="向量.html#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="向量.html#cb9-6" aria-hidden="true" tabindex="-1"></a>vector.characters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;R&quot;</span>, <span class="st">&quot;is&quot;</span>, <span class="st">&quot;cool&quot;</span>) </span>
+<span id="cb9-7"><a href="向量.html#cb9-7" aria-hidden="true" tabindex="-1"></a>vector.characters  <span class="co"># get &quot;&#39;R&#39;    &#39;is&#39;   &#39;cool&#39;&quot;</span></span>
+<span id="cb9-8"><a href="向量.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(vector.characters)  <span class="co"># get &quot;&#39;character&#39;&quot;</span></span>
+<span id="cb9-9"><a href="向量.html#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="向量.html#cb9-10" aria-hidden="true" tabindex="-1"></a>vector.logicals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb9-11"><a href="向量.html#cb9-11" aria-hidden="true" tabindex="-1"></a>vector.logicals  <span class="co"># get &quot;TRUE FALSE&quot;</span></span>
+<span id="cb9-12"><a href="向量.html#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(vector.logicals)  <span class="co"># get &quot;&#39;logical&#39;&quot;</span></span></code></pre></div>
+<p>但如果是向量內有不同種類的元素，那麼 R 會去讓向量裡的元素的型態變得更「一般」，即 character 優先於 numeric 又優先於 logical，就連 <code>NA</code> 都能被變成其他型態，如：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="向量.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;I&quot;</span>, <span class="st">&quot;am&quot;</span>, <span class="dv">1</span>)  <span class="co"># get &quot;&#39;I&#39;  &#39;am&#39; &#39;1&#39;&quot;</span></span>
+<span id="cb10-2"><a href="向量.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">c</span>(<span class="st">&quot;I&quot;</span>, <span class="st">&quot;am&quot;</span>, <span class="dv">1</span>))  <span class="co"># get &quot;&#39;character&#39;&quot;</span></span>
+<span id="cb10-3"><a href="向量.html#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="向量.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&quot;He&quot;</span>, <span class="st">&quot;is&quot;</span>, <span class="st">&quot;the&quot;</span>, <span class="cn">TRUE</span>)  <span class="co"># get &quot;&#39;He&#39;   &#39;is&#39;   &#39;the&#39;  &#39;TRUE&#39;&quot;</span></span>
+<span id="cb10-5"><a href="向量.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">c</span>(<span class="st">&quot;He&quot;</span>, <span class="st">&quot;is&quot;</span>, <span class="st">&quot;the&quot;</span>, <span class="cn">TRUE</span>))  <span class="co"># get &quot;&#39;character&#39;&quot;</span></span>
+<span id="cb10-6"><a href="向量.html#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="向量.html#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">FALSE</span>)  <span class="co"># get &quot;1 0&quot;</span></span>
+<span id="cb10-8"><a href="向量.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">FALSE</span>))  <span class="co"># get &quot;&#39;numeric&#39;&quot;</span></span>
+<span id="cb10-9"><a href="向量.html#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="向量.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">NA</span>, <span class="st">&quot;1&quot;</span>)  <span class="co"># get &quot;NA  &#39;1&#39;&quot;</span></span>
+<span id="cb10-11"><a href="向量.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="st">&quot;1&quot;</span>))  <span class="co"># get &quot;&#39;character&#39;&quot;</span></span>
+<span id="cb10-12"><a href="向量.html#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="向量.html#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">TRUE</span>)  <span class="co"># get &quot;NA  TRUE&quot;</span></span>
+<span id="cb10-14"><a href="向量.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">TRUE</span>))  <span class="co"># get &quot;&#39;logical&#39;&quot;</span></span></code></pre></div>
+<div id="創造向量的其他方法" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> 創造向量的其他方法</h3>
+<p>如果我們要創造一個連續的向量，可以使用 <code>a:b</code>，如：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="向量.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span><span class="dv">12</span>  <span class="co"># get &quot;3  4  5  6  7  8  9 10 11 12&quot;</span></span>
+<span id="cb11-2"><a href="向量.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">12</span>)  <span class="co"># get &quot;&#39;numeric&#39;&quot;</span></span></code></pre></div>
+<p>如果我們想要重複（repeat）某個數字或某群數字好幾遍，可以使用 <code>rep()</code>，例如：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="向量.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.5</span>), <span class="dv">3</span>)  <span class="co"># get &quot;3.0 -1.0  0.5  3.0 -1.0  0.5  3.0 -1.0  0.5&quot;</span></span>
+<span id="cb12-2"><a href="向量.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.5</span>), <span class="at">times=</span><span class="dv">3</span>)  <span class="co"># get &quot;3.0 -1.0  0.5  3.0 -1.0  0.5  3.0 -1.0  0.5&quot;</span></span>
+<span id="cb12-3"><a href="向量.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 所以第二個 argument 預設是整串重複幾次的意思</span></span>
+<span id="cb12-4"><a href="向量.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 但也能改成個別重複幾次，如下：</span></span>
+<span id="cb12-5"><a href="向量.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.5</span>), <span class="at">each=</span><span class="dv">3</span>)  <span class="co"># get &quot;3.0  3.0  3.0 -1.0 -1.0 -1.0  0.5  0.5  0.5&quot;</span></span></code></pre></div>
+<p>或者，我們可以在第二個 argument 丟入一個向量，指定第一個 argument 的個別的向量分別要重覆幾次，但這時候會長得像在第二個 argument 丟入 <code>each=</code> 的樣子，如：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="向量.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.5</span>), <span class="at">times=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>)) <span class="co"># get &quot;3.0  3.0 -1.0  0.5  0.5  0.5&quot;</span></span></code></pre></div>
+<p>我們也可以在第二個 argument 丟入一個 <code>length.out=</code>，這會使第一個 argument 的向量重複，而直到長度與 <code>length.out=</code> 的值相當，如：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="向量.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="fl">0.5</span>), <span class="at">length.out=</span><span class="dv">8</span>)  <span class="co"># get &quot;3.0 -1.0  0.5  3.0 -1.0  0.5  3.0 -1.0&quot;</span></span></code></pre></div>
+<p>除了手動輸入、使用 <code>a:b</code> 或者以 <code>rep()</code> 的方式產生向量，我們還可以使用 <code>seq()</code>，這可以創造出一個數列。<code>seq()</code> 有三個引數，第一個引數為起始值，第二個引數為結束值，第三個引述則為公差，如：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="向量.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="fl">2.5</span>)  <span class="co"># get &quot;0.0  2.5  5.0  7.5 10.0&quot;</span></span>
+<span id="cb15-2"><a href="向量.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="fl">2.3</span>)  <span class="co"># get &quot;0.0 2.3 4.6 6.9 9.2&quot;</span></span></code></pre></div>
+</div>
+<div id="標籤" class="section level3" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> 標籤</h3>
+<p>只要創建了向量，裡頭的元素就能以 <code>name()</code> 命名。在我們要指出向量中的特定元素時還蠻有用的。此功能也有點像 Python 裡頭的字典，如：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="向量.html#cb16-1" aria-hidden="true" tabindex="-1"></a>temperatures <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">27</span>, <span class="dv">27</span>, <span class="dv">30</span>)</span>
+<span id="cb16-2"><a href="向量.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(temperatures) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>, <span class="st">&quot;Wednesday&quot;</span>,</span>
+<span id="cb16-3"><a href="向量.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Thursday&quot;</span>, <span class="st">&quot;Friday&quot;</span>)</span>
+<span id="cb16-4"><a href="向量.html#cb16-4" aria-hidden="true" tabindex="-1"></a>temperatures</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##        28        29        27        27        30</code></pre>
+<p>這時候，ouput 就不會有 <code>[1]</code> 了，而是變成結構性的帶有標籤的向量。此外，如果要新增一個有同樣多座標且標籤順序一致的向量，有兩種方法。第一種方法是直接把 <code>names(標籤向量)</code> 指派給 <code>names(欲標籤的向量)</code>，這樣會把前者的標籤貼到後者身上；或者，我們還是可以仿效原先的做法，再新創一個同等長度的字串向量，然後輸入 <code>names(欲標籤的向量)</code>，如下：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="向量.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 1</span></span>
+<span id="cb18-2"><a href="向量.html#cb18-2" aria-hidden="true" tabindex="-1"></a>rains <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb18-3"><a href="向量.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rains) <span class="ot">&lt;-</span> <span class="fu">names</span>(temperatures)</span>
+<span id="cb18-4"><a href="向量.html#cb18-4" aria-hidden="true" tabindex="-1"></a>rains</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##         0         5         6         0         2</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="向量.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 2</span></span>
+<span id="cb20-2"><a href="向量.html#cb20-2" aria-hidden="true" tabindex="-1"></a>rains <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NULL</span>, <span class="dv">5</span>)  <span class="co"># 先清空剛剛指派的 named num [1:5]</span></span>
+<span id="cb20-3"><a href="向量.html#cb20-3" aria-hidden="true" tabindex="-1"></a>rains <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb20-4"><a href="向量.html#cb20-4" aria-hidden="true" tabindex="-1"></a>days <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>, <span class="st">&quot;Wednesday&quot;</span>, <span class="st">&quot;Thursday&quot;</span>, <span class="st">&quot;Friday&quot;</span>)</span>
+<span id="cb20-5"><a href="向量.html#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rains) <span class="ot">&lt;-</span> days</span>
+<span id="cb20-6"><a href="向量.html#cb20-6" aria-hidden="true" tabindex="-1"></a>rains</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##         0         5         6         0         2</code></pre>
+</div>
+<div id="vectcalc" class="section level3" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> 向量的運算</h3>
+<p>而如果我們想要把向量中的每個數字都加上另一個數字，只要直接把兩個物件相加就行了（雖然這違反了數學邏輯的公理）；如果要把向量中的每個數字都乘上某個數字也是同理，如攝氏溫標轉換成凱式溫標與華氏溫標：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="向量.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kelvin degrees</span></span>
+<span id="cb22-2"><a href="向量.html#cb22-2" aria-hidden="true" tabindex="-1"></a>Ktemp <span class="ot">&lt;-</span> temperatures <span class="sc">+</span> <span class="fl">273.15</span></span>
+<span id="cb22-3"><a href="向量.html#cb22-3" aria-hidden="true" tabindex="-1"></a>Ktemp</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##    301.15    302.15    300.15    300.15    303.15</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="向量.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fahrenheit degrees</span></span>
+<span id="cb24-2"><a href="向量.html#cb24-2" aria-hidden="true" tabindex="-1"></a>Ftemp <span class="ot">&lt;-</span> temperatures <span class="sc">*</span> <span class="fl">1.8</span> <span class="sc">+</span> <span class="dv">32</span></span>
+<span id="cb24-3"><a href="向量.html#cb24-3" aria-hidden="true" tabindex="-1"></a>Ftemp</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##      82.4      84.2      80.6      80.6      86.0</code></pre>
+<p>減、除、次方也是類似的道理。</p>
+<p>此外，<code>sum()</code> 可以將所有向量的座標加總，如：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="向量.html#cb26-1" aria-hidden="true" tabindex="-1"></a>total.rains <span class="ot">&lt;-</span> <span class="fu">sum</span>(rains)</span>
+<span id="cb26-2"><a href="向量.html#cb26-2" aria-hidden="true" tabindex="-1"></a>total.rains  <span class="co"># get &quot;13&quot;</span></span></code></pre></div>
+</div>
+<div id="accesselements" class="section level3" number="1.2.4">
+<h3><span class="header-section-number">1.2.4</span> 存取向量中的元素</h3>
+<p>在 R 語言中，第一個位置是 1（而不像有些語言是從 0 開始），並依序下去。如果我們要<strong>存取一個向量中的元素</strong>，可以直接指定向量中的位置；若要<strong>存取多個元素</strong>，就要使用 <code>變數[c(想指定的位置)]</code>；<strong>存取連續的位置</strong>則依然可以使用 <code>a:b</code>；當然也可以丟<strong>等差數列</strong> <code>seq()</code> 進去，如：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="向量.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 存取一個元素</span></span>
+<span id="cb27-2"><a href="向量.html#cb27-2" aria-hidden="true" tabindex="-1"></a>rains[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## Tuesday 
+##       5</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="向量.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 存取多個元素</span></span>
+<span id="cb29-2"><a href="向量.html#cb29-2" aria-hidden="true" tabindex="-1"></a>rains[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>## Tuesday  Friday 
+##       5       2</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="向量.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 存取連續的元素</span></span>
+<span id="cb31-2"><a href="向量.html#cb31-2" aria-hidden="true" tabindex="-1"></a>rains[<span class="dv">2</span><span class="sc">:</span> <span class="dv">5</span>]</span></code></pre></div>
+<pre><code>##   Tuesday Wednesday  Thursday    Friday 
+##         5         6         0         2</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="向量.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 等差地存取元素</span></span>
+<span id="cb33-2"><a href="向量.html#cb33-2" aria-hidden="true" tabindex="-1"></a>rains[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">2</span>)]</span></code></pre></div>
+<pre><code>##    Monday Wednesday    Friday 
+##         0         6         2</code></pre>
+<p>除了以位置來存取，當然也可以標籤來存取向量中的元素，如：</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="向量.html#cb35-1" aria-hidden="true" tabindex="-1"></a>rains[<span class="fu">c</span>(<span class="st">&quot;Monday&quot;</span>, <span class="st">&quot;Tuesday&quot;</span>)]</span></code></pre></div>
+<pre><code>##  Monday Tuesday 
+##       0       5</code></pre>
+</div>
+<div id="關係" class="section level3" number="1.2.5">
+<h3><span class="header-section-number">1.2.5</span> 關係</h3>
+<ul>
+<li><code>&lt;</code>：小於。</li>
+<li><code>&gt;</code>：大於。</li>
+<li><code>&lt;=</code>：小於或等於。</li>
+<li><code>&gt;=</code>：大於或等於。</li>
+<li><code>==</code>：相等。</li>
+<li><code>!=</code>：不相等。</li>
+</ul>
+<p>在兩個值之間加入這些關係符號，會輸出一個布林值，描述兩者的關係是否符合輸入的關係，如：</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="向量.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">&gt;</span> <span class="dv">3</span>  <span class="co"># get &quot;TRUE&quot;</span></span>
+<span id="cb37-2"><a href="向量.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">!=</span> <span class="dv">4</span>  <span class="co"># get &quot;FALSE&quot;</span></span></code></pre></div>
+<p>向量也能與一個數字比較，此時會依據向量裡頭的位置順序，連帶著標籤（如果有的話），輸出各個座標的布林值，如：</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="向量.html#cb38-1" aria-hidden="true" tabindex="-1"></a>rains <span class="sc">&gt;</span> <span class="dv">0</span></span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##     FALSE      TRUE      TRUE     FALSE      TRUE</code></pre>
+<p>也能考慮多重的關係。<code>&amp;</code> 代表的是「且」（and），而 <code>|</code> 代表的是「或」（or），而函數 <code>xor()</code> 在其中一者為真一者為假時會回傳真，在兩者皆真或皆假的情況會回傳假，如：</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="向量.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">==</span> <span class="dv">4</span> <span class="sc">&amp;</span> <span class="dv">3</span> <span class="sc">==</span> <span class="dv">3</span>  <span class="co"># get &quot;FALSE&quot;</span></span>
+<span id="cb40-2"><a href="向量.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span> <span class="dv">3</span> <span class="sc">==</span> <span class="dv">3</span>  <span class="co"># get &quot;TRUE&quot;</span></span>
+<span id="cb40-3"><a href="向量.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&lt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> <span class="dv">4</span> <span class="sc">&gt;</span> <span class="dv">2</span>  <span class="co"># get &quot;TRUE&quot;</span></span>
+<span id="cb40-4"><a href="向量.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">FALSE</span>  <span class="co"># get &quot;FALSE&quot;</span></span>
+<span id="cb40-5"><a href="向量.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(<span class="dv">3</span> <span class="sc">&gt;</span> <span class="dv">2</span>, <span class="cn">FALSE</span>)  <span class="co"># get &quot;TRUE&quot;</span></span>
+<span id="cb40-6"><a href="向量.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(<span class="dv">3</span> <span class="sc">&gt;</span> <span class="dv">2</span>, <span class="cn">TRUE</span>)  <span class="co"># get &quot;FALSE&quot;</span></span>
+<span id="cb40-7"><a href="向量.html#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">xor</span>(<span class="dv">3</span> <span class="sc">&lt;</span> <span class="dv">2</span>, <span class="cn">FALSE</span>)  <span class="co"># get &quot;FALSE&quot;</span></span></code></pre></div>
+<p>我們可以運用這些比較關係來確認向量裡頭的元素是否符合某個性質。例如是否下雨、是否溫度高於某個給定的溫度，即：</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="向量.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 沒下雨的日子</span></span>
+<span id="cb41-2"><a href="向量.html#cb41-2" aria-hidden="true" tabindex="-1"></a>not.rainy.days <span class="ot">&lt;-</span> rains <span class="sc">==</span> <span class="dv">0</span></span>
+<span id="cb41-3"><a href="向量.html#cb41-3" aria-hidden="true" tabindex="-1"></a>not.rainy.days</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##      TRUE     FALSE     FALSE      TRUE     FALSE</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="向量.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 炎熱的日子</span></span>
+<span id="cb43-2"><a href="向量.html#cb43-2" aria-hidden="true" tabindex="-1"></a>hot.days <span class="ot">&lt;-</span> temperatures <span class="sc">&gt;=</span> <span class="dv">29</span></span>
+<span id="cb43-3"><a href="向量.html#cb43-3" aria-hidden="true" tabindex="-1"></a>hot.days</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##     FALSE      TRUE     FALSE     FALSE      TRUE</code></pre>
+<p>還可以用剛剛新建的向量，來存取原先向量中的位置，如：</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="向量.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在 hot.days 中，Tues. 與 Fri. 是真</span></span>
+<span id="cb45-2"><a href="向量.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 所以 rains 中 Tues. 與 Fri. 標籤的位置的標籤與值會被叫出來</span></span>
+<span id="cb45-3"><a href="向量.html#cb45-3" aria-hidden="true" tabindex="-1"></a>rains[hot.days]</span></code></pre></div>
+<pre><code>## Tuesday  Friday 
+##       5       2</code></pre>
+<p>此外，我們可以透過兩個函數來一次檢查向量中的元素與某個性質之間的關係，即 <code>all()</code> 與 <code>any()</code>。前者在都有滿足的情況下就會回傳 <code>TRUE</code>，反之則回傳 <code>FALSE</code>；後者在其中一個座標有滿足的情況下就會回傳 <code>TRUE</code>，反之則回傳 <code>FALSE</code>。例如以下分別為「如果所有日子氣溫都大於等於 28 度則回傳 <code>TRUE</code>」與「如果其中一天氣溫恰等於 30 度則回傳 <code>TRUE</code>」，即：</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="向量.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(temperatures <span class="sc">&gt;=</span> <span class="dv">28</span>)  <span class="co"># get &quot;FALSE&quot;</span></span>
+<span id="cb47-2"><a href="向量.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(temperatures <span class="sc">&gt;=</span> <span class="dv">30</span>)  <span class="co"># get &quot;TRUE&quot;</span></span></code></pre></div>
+<p>另外，<code>which()</code> 則可以找到滿足條件的位置，即回傳為 <code>TRUE</code> 的位置的標籤與索引值，如找出溫度恰等於 27 度的日子：</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="向量.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(temperatures <span class="sc">==</span> <span class="dv">27</span>)</span></code></pre></div>
+<pre><code>## Wednesday  Thursday 
+##         3         4</code></pre>
+</div>
+<div id="排序" class="section level3" number="1.2.6">
+<h3><span class="header-section-number">1.2.6</span> 排序</h3>
+<p>我們可以使用 <code>order()</code>，其引數為一個向量，而此函數會回傳此向量中的元素的索引值為一個向量，由原向量的元素由小到大排列。如下，<code>order(some.vector)</code> 回傳的向量的第一個元素為 <code>5</code>，這意味著原先的向量中最小的元素 <code>2</code> 其索引值為 <code>5</code>，而次小的元素 <code>3</code> 其索引值為 <code>1</code>，依此類推，最大的元素 <code>9</code> 其索引值為 <code>3</code>：</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="向量.html#cb50-1" aria-hidden="true" tabindex="-1"></a>some.vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">8</span>)</span>
+<span id="cb50-2"><a href="向量.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">order</span>(some.vector)</span></code></pre></div>
+<pre><code>## [1] 5 1 4 2 6 3</code></pre>
+<p>所以，將 <code>order(some.vector)</code> 作為 <code>some.veector[]</code> 的引數（回憶節 <a href="向量.html#accesselements">1.2.4</a>），我們可以由小到大重新排列向量，即回傳一個向量，其第一個元素為原向量索引值 <code>5</code> 的元素，其值為 <code>2</code>，依此類推，如：</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="向量.html#cb52-1" aria-hidden="true" tabindex="-1"></a>some.vector[<span class="fu">order</span>(some.vector)]</span></code></pre></div>
+<pre><code>## [1] 2 3 6 7 8 9</code></pre>
+<p>不過要把向量由小排到大也可以使用 <code>sort()</code> 就是了。此操作不會改變原本的向量的排序，但會回傳排序後的向量。不過與上面的方法不同的是，此方法無法知道這些值原先在什麼位置：</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="向量.html#cb54-1" aria-hidden="true" tabindex="-1"></a>some.vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">8</span>)</span>
+<span id="cb54-2"><a href="向量.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(some.vector)</span></code></pre></div>
+<pre><code>## [1] 2 3 6 7 8 9</code></pre>
+</div>
+<div id="其他操作" class="section level3" number="1.2.7">
+<h3><span class="header-section-number">1.2.7</span> 其他操作</h3>
+<p>我們可以使用 <code>sum()</code> 將向量的所有元素的值加總；<code>max()</code> 與 <code>min()</code> 則分別會回傳其中最大與最小的值；<code>range()</code> 則將回傳向量中的元素的範圍（即同時回傳 <code>min()</code> 與 <code>max()</code>）；<code>mean()</code> 可以計算向量的算術平均，如：</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="向量.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(some.vector)  <span class="co"># get &quot;35&quot;</span></span>
+<span id="cb56-2"><a href="向量.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(some.vector)  <span class="co"># get &quot;9&quot;</span></span>
+<span id="cb56-3"><a href="向量.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(some.vector)  <span class="co"># get &quot;2&quot;</span></span>
+<span id="cb56-4"><a href="向量.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(some.vector)  <span class="co"># get &quot;2 9&quot;</span></span>
+<span id="cb56-5"><a href="向量.html#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(some.vector)  <span class="co"># get &quot;5.833333&quot;</span></span></code></pre></div>
+<p>結合 <code>which()</code>（回傳為 TRUE 的位置的標籤與索引值）與 <code>max()</code>（找到氣溫最高的值），就可以找到氣溫最高的日子的標籤與索引值，如：</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="向量.html#cb57-1" aria-hidden="true" tabindex="-1"></a>temperatures</span></code></pre></div>
+<pre><code>##    Monday   Tuesday Wednesday  Thursday    Friday 
+##        28        29        27        27        30</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="向量.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(temperatures <span class="sc">==</span> <span class="fu">min</span>(temperatures))</span></code></pre></div>
+<pre><code>## Wednesday  Thursday 
+##         3         4</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="向量.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(temperatures)</span></code></pre></div>
+<pre><code>## [1] 30</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="變數與基本的運算.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="矩陣.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["R_learning_notes.pdf", "R_learning_notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

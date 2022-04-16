@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>13 以 tidyr 整理資料 | R 學習筆記</title>
+  <meta name="description" content="13 以 tidyr 整理資料 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="13 以 tidyr 整理資料 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="13 以 tidyr 整理資料 | R 學習筆記" />
+  
+  
+  
+
+<meta name="author" content="Ting-Chih Hung" />
+
+
+<meta name="date" content="2021-09-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="readr.html"/>
+<link rel="next" href="dplyr2.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="rlang.html"><a href="rlang.html#變數與基本的運算"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="rlang.html"><a href="rlang.html#向量"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="rlang.html"><a href="rlang.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="rlang.html"><a href="rlang.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="rlang.html"><a href="rlang.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="rlang.html"><a href="rlang.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="rlang.html"><a href="rlang.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="rlang.html"><a href="rlang.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="rlang.html"><a href="rlang.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="rlang.html"><a href="rlang.html#矩陣"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="rlang.html"><a href="rlang.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="rlang.html"><a href="rlang.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="rlang.html"><a href="rlang.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="rlang.html"><a href="rlang.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="rlang.html"><a href="rlang.html#factors"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="rlang.html"><a href="rlang.html#data-frames"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="rlang.html"><a href="rlang.html#dataframesubsetting"><i class="fa fa-check"></i><b>1.5.1</b> 存取 data frames 中的元素與 subset</a></li>
+<li class="chapter" data-level="1.5.2" data-path="rlang.html"><a href="rlang.html#dataframeordering"><i class="fa fa-check"></i><b>1.5.2</b> 排序</a></li>
+<li class="chapter" data-level="1.5.3" data-path="rlang.html"><a href="rlang.html#其他操作-1"><i class="fa fa-check"></i><b>1.5.3</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="rlang.html"><a href="rlang.html#lists"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="control.html"><a href="control.html#conditionals"><i class="fa fa-check"></i><b>2.1</b> Conditionals</a></li>
+<li class="chapter" data-level="2.2" data-path="control.html"><a href="control.html#loops"><i class="fa fa-check"></i><b>2.2</b> Loops</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="control.html"><a href="control.html#for-迴圈"><i class="fa fa-check"></i><b>2.2.1</b> <code>for</code> 迴圈</a></li>
+<li class="chapter" data-level="2.2.2" data-path="control.html"><a href="control.html#while-迴圈"><i class="fa fa-check"></i><b>2.2.2</b> <code>while</code> 迴圈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="control.html"><a href="control.html#functions-and-operators"><i class="fa fa-check"></i><b>2.3</b> Functions and Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="control.html"><a href="control.html#創建新函數"><i class="fa fa-check"></i><b>2.3.1</b> 創建新函數</a></li>
+<li class="chapter" data-level="2.3.2" data-path="control.html"><a href="control.html#defaultargument"><i class="fa fa-check"></i><b>2.3.2</b> 引數的預設值</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II 資料庫與基本的資料前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rdata.html"><a href="rdata.html#資料來源匯入與匯出"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="rdata.html"><a href="rdata.html#tabulated-file-types"><i class="fa fa-check"></i><b>3.1.1</b> Tabulated File Types</a></li>
+<li class="chapter" data-level="3.1.2" data-path="rdata.html"><a href="rdata.html#匯入與匯出"><i class="fa fa-check"></i><b>3.1.2</b> 匯入與匯出</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="rdata.html"><a href="rdata.html#資料收集"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="rdata.html"><a href="rdata.html#data-repositories"><i class="fa fa-check"></i><b>3.2.1</b> Data Repositories</a></li>
+<li class="chapter" data-level="3.2.2" data-path="rdata.html"><a href="rdata.html#apis"><i class="fa fa-check"></i><b>3.2.2</b> APIs</a></li>
+<li class="chapter" data-level="3.2.3" data-path="rdata.html"><a href="rdata.html#rvestweb"><i class="fa fa-check"></i><b>3.2.3</b> Web Scraping</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="rdata.html"><a href="rdata.html#小結"><i class="fa fa-check"></i><b>3.3</b> 小結</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="preprocessing.html"><a href="preprocessing.html"><i class="fa fa-check"></i><b>4</b> 資料前處理</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="preprocessing.html"><a href="preprocessing.html#datatable"><i class="fa fa-check"></i><b>4.1</b> Data Tables</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="preprocessing.html"><a href="preprocessing.html#排序-ordering"><i class="fa fa-check"></i><b>4.1.1</b> 排序 Ordering</a></li>
+<li class="chapter" data-level="4.1.2" data-path="preprocessing.html"><a href="preprocessing.html#子集-subsetting"><i class="fa fa-check"></i><b>4.1.2</b> 子集 Subsetting</a></li>
+<li class="chapter" data-level="4.1.3" data-path="preprocessing.html"><a href="preprocessing.html#加總-aggregation"><i class="fa fa-check"></i><b>4.1.3</b> 加總 Aggregation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="preprocessing.html"><a href="preprocessing.html#keying"><i class="fa fa-check"></i><b>4.1.4</b> Keying</a></li>
+<li class="chapter" data-level="4.1.5" data-path="preprocessing.html"><a href="preprocessing.html#編輯表格-updating-by-reference"><i class="fa fa-check"></i><b>4.1.5</b> 編輯表格 Updating by Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="preprocessing.html"><a href="preprocessing.html#merging"><i class="fa fa-check"></i><b>4.2</b> Merging</a></li>
+<li class="chapter" data-level="4.3" data-path="preprocessing.html"><a href="preprocessing.html#實例"><i class="fa fa-check"></i><b>4.3</b> 實例</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="preprocessing.html"><a href="preprocessing.html#thesportsdb-nba-dataset-preprocessing"><i class="fa fa-check"></i><b>4.3.1</b> TheSportsDB NBA Dataset Preprocessing</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III 基礎矩陣代數</b></span></li>
+<li class="chapter" data-level="5" data-path="vector-matrix.html"><a href="vector-matrix.html"><i class="fa fa-check"></i><b>5</b> 向量與矩陣</a></li>
+<li class="chapter" data-level="6" data-path="rank-det-inv.html"><a href="rank-det-inv.html"><i class="fa fa-check"></i><b>6</b> Rank, Determinants and Inverses</a></li>
+<li class="part"><span><b>IV 以 <code>tidyverse</code> 進行資料探索</b></span></li>
+<li class="chapter" data-level="7" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>7</b> 以 <code>ggplot2</code> 進行資料視覺化</a>
+<ul>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#前置作業"><i class="fa fa-check"></i>前置作業</a></li>
+<li class="chapter" data-level="7.1" data-path="ggplot2.html"><a href="ggplot2.html#create"><i class="fa fa-check"></i><b>7.1</b> 創建一個 <code>ggplot</code></a></li>
+<li class="chapter" data-level="7.2" data-path="ggplot2.html"><a href="ggplot2.html#the-layered-grammar-of-graphics"><i class="fa fa-check"></i><b>7.2</b> The Layered Grammar of Graphics</a></li>
+<li class="chapter" data-level="7.3" data-path="ggplot2.html"><a href="ggplot2.html#aesthetic-mappings"><i class="fa fa-check"></i><b>7.3</b> Aesthetic Mappings</a></li>
+<li class="chapter" data-level="7.4" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>7.4</b> Facets</a></li>
+<li class="chapter" data-level="7.5" data-path="ggplot2.html"><a href="ggplot2.html#幾何物件"><i class="fa fa-check"></i><b>7.5</b> 幾何物件</a></li>
+<li class="chapter" data-level="7.6" data-path="ggplot2.html"><a href="ggplot2.html#統計轉換"><i class="fa fa-check"></i><b>7.6</b> 統計轉換</a></li>
+<li class="chapter" data-level="7.7" data-path="ggplot2.html"><a href="ggplot2.html#position-adjustment"><i class="fa fa-check"></i><b>7.7</b> Position Adjustment</a></li>
+<li class="chapter" data-level="7.8" data-path="ggplot2.html"><a href="ggplot2.html#coordinatedsystem"><i class="fa fa-check"></i><b>7.8</b> 座標系統</a></li>
+<li class="chapter" data-level="7.9" data-path="ggplot2.html"><a href="ggplot2.html#標籤-1"><i class="fa fa-check"></i><b>7.9</b> 標籤</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ggplot22.html"><a href="ggplot22.html"><i class="fa fa-check"></i><b>8</b> 更多 <code>ggplot2</code></a></li>
+<li class="chapter" data-level="9" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>9</b> 以 <code>dplyr</code> 轉換資料</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="dplyr.html"><a href="dplyr.html#前言"><i class="fa fa-check"></i><b>9.1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="dplyr.html"><a href="dplyr.html#前置作業-1"><i class="fa fa-check"></i><b>9.1.1</b> 前置作業</a></li>
+<li class="chapter" data-level="9.1.2" data-path="dplyr.html"><a href="dplyr.html#nycflights13"><i class="fa fa-check"></i><b>9.1.2</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="9.1.3" data-path="dplyr.html"><a href="dplyr.html#基礎-dplyr"><i class="fa fa-check"></i><b>9.1.3</b> 基礎 <code>dplyr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="dplyr.html"><a href="dplyr.html#filter"><i class="fa fa-check"></i><b>9.2</b> Filter Rows with <code>filter()</code></a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="dplyr.html"><a href="dplyr.html#比較"><i class="fa fa-check"></i><b>9.2.1</b> 比較</a></li>
+<li class="chapter" data-level="9.2.2" data-path="dplyr.html"><a href="dplyr.html#邏輯運算子"><i class="fa fa-check"></i><b>9.2.2</b> 邏輯運算子</a></li>
+<li class="chapter" data-level="9.2.3" data-path="dplyr.html"><a href="dplyr.html#缺漏值"><i class="fa fa-check"></i><b>9.2.3</b> 缺漏值</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="dplyr.html"><a href="dplyr.html#arrange"><i class="fa fa-check"></i><b>9.3</b> Arrange Rows with <code>arrange()</code></a></li>
+<li class="chapter" data-level="9.4" data-path="dplyr.html"><a href="dplyr.html#select"><i class="fa fa-check"></i><b>9.4</b> Select Columns with <code>select()</code></a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="dplyr.html"><a href="dplyr.html#常用的-5-個函數"><i class="fa fa-check"></i><b>9.4.1</b> 常用的 5 個函數</a></li>
+<li class="chapter" data-level="9.4.2" data-path="dplyr.html"><a href="dplyr.html#重新命名rename"><i class="fa fa-check"></i><b>9.4.2</b> 重新命名：<code>rename()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="dplyr.html"><a href="dplyr.html#mutate"><i class="fa fa-check"></i><b>9.5</b> Add New Variables with <code>mutate()</code></a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="dplyr.html"><a href="dplyr.html#useful-creation-functions"><i class="fa fa-check"></i><b>9.5.1</b> Useful Creation Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="dplyr.html"><a href="dplyr.html#summarize"><i class="fa fa-check"></i><b>9.6</b> Grouped Summaries with <code>summarize()</code></a>
+<ul>
+<li class="chapter" data-level="9.6.1" data-path="dplyr.html"><a href="dplyr.html#以-pipe-結合多重運算"><i class="fa fa-check"></i><b>9.6.1</b> 以 Pipe 結合多重運算</a></li>
+<li class="chapter" data-level="9.6.2" data-path="dplyr.html"><a href="dplyr.html#missingvaluesdplyr"><i class="fa fa-check"></i><b>9.6.2</b> 缺漏值</a></li>
+<li class="chapter" data-level="9.6.3" data-path="dplyr.html"><a href="dplyr.html#計數"><i class="fa fa-check"></i><b>9.6.3</b> 計數</a></li>
+<li class="chapter" data-level="9.6.4" data-path="dplyr.html"><a href="dplyr.html#有用的歸納函數"><i class="fa fa-check"></i><b>9.6.4</b> 有用的歸納函數</a></li>
+<li class="chapter" data-level="9.6.5" data-path="dplyr.html"><a href="dplyr.html#依據多變數分組"><i class="fa fa-check"></i><b>9.6.5</b> 依據多變數分組</a></li>
+<li class="chapter" data-level="9.6.6" data-path="dplyr.html"><a href="dplyr.html#取消分組"><i class="fa fa-check"></i><b>9.6.6</b> 取消分組</a></li>
+</ul></li>
+<li class="chapter" data-level="9.7" data-path="dplyr.html"><a href="dplyr.html#grouped-mutates-and-filters"><i class="fa fa-check"></i><b>9.7</b> Grouped Mutates (and Filters)</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="EDA.html"><a href="EDA.html"><i class="fa fa-check"></i><b>10</b> 探索性資料分析</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="EDA.html"><a href="EDA.html#事前準備"><i class="fa fa-check"></i><b>10.1</b> 事前準備</a></li>
+<li class="chapter" data-level="10.2" data-path="EDA.html"><a href="EDA.html#問題"><i class="fa fa-check"></i><b>10.2</b> 問題</a></li>
+<li class="chapter" data-level="10.3" data-path="EDA.html"><a href="EDA.html#variation"><i class="fa fa-check"></i><b>10.3</b> Variation</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="EDA.html"><a href="EDA.html#視覺化分配"><i class="fa fa-check"></i><b>10.3.1</b> 視覺化分配</a></li>
+<li class="chapter" data-level="10.3.2" data-path="EDA.html"><a href="EDA.html#代表性的變數值"><i class="fa fa-check"></i><b>10.3.2</b> 代表性的變數值</a></li>
+<li class="chapter" data-level="10.3.3" data-path="EDA.html"><a href="EDA.html#不尋常的變數值"><i class="fa fa-check"></i><b>10.3.3</b> 不尋常的變數值</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="EDA.html"><a href="EDA.html#missing-value"><i class="fa fa-check"></i><b>10.4</b> Missing Value</a>
+<ul>
+<li class="chapter" data-level="10.4.1" data-path="EDA.html"><a href="EDA.html#替換掉-outliers"><i class="fa fa-check"></i><b>10.4.1</b> 替換掉 Outliers</a></li>
+<li class="chapter" data-level="10.4.2" data-path="EDA.html"><a href="EDA.html#比較-na-與否"><i class="fa fa-check"></i><b>10.4.2</b> 比較 <code>NA</code> 與否</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="EDA.html"><a href="EDA.html#covariation"><i class="fa fa-check"></i><b>10.5</b> Covariation</a>
+<ul>
+<li class="chapter" data-level="10.5.1" data-path="EDA.html"><a href="EDA.html#類別與連續變數"><i class="fa fa-check"></i><b>10.5.1</b> 類別與連續變數</a></li>
+<li class="chapter" data-level="10.5.2" data-path="EDA.html"><a href="EDA.html#兩個類別變數"><i class="fa fa-check"></i><b>10.5.2</b> 兩個類別變數</a></li>
+<li class="chapter" data-level="10.5.3" data-path="EDA.html"><a href="EDA.html#兩個連續變數"><i class="fa fa-check"></i><b>10.5.3</b> 兩個連續變數</a></li>
+</ul></li>
+<li class="chapter" data-level="10.6" data-path="EDA.html"><a href="EDA.html#模式與模型"><i class="fa fa-check"></i><b>10.6</b> 模式與模型</a></li>
+</ul></li>
+<li class="part"><span><b>V 以 <code>tidyverse</code> 進行資料整理</b></span></li>
+<li class="chapter" data-level="11" data-path="tibble.html"><a href="tibble.html"><i class="fa fa-check"></i><b>11</b> 以 <code>tibble</code> 處理 Tibbles</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="tibble.html"><a href="tibble.html#創建-tibbles"><i class="fa fa-check"></i><b>11.1</b> 創建 Tibbles</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="tibble.html"><a href="tibble.html#把-data-frames-轉換-tibbles"><i class="fa fa-check"></i><b>11.1.1</b> 把 Data Frames 轉換 Tibbles</a></li>
+<li class="chapter" data-level="11.1.2" data-path="tibble.html"><a href="tibble.html#透過向量創建-tibbles"><i class="fa fa-check"></i><b>11.1.2</b> 透過向量創建 Tibbles</a></li>
+<li class="chapter" data-level="11.1.3" data-path="tibble.html"><a href="tibble.html#以-transposed-tibble-tribble-創建-tibbles"><i class="fa fa-check"></i><b>11.1.3</b> 以 Transposed Tibble <code>tribble()</code> 創建 Tibbles</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="tibble.html"><a href="tibble.html#tibbles-與-data-frames-的比較"><i class="fa fa-check"></i><b>11.2</b> Tibbles 與 Data Frames 的比較</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="tibble.html"><a href="tibble.html#printing"><i class="fa fa-check"></i><b>11.2.1</b> Printing</a></li>
+<li class="chapter" data-level="11.2.2" data-path="tibble.html"><a href="tibble.html#subsetting"><i class="fa fa-check"></i><b>11.2.2</b> Subsetting</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="tibble.html"><a href="tibble.html#古老的程式碼"><i class="fa fa-check"></i><b>11.3</b> 古老的程式碼</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="readr.html"><a href="readr.html"><i class="fa fa-check"></i><b>12</b> 以 <code>readr</code> 匯入資料</a>
+<ul>
+<li class="chapter" data-level="" data-path="readr.html"><a href="readr.html#需要的套件"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="12.1" data-path="readr.html"><a href="readr.html#簡介"><i class="fa fa-check"></i><b>12.1</b> 簡介</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="readr.html"><a href="readr.html#與-base-r-比較"><i class="fa fa-check"></i><b>12.1.1</b> 與 base R 比較</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="readr.html"><a href="readr.html#parsing-a-vector"><i class="fa fa-check"></i><b>12.2</b> Parsing a Vector</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="readr.html"><a href="readr.html#parsenumber"><i class="fa fa-check"></i><b>12.2.1</b> Numbers</a></li>
+<li class="chapter" data-level="12.2.2" data-path="readr.html"><a href="readr.html#parsestring"><i class="fa fa-check"></i><b>12.2.2</b> Strings</a></li>
+<li class="chapter" data-level="12.2.3" data-path="readr.html"><a href="readr.html#parsefactor"><i class="fa fa-check"></i><b>12.2.3</b> Factors</a></li>
+<li class="chapter" data-level="12.2.4" data-path="readr.html"><a href="readr.html#parsedatetime"><i class="fa fa-check"></i><b>12.2.4</b> Dates, Date-Times, and Times</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="readr.html"><a href="readr.html#parsing-a-file"><i class="fa fa-check"></i><b>12.3</b> Parsing a File</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="readr.html"><a href="readr.html#策略"><i class="fa fa-check"></i><b>12.3.1</b> 策略</a></li>
+<li class="chapter" data-level="12.3.2" data-path="readr.html"><a href="readr.html#問題-1"><i class="fa fa-check"></i><b>12.3.2</b> 問題</a></li>
+<li class="chapter" data-level="12.3.3" data-path="readr.html"><a href="readr.html#其他策略"><i class="fa fa-check"></i><b>12.3.3</b> 其他策略</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="readr.html"><a href="readr.html#寫入檔案"><i class="fa fa-check"></i><b>12.4</b> 寫入檔案</a></li>
+<li class="chapter" data-level="12.5" data-path="readr.html"><a href="readr.html#其他類型的資料"><i class="fa fa-check"></i><b>12.5</b> 其他類型的資料</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="tidyr.html"><a href="tidyr.html"><i class="fa fa-check"></i><b>13</b> 以 <code>tidyr</code> 整理資料</a>
+<ul>
+<li class="chapter" data-level="" data-path="tidyr.html"><a href="tidyr.html#需要的套件-1"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="13.1" data-path="tidyr.html"><a href="tidyr.html#tidy-data"><i class="fa fa-check"></i><b>13.1</b> Tidy Data</a></li>
+<li class="chapter" data-level="13.2" data-path="tidyr.html"><a href="tidyr.html#spreading-and-gathering"><i class="fa fa-check"></i><b>13.2</b> Spreading and Gathering</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="tidyr.html"><a href="tidyr.html#gathering"><i class="fa fa-check"></i><b>13.2.1</b> Gathering</a></li>
+<li class="chapter" data-level="13.2.2" data-path="tidyr.html"><a href="tidyr.html#spreading"><i class="fa fa-check"></i><b>13.2.2</b> Spreading</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="tidyr.html"><a href="tidyr.html#separating-and-pull"><i class="fa fa-check"></i><b>13.3</b> Separating and Pull</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="tidyr.html"><a href="tidyr.html#seperate"><i class="fa fa-check"></i><b>13.3.1</b> Seperate</a></li>
+<li class="chapter" data-level="13.3.2" data-path="tidyr.html"><a href="tidyr.html#unite"><i class="fa fa-check"></i><b>13.3.2</b> Unite</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="tidyr.html"><a href="tidyr.html#missing-values"><i class="fa fa-check"></i><b>13.4</b> Missing Values</a>
+<ul>
+<li class="chapter" data-level="13.4.1" data-path="tidyr.html"><a href="tidyr.html#讓潛藏的缺漏值顯露出來"><i class="fa fa-check"></i><b>13.4.1</b> 讓潛藏的缺漏值顯露出來</a></li>
+<li class="chapter" data-level="13.4.2" data-path="tidyr.html"><a href="tidyr.html#自動填入"><i class="fa fa-check"></i><b>13.4.2</b> 自動填入</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="dplyr2.html"><a href="dplyr2.html"><i class="fa fa-check"></i><b>14</b> 以 <code>dplyr</code> 處理關聯性資料</a>
+<ul>
+<li class="chapter" data-level="" data-path="dplyr2.html"><a href="dplyr2.html#需要的套件-2"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="14.1" data-path="dplyr2.html"><a href="dplyr2.html#nycflights13-1"><i class="fa fa-check"></i><b>14.1</b> <code>nycflights13</code></a></li>
+<li class="chapter" data-level="14.2" data-path="dplyr2.html"><a href="dplyr2.html#keys"><i class="fa fa-check"></i><b>14.2</b> Keys</a></li>
+<li class="chapter" data-level="14.3" data-path="dplyr2.html"><a href="dplyr2.html#mutating-joins"><i class="fa fa-check"></i><b>14.3</b> Mutating Joins</a></li>
+<li class="chapter" data-level="14.4" data-path="dplyr2.html"><a href="dplyr2.html#filtering-joins"><i class="fa fa-check"></i><b>14.4</b> Filtering joins</a></li>
+<li class="chapter" data-level="14.5" data-path="dplyr2.html"><a href="dplyr2.html#join-problems"><i class="fa fa-check"></i><b>14.5</b> Join Problems</a></li>
+<li class="chapter" data-level="14.6" data-path="dplyr2.html"><a href="dplyr2.html#set-operations"><i class="fa fa-check"></i><b>14.6</b> Set operations</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="stringr.html"><a href="stringr.html"><i class="fa fa-check"></i><b>15</b> 以 <code>stringr</code> 處理字串</a>
+<ul>
+<li class="chapter" data-level="" data-path="stringr.html"><a href="stringr.html#需要的套件-3"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="15.1" data-path="stringr.html"><a href="stringr.html#string-basics"><i class="fa fa-check"></i><b>15.1</b> String Basics</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="stringr.html"><a href="stringr.html#string-length"><i class="fa fa-check"></i><b>15.1.1</b> String Length</a></li>
+<li class="chapter" data-level="15.1.2" data-path="stringr.html"><a href="stringr.html#combining-strings"><i class="fa fa-check"></i><b>15.1.2</b> Combining Strings</a></li>
+<li class="chapter" data-level="15.1.3" data-path="stringr.html"><a href="stringr.html#subsetting-strings"><i class="fa fa-check"></i><b>15.1.3</b> Subsetting Strings</a></li>
+<li class="chapter" data-level="15.1.4" data-path="stringr.html"><a href="stringr.html#locales"><i class="fa fa-check"></i><b>15.1.4</b> Locales</a></li>
+</ul></li>
+<li class="chapter" data-level="15.2" data-path="stringr.html"><a href="stringr.html#matching-patterns-with-regular-expressions"><i class="fa fa-check"></i><b>15.2</b> Matching Patterns with Regular Expressions</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="stringr.html"><a href="stringr.html#basic-matches"><i class="fa fa-check"></i><b>15.2.1</b> Basic Matches</a></li>
+<li class="chapter" data-level="15.2.2" data-path="stringr.html"><a href="stringr.html#anchors"><i class="fa fa-check"></i><b>15.2.2</b> Anchors</a></li>
+<li class="chapter" data-level="15.2.3" data-path="stringr.html"><a href="stringr.html#character-classes-and-alternatives"><i class="fa fa-check"></i><b>15.2.3</b> Character Classes and Alternatives</a></li>
+<li class="chapter" data-level="15.2.4" data-path="stringr.html"><a href="stringr.html#repetition"><i class="fa fa-check"></i><b>15.2.4</b> Repetition</a></li>
+<li class="chapter" data-level="15.2.5" data-path="stringr.html"><a href="stringr.html#grouping-and-backreferences"><i class="fa fa-check"></i><b>15.2.5</b> Grouping and Backreferences</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="stringr.html"><a href="stringr.html#tools"><i class="fa fa-check"></i><b>15.3</b> Tools</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="stringr.html"><a href="stringr.html#detect-matches"><i class="fa fa-check"></i><b>15.3.1</b> Detect Matches</a></li>
+<li class="chapter" data-level="15.3.2" data-path="stringr.html"><a href="stringr.html#extract-matches"><i class="fa fa-check"></i><b>15.3.2</b> Extract Matches</a></li>
+<li class="chapter" data-level="15.3.3" data-path="stringr.html"><a href="stringr.html#grouped-matches"><i class="fa fa-check"></i><b>15.3.3</b> Grouped Matches</a></li>
+<li class="chapter" data-level="15.3.4" data-path="stringr.html"><a href="stringr.html#replacing-matches"><i class="fa fa-check"></i><b>15.3.4</b> Replacing Matches</a></li>
+<li class="chapter" data-level="15.3.5" data-path="stringr.html"><a href="stringr.html#splitting"><i class="fa fa-check"></i><b>15.3.5</b> Splitting</a></li>
+<li class="chapter" data-level="15.3.6" data-path="stringr.html"><a href="stringr.html#find-matches"><i class="fa fa-check"></i><b>15.3.6</b> Find Matches</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="stringr.html"><a href="stringr.html#other-types-of-pattern"><i class="fa fa-check"></i><b>15.4</b> Other Types of Pattern</a></li>
+<li class="chapter" data-level="15.5" data-path="stringr.html"><a href="stringr.html#other-uses-of-regular-expressions"><i class="fa fa-check"></i><b>15.5</b> Other Uses of Regular Expressions</a></li>
+<li class="chapter" data-level="15.6" data-path="stringr.html"><a href="stringr.html#stringi"><i class="fa fa-check"></i><b>15.6</b> stringi</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="forcats.html"><a href="forcats.html"><i class="fa fa-check"></i><b>16</b> 以 <code>forcats</code> 處理 Factors</a></li>
+<li class="chapter" data-level="17" data-path="lubridate.html"><a href="lubridate.html"><i class="fa fa-check"></i><b>17</b> 以 <code>lubridate</code> 處理日期時間</a></li>
+<li class="part"><span><b>VI 編寫程式與 <code>tidyverse</code></b></span></li>
+<li class="chapter" data-level="18" data-path="以-magrittr-使用-pipes.html"><a href="以-magrittr-使用-pipes.html"><i class="fa fa-check"></i><b>18</b> 以 <code>magrittr</code> 使用 Pipes</a></li>
+<li class="chapter" data-level="19" data-path="tidyfunction.html"><a href="tidyfunction.html"><i class="fa fa-check"></i><b>19</b> 函數</a></li>
+<li class="chapter" data-level="20" data-path="tidyvector.html"><a href="tidyvector.html"><i class="fa fa-check"></i><b>20</b> 向量</a></li>
+<li class="chapter" data-level="21" data-path="purrr.html"><a href="purrr.html"><i class="fa fa-check"></i><b>21</b> 遞迴與 <code>purrr</code></a></li>
+<li class="part"><span><b>VII <code>tidyverse</code> 與簡單的模型</b></span></li>
+<li class="chapter" data-level="22" data-path="modelr.html"><a href="modelr.html"><i class="fa fa-check"></i><b>22</b> <code>modelr</code> 與基礎的模型</a></li>
+<li class="chapter" data-level="23" data-path="modelbuilding.html"><a href="modelbuilding.html"><i class="fa fa-check"></i><b>23</b> 建立模型</a></li>
+<li class="chapter" data-level="24" data-path="purrrbroom.html"><a href="purrrbroom.html"><i class="fa fa-check"></i><b>24</b> <code>purrr</code> 與 <code>broom</code></a></li>
+<li class="part"><span><b>VIII R 與社會科學計量</b></span></li>
+<li class="chapter" data-level="25" data-path="singlereg.html"><a href="singlereg.html"><i class="fa fa-check"></i><b>25</b> 單變數迴歸</a>
+<ul>
+<li class="chapter" data-level="" data-path="singlereg.html"><a href="singlereg.html#需要的套件-4"><i class="fa fa-check"></i>需要的套件</a></li>
+<li class="chapter" data-level="25.1" data-path="singlereg.html"><a href="singlereg.html#解釋變數為連續變數"><i class="fa fa-check"></i><b>25.1</b> 解釋變數為連續變數</a>
+<ul>
+<li class="chapter" data-level="25.1.1" data-path="singlereg.html"><a href="singlereg.html#探索性資料分析"><i class="fa fa-check"></i><b>25.1.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="25.1.2" data-path="singlereg.html"><a href="singlereg.html#簡單線性迴歸"><i class="fa fa-check"></i><b>25.1.2</b> 簡單線性迴歸</a></li>
+<li class="chapter" data-level="25.1.3" data-path="singlereg.html"><a href="singlereg.html#observedfitted-values-and-residuals"><i class="fa fa-check"></i><b>25.1.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+<li class="chapter" data-level="25.2" data-path="singlereg.html"><a href="singlereg.html#解釋變數為類別變數"><i class="fa fa-check"></i><b>25.2</b> 解釋變數為類別變數</a>
+<ul>
+<li class="chapter" data-level="25.2.1" data-path="singlereg.html"><a href="singlereg.html#探索性資料分析-1"><i class="fa fa-check"></i><b>25.2.1</b> 探索性資料分析</a></li>
+<li class="chapter" data-level="25.2.2" data-path="singlereg.html"><a href="singlereg.html#線性迴歸"><i class="fa fa-check"></i><b>25.2.2</b> 線性迴歸</a></li>
+<li class="chapter" data-level="25.2.3" data-path="singlereg.html"><a href="singlereg.html#observedfitted-values-and-residuals-1"><i class="fa fa-check"></i><b>25.2.3</b> Observed/fitted values and residuals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="multireg.html"><a href="multireg.html"><i class="fa fa-check"></i><b>26</b> 多變數迴歸</a></li>
+<li class="chapter" data-level="27" data-path="binomial.html"><a href="binomial.html"><i class="fa fa-check"></i><b>27</b> 二元迴歸</a></li>
+<li class="chapter" data-level="28" data-path="logit.html"><a href="logit.html"><i class="fa fa-check"></i><b>28</b> Logit Regression</a></li>
+<li class="chapter" data-level="29" data-path="ologit.html"><a href="ologit.html"><i class="fa fa-check"></i><b>29</b> Ordered Logit Regression</a></li>
+<li class="chapter" data-level="30" data-path="IV.html"><a href="IV.html"><i class="fa fa-check"></i><b>30</b> 工具變數</a></li>
+<li class="chapter" data-level="31" data-path="邊界估計.html"><a href="邊界估計.html"><i class="fa fa-check"></i><b>31</b> 邊界估計</a></li>
+<li class="chapter" data-level="32" data-path="縱貫資料.html"><a href="縱貫資料.html"><i class="fa fa-check"></i><b>32</b> 縱貫資料</a></li>
+<li class="chapter" data-level="33" data-path="合成控制.html"><a href="合成控制.html"><i class="fa fa-check"></i><b>33</b> 合成控制</a></li>
+<li class="chapter" data-level="34" data-path="探索性因素分析.html"><a href="探索性因素分析.html"><i class="fa fa-check"></i><b>34</b> 探索性因素分析</a></li>
+<li class="chapter" data-level="35" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html"><i class="fa fa-check"></i><b>35</b> 驗證性因素分析</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#part-網路與資料技術入門"><i class="fa fa-check"></i>(PART) 網路與資料技術入門</a>
+<ul>
+<li class="chapter" data-level="35.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#sourcecode"><i class="fa fa-check"></i><b>35.1</b> 瀏覽器呈現與原始碼</a></li>
+<li class="chapter" data-level="35.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#htmlsyntax"><i class="fa fa-check"></i><b>35.2</b> 語法規則</a>
+<ul>
+<li class="chapter" data-level="35.2.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#標籤元素與屬性"><i class="fa fa-check"></i><b>35.2.1</b> 標籤、元素與屬性</a></li>
+<li class="chapter" data-level="35.2.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#樹結構"><i class="fa fa-check"></i><b>35.2.2</b> 樹結構</a></li>
+<li class="chapter" data-level="35.2.3" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#註釋"><i class="fa fa-check"></i><b>35.2.3</b> 註釋</a></li>
+<li class="chapter" data-level="35.2.4" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#保留與特殊字元"><i class="fa fa-check"></i><b>35.2.4</b> 保留與特殊字元</a></li>
+<li class="chapter" data-level="35.2.5" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#文件類型定義"><i class="fa fa-check"></i><b>35.2.5</b> 文件類型定義</a></li>
+<li class="chapter" data-level="35.2.6" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#空白與換行"><i class="fa fa-check"></i><b>35.2.6</b> 空白與換行</a></li>
+</ul></li>
+<li class="chapter" data-level="35.3" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#tagsattri"><i class="fa fa-check"></i><b>35.3</b> 標籤與屬性</a>
+<ul>
+<li class="chapter" data-level="35.3.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-anchor-tag-a"><i class="fa fa-check"></i><b>35.3.1</b> The anchor tag <code>&lt;a&gt;</code></a></li>
+<li class="chapter" data-level="35.3.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-metadata-tag-meta"><i class="fa fa-check"></i><b>35.3.2</b> The metadata tag <code>&lt;meta&gt;</code></a></li>
+<li class="chapter" data-level="35.3.3" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-external-reference-tag-link"><i class="fa fa-check"></i><b>35.3.3</b> The external reference tag <code>&lt;link&gt;</code></a></li>
+<li class="chapter" data-level="35.3.4" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#emphasizing-tags-b-i-strong"><i class="fa fa-check"></i><b>35.3.4</b> Emphasizing tags <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code></a></li>
+<li class="chapter" data-level="35.3.5" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-paragraphs-tag-p"><i class="fa fa-check"></i><b>35.3.5</b> The paragraphs tag <code>&lt;p&gt;</code></a></li>
+<li class="chapter" data-level="35.3.6" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#heading-tags-h1-h2-h3"><i class="fa fa-check"></i><b>35.3.6</b> Heading tags <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>,…</a></li>
+<li class="chapter" data-level="35.3.7" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#listing-content-with-ul-ol-and-dl"><i class="fa fa-check"></i><b>35.3.7</b> Listing content with <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;dl&gt;</code></a></li>
+<li class="chapter" data-level="35.3.8" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-organizational-tags-div-and-span"><i class="fa fa-check"></i><b>35.3.8</b> The organizational tags <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code></a></li>
+<li class="chapter" data-level="35.3.9" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-form-tag-and-its-companions"><i class="fa fa-check"></i><b>35.3.9</b> The <code>&lt;form&gt;</code> tag and its companions</a></li>
+<li class="chapter" data-level="35.3.10" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#the-foreign-script-tag-script"><i class="fa fa-check"></i><b>35.3.10</b> The foreign script tag <code>&lt;script&gt;</code></a></li>
+<li class="chapter" data-level="35.3.11" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#table-tags-table-tr-td-and-th"><i class="fa fa-check"></i><b>35.3.11</b> Table tags <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code>, and <code>&lt;th&gt;</code></a></li>
+</ul></li>
+<li class="chapter" data-level="35.4" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#parsing"><i class="fa fa-check"></i><b>35.4</b> 解析</a>
+<ul>
+<li class="chapter" data-level="35.4.1" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#discarding-nodes"><i class="fa fa-check"></i><b>35.4.1</b> Discarding nodes</a></li>
+<li class="chapter" data-level="35.4.2" data-path="驗證性因素分析.html"><a href="驗證性因素分析.html#提取資訊"><i class="fa fa-check"></i><b>35.4.2</b> 提取資訊</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="36" data-path="xml-與-json.html"><a href="xml-與-json.html"><i class="fa fa-check"></i><b>36</b> XML 與 JSON</a></li>
+<li class="chapter" data-level="37" data-path="xpath.html"><a href="xpath.html"><i class="fa fa-check"></i><b>37</b> XPath</a></li>
+<li class="chapter" data-level="38" data-path="http.html"><a href="http.html"><i class="fa fa-check"></i><b>38</b> HTTP</a></li>
+<li class="chapter" data-level="39" data-path="ajax.html"><a href="ajax.html"><i class="fa fa-check"></i><b>39</b> AJAX</a></li>
+<li class="chapter" data-level="40" data-path="sql-與關聯性資料庫.html"><a href="sql-與關聯性資料庫.html"><i class="fa fa-check"></i><b>40</b> SQL 與關聯性資料庫</a></li>
+<li class="chapter" data-level="41" data-path="正規表達式.html"><a href="正規表達式.html"><i class="fa fa-check"></i><b>41</b> 正規表達式</a></li>
+<li class="part"><span><b>IX 網路爬蟲</b></span></li>
+<li class="chapter" data-level="42" data-path="網路爬蟲.html"><a href="網路爬蟲.html"><i class="fa fa-check"></i><b>42</b> 網路爬蟲</a></li>
+<li class="part"><span><b>X 自然語言的特色</b></span></li>
+<li class="chapter" data-level="43" data-path="langmodeling.html"><a href="langmodeling.html"><i class="fa fa-check"></i><b>43</b> 語言與建模</a></li>
+<li class="chapter" data-level="44" data-path="斷詞.html"><a href="斷詞.html"><i class="fa fa-check"></i><b>44</b> 斷詞</a></li>
+<li class="chapter" data-level="" data-path="ref.html"><a href="ref.html"><i class="fa fa-check"></i>參考文獻</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tidyr" class="section level1" number="13">
+<h1><span class="header-section-number">13</span> 以 <code>tidyr</code> 整理資料</h1>
+<div class="note">
+<p>本章為 <span class="citation"><a href="#ref-wickhamDataScience2016" role="doc-biblioref">Wickham and Grolemund</a> (<a href="#ref-wickhamDataScience2016" role="doc-biblioref">2016</a>)</span> 第 9 章內容。另外可參見 <span class="citation"><a href="#ref-wickham2014tidy" role="doc-biblioref">Wickham</a> (<a href="#ref-wickham2014tidy" role="doc-biblioref">2014</a>)</span> 作為本章補充。</p>
+</div>
+<blockquote>
+<p>Happy families are all alike; every unhappy family is unhappy in its own way.</p>
+<p>— Leo Tolstoy</p>
+</blockquote>
+<blockquote>
+<p>Tidy datasets are all alike, but every messy dataset is messy in its own way.</p>
+<p>— Hadley Wickham</p>
+</blockquote>
+<div id="需要的套件-1" class="section level3 unnumbered">
+<h3>需要的套件</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tidyr.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.3     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div id="tidy-data" class="section level2" number="13.1">
+<h2><span class="header-section-number">13.1</span> Tidy Data</h2>
+<div class="comment">
+<p>一筆<strong>整潔的</strong>資料有三個彼此相關的規則：</p>
+<ol style="list-style-type: decimal">
+<li>每個變數都自成一行。</li>
+<li>每個觀察值都自成一列。</li>
+<li>每個變數值都自成一格。</li>
+</ol>
+<p>因此，我們要做的事情就是：</p>
+<ol style="list-style-type: decimal">
+<li>把每筆資料都放在一個 tibble 中。</li>
+<li>把每個變數都放在一行中。</li>
+</ol>
+</div>
+<p>以下有五筆資料，每筆都是相同的，但是只有 <code>table1</code> 是整潔的（tidy）的：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="tidyr.html#cb5-1" aria-hidden="true" tabindex="-1"></a>table1</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tidyr.html#cb7-1" aria-hidden="true" tabindex="-1"></a>table2</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tidyr.html#cb9-1" aria-hidden="true" tabindex="-1"></a>table3</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tidyr.html#cb11-1" aria-hidden="true" tabindex="-1"></a>table4a</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="tidyr.html#cb13-1" aria-hidden="true" tabindex="-1"></a>table4b</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##   country         `1999`     `2000`
+## * &lt;chr&gt;            &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan   19987071   20595360
+## 2 Brazil       172006362  174504898
+## 3 China       1272915272 1280428583</code></pre>
+<p>事實上，因為 <code>dplyr</code> 與 <code>ggplot2</code>，以及所有 <code>tidyverse</code> 的套件，甚至是多數的 R 套件都是為 tidy data 所設計，因此這個環節至關重要。</p>
+<div class="comment">
+<p>不過，有時候 nontidy data 也有其用處。例如可能效能較好，或佔據的空間更小；或者某些專業領域有其儲存資料的特殊傳統。詳情可以參見 <a href="https://simplystatistics.org/2016/02/17/non-tidy-data/">Non-tidy data</a>。</p>
+</div>
+</div>
+<div id="spreading-and-gathering" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Spreading and Gathering</h2>
+<div class="comment">
+<p>不整潔的資料，有兩類常見的問題：</p>
+<ul>
+<li>一個變數存在多行中。</li>
+<li>一個觀察值分散在好幾列中。</li>
+</ul>
+<p>想要解決這兩種問題，我們可以使用 <code>tidyr</code> 所提供的 <code>gather()</code> 與 <code>spread()</code> 函數。</p>
+</div>
+<div id="gathering" class="section level3" number="13.2.1">
+<h3><span class="header-section-number">13.2.1</span> Gathering</h3>
+<p>以剛剛展示過的 <code>table4a</code> 而言，它<strong>行的名稱不是變數的名稱</strong>：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="tidyr.html#cb15-1" aria-hidden="true" tabindex="-1"></a>table4a</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766</code></pre>
+<p>要整理這批資料，我們需要三種參數：</p>
+<ul>
+<li><p>應該要是變數值而不是變數的行，即 <code>1999</code> 和 <code>2000</code>。</p></li>
+<li><p>其值原本是行的名稱的新變數名稱，這裡將有變數值為 <code>1999</code> 和 <code>2000</code> 的變數稱為 <code>year</code>，搭配引數 <code>key</code>。</p></li>
+<li><p>其值原本散落在格子內的新變數名稱，這裡稱呼為 <code>cases</code>，搭配引數 <code>value</code>。</p></li>
+</ul>
+<p>所以，我們可以如此整理 <code>table4a</code>：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tidyr.html#cb17-1" aria-hidden="true" tabindex="-1"></a>table4a <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="tidyr.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="st">`</span><span class="at">1999</span><span class="st">`</span>, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>, <span class="at">key =</span> <span class="st">&quot;year&quot;</span>, <span class="at">value =</span> <span class="st">&quot;cases&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country     year   cases
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
+## 1 Afghanistan 1999     745
+## 2 Brazil      1999   37737
+## 3 China       1999  212258
+## 4 Afghanistan 2000    2666
+## 5 Brazil      2000   80488
+## 6 China       2000  213766</code></pre>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="images/%E6%88%AA%E5%9C%96%202021-09-02%20%E4%B8%8B%E5%8D%885.17.03.png" alt="`gather()` 的運作方式。" width="550" />
+<p class="caption">
+Figure 13.1: <code>gather()</code> 的運作方式。
+</p>
+</div>
+<p>我們可以依樣畫葫蘆地整理 <code>table4b</code>：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tidyr.html#cb19-1" aria-hidden="true" tabindex="-1"></a>table4b <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="tidyr.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="st">`</span><span class="at">1999</span><span class="st">`</span>, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>, <span class="at">key =</span> <span class="st">&quot;year&quot;</span>, <span class="at">value =</span> <span class="st">&quot;population&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country     year  population
+##   &lt;chr&gt;       &lt;chr&gt;      &lt;int&gt;
+## 1 Afghanistan 1999    19987071
+## 2 Brazil      1999   172006362
+## 3 China       1999  1272915272
+## 4 Afghanistan 2000    20595360
+## 5 Brazil      2000   174504898
+## 6 China       2000  1280428583</code></pre>
+<p>接下來，我們可以利用第 <a href="dplyr2.html#dplyr2">14</a> 章會學到的 <code>dplyr::left_join()</code> 來合併這兩者：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tidyr.html#cb21-1" aria-hidden="true" tabindex="-1"></a>tidy4a <span class="ot">&lt;-</span> table4a <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="tidyr.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="st">`</span><span class="at">1999</span><span class="st">`</span>, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>, <span class="at">key =</span> <span class="st">&quot;year&quot;</span>, <span class="at">value =</span> <span class="st">&quot;cases&quot;</span>)</span>
+<span id="cb21-3"><a href="tidyr.html#cb21-3" aria-hidden="true" tabindex="-1"></a>tidy4b <span class="ot">&lt;-</span> table4b <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="tidyr.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="st">`</span><span class="at">1999</span><span class="st">`</span>, <span class="st">`</span><span class="at">2000</span><span class="st">`</span>, <span class="at">key =</span> <span class="st">&quot;year&quot;</span>, <span class="at">value =</span> <span class="st">&quot;population&quot;</span>)</span>
+<span id="cb21-5"><a href="tidyr.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(tidy4a, tidy4b)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country     year   cases population
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan 1999     745   19987071
+## 2 Brazil      1999   37737  172006362
+## 3 China       1999  212258 1272915272
+## 4 Afghanistan 2000    2666   20595360
+## 5 Brazil      2000   80488  174504898
+## 6 China       2000  213766 1280428583</code></pre>
+</div>
+<div id="spreading" class="section level3" number="13.2.2">
+<h3><span class="header-section-number">13.2.2</span> Spreading</h3>
+<p>Spreading 與 gathering 恰好相反，所要處理的問題是<strong>觀察值分散在不同列裏</strong>，<code>table2</code> 就有這樣的問題：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tidyr.html#cb23-1" aria-hidden="true" tabindex="-1"></a>table2</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583</code></pre>
+<p>要處理這種問題，我們需要兩種參數：</p>
+<ul>
+<li><p>包含變數名稱的行，此處即 <code>type</code>，搭配引數 <code>key</code>。</p></li>
+<li><p>包含組成多個變數的變數值的行，此處即 <code>count</code>，搭配引數 <code>value</code>。</p></li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tidyr.html#cb25-1" aria-hidden="true" tabindex="-1"></a>table2 <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="tidyr.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> type, <span class="at">value =</span> count)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="images/%E6%88%AA%E5%9C%96%202021-09-02%20%E4%B8%8B%E5%8D%885.31.57.png" alt="`spread()` 的運作方式。" width="550" />
+<p class="caption">
+Figure 13.2: <code>spread()</code> 的運作方式。
+</p>
+</div>
+</div>
+</div>
+<div id="separating-and-pull" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Separating and Pull</h2>
+<div class="comment">
+<p>另外兩種問題是<strong>一行中有多個變數</strong>與<strong>一個變數分散在多行</strong>，我們可以使用 <code>separate()</code> 與 <code>unite()</code> 來解決這兩種問題。</p>
+</div>
+<div id="seperate" class="section level3" number="13.3.1">
+<h3><span class="header-section-number">13.3.1</span> Seperate</h3>
+<p><code>table3</code> 的問題就在有一行 <code>rate</code>，事實上裝了兩個變數：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tidyr.html#cb27-1" aria-hidden="true" tabindex="-1"></a>table3</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583</code></pre>
+<p>只要有分隔字元的話，seperate 可以把一行拉成兩行，如：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="tidyr.html#cb29-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="tidyr.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(rate, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;population&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year cases  population
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     
+## 1 Afghanistan  1999 745    19987071  
+## 2 Afghanistan  2000 2666   20595360  
+## 3 Brazil       1999 37737  172006362 
+## 4 Brazil       2000 80488  174504898 
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-13"></span>
+<img src="images/%E6%88%AA%E5%9C%96%202021-09-02%20%E4%B8%8B%E5%8D%886.30.19.png" alt="`separate()` 的運作方式。" width="550" />
+<p class="caption">
+Figure 13.3: <code>separate()</code> 的運作方式。
+</p>
+</div>
+<p><code>separate()</code> 預設會將非數字或字母的字元當成分隔字元，然後拆開。不過，如果有特殊的需求，我們也可以引數 <code>sep</code> 來手動指定分隔符號，如：</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tidyr.html#cb31-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="tidyr.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(rate, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;population&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;/&quot;</span>)</span></code></pre></div>
+<p><code>sep</code> 引數也不見得要丟入符號。我們可以在 <code>sep</code> 丟入數字，正值代表從字串左邊數來第 <span class="math inline">\(n\)</span> 個處分隔，負值則為從右邊數來第 <span class="math inline">\(n\)</span> 個處分隔，如：</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tidyr.html#cb32-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="tidyr.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(year, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;century&quot;</span>, <span class="st">&quot;year&quot;</span>), <span class="at">sep =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country     century year  rate             
+##   &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;            
+## 1 Afghanistan 19      99    745/19987071     
+## 2 Afghanistan 20      00    2666/20595360    
+## 3 Brazil      19      99    37737/172006362  
+## 4 Brazil      20      00    80488/174504898  
+## 5 China       19      99    212258/1272915272
+## 6 China       20      00    213766/1280428583</code></pre>
+<p>不過，事情還沒有結束。注意到上面的 <code>cases</code> 與 <code>population</code>，本應是數字，卻被記為字元。我們可以使用引數 <code>convert</code> 解決此問題：</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tidyr.html#cb34-1" aria-hidden="true" tabindex="-1"></a>table3 <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="tidyr.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(</span>
+<span id="cb34-3"><a href="tidyr.html#cb34-3" aria-hidden="true" tabindex="-1"></a>    rate,</span>
+<span id="cb34-4"><a href="tidyr.html#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;population&quot;</span>),</span>
+<span id="cb34-5"><a href="tidyr.html#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">convert =</span> <span class="cn">TRUE</span></span>
+<span id="cb34-6"><a href="tidyr.html#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+</div>
+<div id="unite" class="section level3" number="13.3.2">
+<h3><span class="header-section-number">13.3.2</span> Unite</h3>
+<p><code>unite()</code> 與 <code>separate()</code> 恰好相反，即把數行合併成一行。我們可以把 <code>table5</code> 的 <code>century</code> 與 <code>year</code> 兩行合併成 <code>new</code>，其中還可以加上引數 <code>sep</code>，因為 <code>unite()</code> 合併時預設會加入 <code>_</code>，因此我們必須設置為 <code>sep = ""</code>，如：</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="tidyr.html#cb36-1" aria-hidden="true" tabindex="-1"></a>table5</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   country     century year  rate             
+## * &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;            
+## 1 Afghanistan 19      99    745/19987071     
+## 2 Afghanistan 20      00    2666/20595360    
+## 3 Brazil      19      99    37737/172006362  
+## 4 Brazil      20      00    80488/174504898  
+## 5 China       19      99    212258/1272915272
+## 6 China       20      00    213766/1280428583</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tidyr.html#cb38-1" aria-hidden="true" tabindex="-1"></a>table5 <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="tidyr.html#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(new, century, year, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   country     new   rate             
+##   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            
+## 1 Afghanistan 1999  745/19987071     
+## 2 Afghanistan 2000  2666/20595360    
+## 3 Brazil      1999  37737/172006362  
+## 4 Brazil      2000  80488/174504898  
+## 5 China       1999  212258/1272915272
+## 6 China       2000  213766/1280428583</code></pre>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
+<img src="images/%E6%88%AA%E5%9C%96%202021-09-03%20%E4%B8%8A%E5%8D%882.14.26.png" alt="`unite()` 的運作方式。" width="550" />
+<p class="caption">
+Figure 13.4: <code>unite()</code> 的運作方式。
+</p>
+</div>
+</div>
+</div>
+<div id="missing-values" class="section level2" number="13.4">
+<h2><span class="header-section-number">13.4</span> Missing Values</h2>
+<div class="comment">
+<p>資料裡的缺漏值有兩種呈現形式：</p>
+<ol style="list-style-type: decimal">
+<li><strong>Explicit.</strong> 以 <code>NA</code> 表示。</li>
+<li><strong>Implicit.</strong> 單純地沒有紀錄變數值。</li>
+</ol>
+</div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tidyr.html#cb40-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb40-2"><a href="tidyr.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">year   =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2015</span>, <span class="dv">2016</span>, <span class="dv">2016</span>, <span class="dv">2016</span>),</span>
+<span id="cb40-3"><a href="tidyr.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">qtr    =</span> <span class="fu">c</span>(   <span class="dv">1</span>,    <span class="dv">2</span>,    <span class="dv">3</span>,    <span class="dv">4</span>,    <span class="dv">2</span>,    <span class="dv">3</span>,    <span class="dv">4</span>),</span>
+<span id="cb40-4"><a href="tidyr.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">return =</span> <span class="fu">c</span>(<span class="fl">1.88</span>, <span class="fl">0.59</span>, <span class="fl">0.35</span>,   <span class="cn">NA</span>, <span class="fl">0.92</span>, <span class="fl">0.17</span>, <span class="fl">2.66</span>))</span></code></pre></div>
+<p>在以上的資料中，有兩個缺漏值：</p>
+<ol style="list-style-type: decimal">
+<li><p>2015 年的第四季的報酬為 <code>NA</code>（explicit）。</p></li>
+<li><p>少了 2016 年第一季的資料（implicit）。</p></li>
+</ol>
+<div id="讓潛藏的缺漏值顯露出來" class="section level3" number="13.4.1">
+<h3><span class="header-section-number">13.4.1</span> 讓潛藏的缺漏值顯露出來</h3>
+<p>要如何讓潛藏的缺漏值顯露出來呢？</p>
+<ol style="list-style-type: decimal">
+<li><p>使用 <code>spread()</code> 把 <code>year</code> 放到 column 去，再使用 <code>gather()</code> 把行的名稱變成變數的名稱，如：</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tidyr.html#cb41-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="tidyr.html#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(year, return) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="tidyr.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(year, return, <span class="st">`</span><span class="at">2015</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2016</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 8 × 3
+##     qtr year  return
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+## 1     1 2015    1.88
+## 2     2 2015    0.59
+## 3     3 2015    0.35
+## 4     4 2015   NA   
+## 5     1 2016   NA   
+## 6     2 2016    0.92
+## 7     3 2016    0.17
+## 8     4 2016    2.66</code></pre></li>
+<li><p>使用 <code>complete()</code>，如：</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tidyr.html#cb43-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="tidyr.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(year, qtr)</span></code></pre></div>
+<pre><code>## # A tibble: 8 × 3
+##    year   qtr return
+##   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1  2015     1   1.88
+## 2  2015     2   0.59
+## 3  2015     3   0.35
+## 4  2015     4  NA   
+## 5  2016     1  NA   
+## 6  2016     2   0.92
+## 7  2016     3   0.17
+## 8  2016     4   2.66</code></pre></li>
+</ol>
+</div>
+<div id="自動填入" class="section level3" number="13.4.2">
+<h3><span class="header-section-number">13.4.2</span> 自動填入</h3>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tidyr.html#cb45-1" aria-hidden="true" tabindex="-1"></a>treatment <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb45-2"><a href="tidyr.html#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> person,           <span class="sc">~</span> treatment, <span class="sc">~</span>response,</span>
+<span id="cb45-3"><a href="tidyr.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Derrick Whitmore&quot;</span>, <span class="dv">1</span>,            <span class="dv">7</span>,</span>
+<span id="cb45-4"><a href="tidyr.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,                 <span class="dv">2</span>,            <span class="dv">10</span>,</span>
+<span id="cb45-5"><a href="tidyr.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,                 <span class="dv">3</span>,            <span class="dv">9</span>,</span>
+<span id="cb45-6"><a href="tidyr.html#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Katherine Burke&quot;</span>,  <span class="dv">1</span>,            <span class="dv">4</span></span>
+<span id="cb45-7"><a href="tidyr.html#cb45-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>使用 <code>fill()</code> 會自動填入最常見的非缺漏值：</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tidyr.html#cb46-1" aria-hidden="true" tabindex="-1"></a>treatment <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="tidyr.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fill</span>(person)</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 3
+##   person           treatment response
+##   &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Derrick Whitmore         1        7
+## 2 Derrick Whitmore         2       10
+## 3 Derrick Whitmore         3        9
+## 4 Katherine Burke          1        4</code></pre>
+
+</div>
+</div>
+</div>
+<h3>參考文獻</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-wickham2014tidy" class="csl-entry">
+Wickham, Hadley. 2014. <span>“Tidy Data.”</span> <em>Journal of Statistical Software</em> 59 (1): 1–23.
+</div>
+<div id="ref-wickhamDataScience2016" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. 2016. <em>R for <span>Data Science</span></em>. First Edition. <span>O’Reilly Media, Inc.</span>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="readr.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dplyr2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

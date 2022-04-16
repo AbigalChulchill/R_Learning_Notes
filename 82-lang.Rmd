@@ -1,0 +1,7 @@
+# (PART) 自然語言的特色 {-}
+
+# 語言與建模 {#langmodeling}
+
+:::{.note}
+本章為 @datasupervised 第 1 章內容。
+:::

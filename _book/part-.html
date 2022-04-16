@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 (PART) 資料分析 | R 學習筆記</title>
+  <meta name="description" content="5 (PART) 資料分析 | R 學習筆記" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 (PART) 資料分析 | R 學習筆記" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 (PART) 資料分析 | R 學習筆記" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="visual.html"/>
+<link rel="next" href="analysis.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">R 學習筆記</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>序言</a></li>
+<li class="part"><span><b>I 第一部分：基本語法</b></span></li>
+<li class="chapter" data-level="1" data-path="rlang.html"><a href="rlang.html"><i class="fa fa-check"></i><b>1</b> R 資料結構</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="rlang.html"><a href="rlang.html#變數與基本的運算"><i class="fa fa-check"></i><b>1.1</b> 變數與基本的運算</a></li>
+<li class="chapter" data-level="1.2" data-path="rlang.html"><a href="rlang.html#向量"><i class="fa fa-check"></i><b>1.2</b> 向量</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="rlang.html"><a href="rlang.html#創造向量的其他方法"><i class="fa fa-check"></i><b>1.2.1</b> 創造向量的其他方法</a></li>
+<li class="chapter" data-level="1.2.2" data-path="rlang.html"><a href="rlang.html#標籤"><i class="fa fa-check"></i><b>1.2.2</b> 標籤</a></li>
+<li class="chapter" data-level="1.2.3" data-path="rlang.html"><a href="rlang.html#vectcalc"><i class="fa fa-check"></i><b>1.2.3</b> 向量的運算</a></li>
+<li class="chapter" data-level="1.2.4" data-path="rlang.html"><a href="rlang.html#accesselements"><i class="fa fa-check"></i><b>1.2.4</b> 存取向量中的元素</a></li>
+<li class="chapter" data-level="1.2.5" data-path="rlang.html"><a href="rlang.html#關係"><i class="fa fa-check"></i><b>1.2.5</b> 關係</a></li>
+<li class="chapter" data-level="1.2.6" data-path="rlang.html"><a href="rlang.html#排序"><i class="fa fa-check"></i><b>1.2.6</b> 排序</a></li>
+<li class="chapter" data-level="1.2.7" data-path="rlang.html"><a href="rlang.html#其他操作"><i class="fa fa-check"></i><b>1.2.7</b> 其他操作</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="rlang.html"><a href="rlang.html#矩陣"><i class="fa fa-check"></i><b>1.3</b> 矩陣</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="rlang.html"><a href="rlang.html#創建矩陣"><i class="fa fa-check"></i><b>1.3.1</b> 創建矩陣</a></li>
+<li class="chapter" data-level="1.3.2" data-path="rlang.html"><a href="rlang.html#合併矩陣與矩陣運算"><i class="fa fa-check"></i><b>1.3.2</b> 合併矩陣與矩陣運算</a></li>
+<li class="chapter" data-level="1.3.3" data-path="rlang.html"><a href="rlang.html#存取矩陣中的元素"><i class="fa fa-check"></i><b>1.3.3</b> 存取矩陣中的元素</a></li>
+<li class="chapter" data-level="1.3.4" data-path="rlang.html"><a href="rlang.html#矩陣的運算"><i class="fa fa-check"></i><b>1.3.4</b> 矩陣的運算</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="rlang.html"><a href="rlang.html#factors"><i class="fa fa-check"></i><b>1.4</b> Factors</a></li>
+<li class="chapter" data-level="1.5" data-path="rlang.html"><a href="rlang.html#data-frames"><i class="fa fa-check"></i><b>1.5</b> Data Frames</a></li>
+<li class="chapter" data-level="1.6" data-path="rlang.html"><a href="rlang.html#lists"><i class="fa fa-check"></i><b>1.6</b> Lists</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="control.html"><a href="control.html"><i class="fa fa-check"></i><b>2</b> 控制結構與函數</a></li>
+<li class="part"><span><b>II 資料與前處理</b></span></li>
+<li class="chapter" data-level="3" data-path="rdata.html"><a href="rdata.html"><i class="fa fa-check"></i><b>3</b> R 的資料庫</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="rdata.html"><a href="rdata.html#資料來源匯入與匯出"><i class="fa fa-check"></i><b>3.1</b> 資料來源、匯入與匯出</a></li>
+<li class="chapter" data-level="3.2" data-path="rdata.html"><a href="rdata.html#資料收集"><i class="fa fa-check"></i><b>3.2</b> 資料收集</a></li>
+<li class="chapter" data-level="3.3" data-path="rdata.html"><a href="rdata.html#資料前處理"><i class="fa fa-check"></i><b>3.3</b> 資料前處理</a></li>
+</ul></li>
+<li class="part"><span><b>III 視覺化</b></span></li>
+<li class="chapter" data-level="4" data-path="visual.html"><a href="visual.html"><i class="fa fa-check"></i><b>4</b> 視覺化</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="visual.html"><a href="visual.html#r-base-graphics"><i class="fa fa-check"></i><b>4.1</b> R Base <code>graphics</code></a></li>
+<li class="chapter" data-level="4.2" data-path="visual.html"><a href="visual.html#libray-ggplot2"><i class="fa fa-check"></i><b>4.2</b> Libray <code>ggplot2</code></a></li>
+<li class="chapter" data-level="4.3" data-path="visual.html"><a href="visual.html#package-plotly"><i class="fa fa-check"></i><b>4.3</b> Package <code>plotly</code></a></li>
+<li class="chapter" data-level="4.4" data-path="visual.html"><a href="visual.html#package-leaflet"><i class="fa fa-check"></i><b>4.4</b> Package <code>leaflet</code></a></li>
+<li class="chapter" data-level="4.5" data-path="visual.html"><a href="visual.html#visualization-of-the-flights-dataset"><i class="fa fa-check"></i><b>4.5</b> Visualization of the <code>flights</code> Dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-.html"><a href="part-.html"><i class="fa fa-check"></i><b>5</b> (PART) 資料分析</a></li>
+<li class="chapter" data-level="6" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>6</b> R 資料分析</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="analysis.html"><a href="analysis.html#敘述統計"><i class="fa fa-check"></i><b>6.1</b> 敘述統計</a></li>
+<li class="chapter" data-level="6.2" data-path="analysis.html"><a href="analysis.html#統計推論"><i class="fa fa-check"></i><b>6.2</b> 統計推論</a></li>
+<li class="chapter" data-level="6.3" data-path="analysis.html"><a href="analysis.html#多變數統計"><i class="fa fa-check"></i><b>6.3</b> 多變數統計</a></li>
+<li class="chapter" data-level="6.4" data-path="analysis.html"><a href="analysis.html#data-analysis-of-the-flights-database"><i class="fa fa-check"></i><b>6.4</b> Data Analysis of the <code>flights</code> Database</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown">
+Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 學習筆記</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part-資料分析" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> (PART) 資料分析</h1>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="visual.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
